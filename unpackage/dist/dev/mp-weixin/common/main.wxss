@@ -347,4 +347,7 @@ page{--animate-duration:1s;--animate-delay:1s;--animate-repeat:1}
 @-webkit-keyframes slideOutUp{0%{-webkit-transform:translateZ(0);transform:translateZ(0)}to{visibility:hidden;-webkit-transform:translate3d(0,-100%,0);transform:translate3d(0,-100%,0)}}
 @keyframes slideOutUp{0%{-webkit-transform:translateZ(0);transform:translateZ(0)}to{visibility:hidden;-webkit-transform:translate3d(0,-100%,0);transform:translate3d(0,-100%,0)}}
 .animate__slideOutUp{-webkit-animation-name:slideOutUp;animation-name:slideOutUp}
+.page{
+	background-color: #30475e;
+}
 

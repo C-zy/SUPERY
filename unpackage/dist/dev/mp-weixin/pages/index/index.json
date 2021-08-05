@@ -1,5 +1,7 @@
 {
-  "navigationBarTitleText": "uni-app",
+  "navigationBarTitleText": "番",
   "navigationStyle": "custom",
-  "usingComponents": {}
+  "usingComponents": {
+    "popup-page": "/pages/components/popupPage"
+  }
 }

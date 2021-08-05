@@ -1,0 +1,22 @@
+{
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/cartoonList/index",
+          "pathName": "pages/cartoonList/index",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

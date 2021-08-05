@@ -26,6 +26,8 @@ api.txt = params => request.globalRequest(`${PORT1}/components/schemas/SubjectBa
 // 每日放送
 api.getCalendar = params => request.globalRequest(`${PORT1}/calendar`, 'GET',{}, 1)
 //获取详情数据
+api.getDetail = params => request.globalRequest(`${PORT1}//subject/${params}`, 'GET',{}, 1)
+//获取章节数据
 api.getsSubject = params => request.globalRequest(`${PORT1}//subject/${params}/ep`, 'GET',{}, 1)
 
 export default api

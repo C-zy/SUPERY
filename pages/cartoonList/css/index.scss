@@ -1,0 +1,71 @@
+.content{
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background-color: #30475e;
+	color: #f9fcfb;
+	padding-bottom: 200rpx;
+	.headText{
+		width: 100%;
+		font-size: 50rpx;
+		font-weight: bold;
+		box-sizing: border-box;
+		padding:0 40rpx;
+		margin-bottom: 40rpx;
+	}
+	.cartBox{
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0 40rpx;
+		margin-bottom: 100rpx;
+		.timeT{
+			width: 100%;
+			font-size: 40rpx;
+			font-weight: bold;
+		}
+		.cartList{
+			width: 100%;
+			overflow: hidden;
+			margin: 40rpx 0;
+			image{
+				width: 30%;
+				float: left;
+				border-radius: 10rpx;
+			}
+			.boxR{
+				width: 70%;
+				float: left;
+				box-sizing: border-box;
+				padding: 20rpx;
+				.textCart{
+					width: 100%;
+					font-size: 30rpx;
+					font-weight: bold;
+				}
+				.firstTime{
+					font-size: 26rpx;
+					margin-top: 40rpx;
+					.fTime{
+						color: #d1c145;
+					}
+				}
+				.score{
+					margin-top: 40rpx;
+					.scoreK{
+						font-size: 32rpx;
+						color: #f9fcfb;
+						opacity: .8;
+					}
+					.scoreN{
+						font-size: 50rpx;
+						font-weight: bold;
+						color: #d1c145;
+					}
+					.scoreNmini{
+						font-size: 32rpx;
+					}
+				}
+			}
+		}
+	}
+}

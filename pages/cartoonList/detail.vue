@@ -3,7 +3,7 @@
 		<!-- 背景图 -->
 		<image :src="bgImg" class="bgImg"></image>
 		<!-- 顶部 -->
-		<scroll-view class="scrollBox" scroll-y="true" @scroll="scrollLy">
+		<scroll-view v-if="date" class="scrollBox" scroll-y="true" @scroll="scrollLy">
 			<view class="headImgBox">
 				<image :src="bgImg" mode="widthFix"></image>
 			</view>
@@ -23,7 +23,7 @@
 			</view>
 		</scroll-view>
 		<!-- 返回组件 -->
-		<view class="toBack" @click="popupShow()" v-if="isPopup" :class="[isPopup?'animate__animated animate__bounceInLeft delay1':'animate__animated animate__fadeOut']">
+		<view class="toBack" @click="popupShow()" v-if="isPopup" :class="[isPopup?'animate__animated animate__bounceInRight delay1':'animate__animated animate__fadeOut']">
 			<image src="../../static/img/back.png" mode="widthFix"></image>
 		</view>
 	</view>
@@ -32,15 +32,17 @@
 <script>
 	import {mixin} from '../../static/js/mixin.js'
 	export default {
-		mixins:[mixin], 
-		props:['isPopup'],
+		mixins:[mixin],
 		data() {
 			return {
+				isPopup:true,
 				date:null,//数据
 				bgImg:null,//背景图
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			console.log(e,'99')
+			this.getDate(e.id,e.img)
 		},
 		methods: {
 			// 滚动事件
@@ -49,14 +51,14 @@
 			},
 			//弹出层隐藏
 			popupShow(){
-				this.$emit('popupShow')
+				uni.navigateBack({
+					url:'-1'
+				})
 			},
 			// 请求数据
 			getDate(e,img=null){
 				this.bgImg=img
-				console.log(img,'11111')
 				this.$api.getDetail(e).then(res => {
-				   console.log(res,'成功')
 				   this.date=res.data
 				})
 			},

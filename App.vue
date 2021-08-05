@@ -33,4 +33,7 @@
 <style>
 	/*每个页面公共css */
 	@import url("./static/css/animate.min.css");
+	.page{
+		background-color: #30475e;
+	}
 </style>

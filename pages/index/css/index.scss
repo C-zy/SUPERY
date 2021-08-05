@@ -6,6 +6,7 @@
 .container{
 	background-color: #30475e;
 	position: relative;
+	overflow: hidden;
 	// 动态盒子
 	.dynamicBox{
 		width: 300rpx;
@@ -13,7 +14,8 @@
 		background-color: #d1c145;
 		position: absolute;
 		left: 50rpx;
-		top: 200rpx;
+		// top: 200rpx;
+		top: 12%;
 		z-index: 80;
 		border-radius: 10rpx;
 		transition: .5s;
@@ -135,6 +137,7 @@
 					}
 					.scoreN{
 						font-size: 50rpx;
+						font-weight: bold;
 						color: #d1c145;
 					}
 					.scoreNmini{
@@ -159,7 +162,8 @@
 				width: 43%;
 				float: left;
 				margin-left: 4%;
-				margin-top: 800rpx;
+				// margin-top: 800rpx;
+				margin-top: 100%;
 			}
 			.rightCardBox{
 				width: 43%;
@@ -167,16 +171,58 @@
 				margin-right: 4%;
 				transform: none;
 				display: inline;
-				margin-top: 800rpx;
+				// margin-top: 800rpx;
+				margin-top: 100%;
 			}
 			.cardBox{
 				width: 100%;
-				height: 200rpx;
+				height: 170rpx;
 				border-radius: 10rpx;
-				// opacity: .7;
 				background: #d1c145;
 				transition: 1s;
 				margin-bottom: 60rpx;
+				position: relative;
+				.boxText{
+					width: 100%;
+					height: 100%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					font-size: 66rpx;
+					font-weight: bold;
+					color: #30475e;
+				}
+				.ikon{
+					width: 200rpx;
+					height: 200rpx;
+					position: absolute;
+				}
+				.ikon1{
+					top: -72rpx;
+					left: -30rpx;
+				}
+				.ikon2{
+					top: -30rpx;
+					left: -36rpx;
+				}
+				.ikon3{
+					top: -79rpx;
+					left: 0rpx;
+				}
+				.ikon4{
+					top: -76rpx;
+					right: -30rpx;
+					width: 230rpx;
+					height: 230rpx;
+				}
+				.ikon5{
+					top: -50rpx;
+					left: -32rpx;
+				}
+				.ikon6{
+					top: -78rpx;
+					right: -30rpx;
+				}
 			}
 		}
 		// 右边页面
@@ -193,4 +239,24 @@
 .delay2{
 	-webkit-animation-delay:0.4s;//延迟执行动画
 	animation-delay:0.4s;
+}
+// 弹出框
+.popupPage{
+	position: absolute;
+	top: 0rpx;
+	left: 0rpx;
+	width: 100%;
+	height: 100vh;
+	// background-color: #d1c145;
+	z-index: 90;
+	border-radius: 20rpx;
+	transition: .8s;
+}
+.popupPageShow{
+	opacity: 1;
+	border-radius: 0rpx;
+}
+.popupPageHidden{
+	top: 2400rpx;
+	opacity: .8;
 }

@@ -24,12 +24,12 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.content.data-v-6729789b {
+.content.data-v-d3cbde66 {
   width: 100%;
   height: 100vh;
   position: relative;
 }
-.content .bgImg.data-v-6729789b {
+.content .bgImg.data-v-d3cbde66 {
   width: 120%;
   height: 120%;
   -webkit-filter: blur(15px);
@@ -39,7 +39,7 @@
   right: -10%;
   z-index: -1;
 }
-.content .scrollBox.data-v-6729789b {
+.content .scrollBox.data-v-d3cbde66 {
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -47,7 +47,7 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-.content .scrollBox .headImgBox.data-v-6729789b {
+.content .scrollBox .headImgBox.data-v-d3cbde66 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -59,49 +59,49 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.content .scrollBox .headImgBox image.data-v-6729789b {
+.content .scrollBox .headImgBox image.data-v-d3cbde66 {
   width: 300rpx;
   -webkit-border-radius: 20rpx;
           border-radius: 20rpx;
   margin-top: 200rpx;
 }
-.content .scrollBox .textBox.data-v-6729789b {
+.content .scrollBox .textBox.data-v-d3cbde66 {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 0 40rpx;
 }
-.content .scrollBox .textBox .score.data-v-6729789b {
+.content .scrollBox .textBox .score.data-v-d3cbde66 {
   margin-top: 40rpx;
   font-size: 30rpx;
 }
-.content .scrollBox .textBox .score .scoreK.data-v-6729789b {
+.content .scrollBox .textBox .score .scoreK.data-v-d3cbde66 {
   font-size: 32rpx;
   color: #f9fcfb;
 }
-.content .scrollBox .textBox .score .scoreN.data-v-6729789b {
+.content .scrollBox .textBox .score .scoreN.data-v-d3cbde66 {
   font-size: 50rpx;
   font-weight: bold;
   color: #d1c145;
 }
-.content .scrollBox .textBox .score .scoreNmini.data-v-6729789b {
+.content .scrollBox .textBox .score .scoreNmini.data-v-d3cbde66 {
   font-size: 32rpx;
 }
-.content .scrollBox .textBox .airTime.data-v-6729789b {
+.content .scrollBox .textBox .airTime.data-v-d3cbde66 {
   font-size: 30rpx;
   margin-top: 20rpx;
 }
-.content .scrollBox .textBox .airTime .airTimeK.data-v-6729789b {
+.content .scrollBox .textBox .airTime .airTimeK.data-v-d3cbde66 {
   color: #f9fcfb;
 }
-.content .scrollBox .textBox .airTime .airTimeN.data-v-6729789b {
+.content .scrollBox .textBox .airTime .airTimeN.data-v-d3cbde66 {
   color: #d1c145;
 }
-.content .scrollBox .textBox .abstract.data-v-6729789b {
+.content .scrollBox .textBox .abstract.data-v-d3cbde66 {
   font-size: 30rpx;
   margin-top: 20rpx;
   margin-bottom: 200rpx;
 }
-.toBack.data-v-6729789b {
+.toBack.data-v-d3cbde66 {
   width: 100rpx;
   height: 100rpx;
   background-color: #d1c145;
@@ -111,7 +111,7 @@
   right: 60rpx;
   bottom: 100rpx;
 }
-.toBack image.data-v-6729789b {
+.toBack image.data-v-d3cbde66 {
   width: 50rpx;
   height: 50rpx;
   margin: 25rpx 24rpx;
