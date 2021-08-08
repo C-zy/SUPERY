@@ -24,6 +24,9 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+image.data-v-6729789b {
+  height: auto;
+}
 .content.data-v-6729789b {
   width: 100%;
   height: 100vh;
@@ -44,8 +47,7 @@
   height: 100vh;
   overflow: hidden;
   color: #f9fcfb;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .content .scrollBox .headImgBox.data-v-6729789b {
   width: 100%;
@@ -61,13 +63,11 @@
 }
 .content .scrollBox .headImgBox image.data-v-6729789b {
   width: 300rpx;
-  -webkit-border-radius: 20rpx;
-          border-radius: 20rpx;
+  border-radius: 20rpx;
   margin-top: 200rpx;
 }
 .content .scrollBox .textBox.data-v-6729789b {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0 40rpx;
 }
 .content .scrollBox .textBox .score.data-v-6729789b {
@@ -105,8 +105,7 @@
   width: 100rpx;
   height: 100rpx;
   background-color: #d1c145;
-  -webkit-border-radius: 50rpx;
-          border-radius: 50rpx;
+  border-radius: 50rpx;
   position: fixed;
   right: 60rpx;
   bottom: 100rpx;

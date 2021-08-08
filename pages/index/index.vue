@@ -128,6 +128,9 @@
 				//    console.log(res,'成功') 
 				// })
 				console.log(this.time)
+				uni.navigateTo({
+					url:'../webView/index'
+				})
 			},
 			//弹出框显示隐藏
 			popupShow(){

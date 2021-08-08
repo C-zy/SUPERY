@@ -28,6 +28,9 @@
   width: 100%;
   height: 100%;
 }
+image.data-v-57280228 {
+  height: auto;
+}
 .container.data-v-57280228 {
   background-color: #30475e;
   position: relative;
@@ -41,8 +44,7 @@
   left: 50rpx;
   top: 12%;
   z-index: 80;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
   -webkit-transition: .5s;
   transition: .5s;
 }
@@ -52,16 +54,13 @@
   color: #ffffff;
 }
 .container .dynamicBox .stateOne .swiper-item.data-v-57280228 {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 20rpx;
   background-color: #d1c145;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
 }
 .container .dynamicBox .stateOne .swiper-item image.data-v-57280228 {
-  -webkit-border-radius: 5rpx;
-          border-radius: 5rpx;
+  border-radius: 5rpx;
 }
 .container .dynamicBox .stateTwo.data-v-57280228 {
   overflow: hidden;
@@ -87,8 +86,7 @@
 .container .dynamicTwo.data-v-57280228 {
   width: 150rpx;
   height: 150rpx;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  border-radius: 50%;
 }
 .container .indexSwiper.data-v-57280228 {
   width: 100%;
@@ -124,15 +122,12 @@
 .container .indexSwiper .swiperCont .cardBox .timeBox.data-v-57280228 {
   width: 40%;
   height: 140rpx;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
   text-align: center;
   line-height: 140rpx;
   background: -webkit-linear-gradient(305deg, #2b4055, #334c65);
   background: linear-gradient(145deg, #2b4055, #334c65);
-  -webkit-box-shadow: 28px 28px 71px #273a4c, 
- -28px -28px 71px #395470;
-          box-shadow: 28px 28px 71px #273a4c, 
+  box-shadow: 28px 28px 71px #273a4c, 
  -28px -28px 71px #395470;
   opacity: .7;
 }
@@ -146,8 +141,7 @@
   position: absolute;
   right: 5%;
   top: 200rpx;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
 }
 .container .indexSwiper .swiperLeft .swiperDetails .title.data-v-57280228 {
   margin-top: 20rpx;
@@ -205,8 +199,7 @@
 .container .indexSwiper .swiperLeft .cardBox.data-v-57280228 {
   width: 100%;
   height: 170rpx;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
   background: #d1c145;
   -webkit-transition: 1s;
   transition: 1s;
@@ -275,15 +268,13 @@
   width: 100%;
   height: 100vh;
   z-index: 90;
-  -webkit-border-radius: 20rpx;
-          border-radius: 20rpx;
+  border-radius: 20rpx;
   -webkit-transition: .8s;
   transition: .8s;
 }
 .popupPageShow.data-v-57280228 {
   opacity: 1;
-  -webkit-border-radius: 0rpx;
-          border-radius: 0rpx;
+  border-radius: 0rpx;
 }
 .popupPageHidden.data-v-57280228 {
   top: 2400rpx;

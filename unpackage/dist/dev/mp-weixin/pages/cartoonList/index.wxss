@@ -24,6 +24,9 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+image.data-v-b5d220f4 {
+  height: auto;
+}
 .content.data-v-b5d220f4 {
   position: relative;
   width: 100%;
@@ -36,15 +39,13 @@
   width: 100%;
   font-size: 50rpx;
   font-weight: bold;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0 40rpx;
   margin-bottom: 40rpx;
 }
 .content .cartBox.data-v-b5d220f4 {
   width: 100%;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0 40rpx;
   margin-bottom: 100rpx;
 }
@@ -61,14 +62,12 @@
 .content .cartBox .cartList image.data-v-b5d220f4 {
   width: 30%;
   float: left;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
 }
 .content .cartBox .cartList .boxR.data-v-b5d220f4 {
   width: 70%;
   float: left;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 20rpx;
 }
 .content .cartBox .cartList .boxR .textCart.data-v-b5d220f4 {

@@ -20,6 +20,12 @@
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom"
 			}
+		},{
+			"path": "pages/webView/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {

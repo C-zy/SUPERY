@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/cartoonList/index",
-    "pages/cartoonList/detail"
+    "pages/cartoonList/detail",
+    "pages/webView/index"
   ],
   "subPackages": [],
   "window": {
@@ -11,6 +12,5 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }
