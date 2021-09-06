@@ -872,7 +872,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"add","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7446,7 +7446,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"add","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7467,14 +7467,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"add","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"add","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7560,7 +7560,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"add","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7998,9 +7998,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!**************************************************!*\
-  !*** C:/Users/ZY/Desktop/Work/SUPERY/pages.json ***!
-  \**************************************************/
+/*!*********************************!*\
+  !*** E:/myzy/SUPERY/pages.json ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8011,9 +8011,9 @@ module.exports = g;
 /* 6 */,
 /* 7 */,
 /* 8 */
-/*!**********************************************************!*\
-  !*** C:/Users/ZY/Desktop/Work/SUPERY/static/js/mixin.js ***!
-  \**********************************************************/
+/*!*****************************************!*\
+  !*** E:/myzy/SUPERY/static/js/mixin.js ***!
+  \*****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8041,10 +8041,31 @@ var mixin = {
       ikon6: 'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgj6b9wUGlLYvuXAMujXibu7voLSQ4dDYsndOnMkygMrKDLcyjty1kLWuQ/0?wx_fmt=png',
       ikon7: '',
       ikon8: '',
-      ikon9: '' };
+      ikon9: '',
+      x: 0 };
 
   },
-  methods: {} };exports.mixin = mixin;
+  computed: {
+    rotate: function rotate() {
+      var num = this.x.toFixed(2) * 4;
+      return "transform: translateX(" + num + "rpx)";
+    } },
+
+  onLoad: function onLoad(e) {
+    this.move();
+  },
+  methods: {
+    move: function move() {var _this = this;
+      uni.startDeviceMotionListening({
+        interval: 'ui' });
+
+      uni.onDeviceMotionChange(function (result) {
+        var xVal = -result.gamma.toFixed(2) / 5;
+        // var yVal = -(result.beta - 30).toFixed(2)/5;
+        _this.x = xVal > 10 ? 10 : xVal < -10 ? -10 : xVal;
+        // this.y = yVal > 10 ? 10 : (yVal < -10 ? -10 : yVal)
+      });
+    } } };exports.mixin = mixin;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -8179,9 +8200,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 12 */
-/*!*********************************************************!*\
-  !*** C:/Users/ZY/Desktop/Work/SUPERY/common/request.js ***!
-  \*********************************************************/
+/*!****************************************!*\
+  !*** E:/myzy/SUPERY/common/request.js ***!
+  \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8248,9 +8269,9 @@ request;exports.default = _default;
 
 /***/ }),
 /* 13 */
-/*!****************************************************!*\
-  !*** C:/Users/ZY/Desktop/Work/SUPERY/api/index.js ***!
-  \****************************************************/
+/*!***********************************!*\
+  !*** E:/myzy/SUPERY/api/index.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8291,9 +8312,9 @@ api;exports.default = _default;
 
 /***/ }),
 /* 14 */
-/*!********************************************************!*\
-  !*** C:/Users/ZY/Desktop/Work/SUPERY/common/config.js ***!
-  \********************************************************/
+/*!***************************************!*\
+  !*** E:/myzy/SUPERY/common/config.js ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8310,9 +8331,9 @@ url_config;exports.default = _default;
 
 /***/ }),
 /* 15 */
-/*!******************************************************!*\
-  !*** C:/Users/ZY/Desktop/Work/SUPERY/store/index.js ***!
-  \******************************************************/
+/*!*************************************!*\
+  !*** E:/myzy/SUPERY/store/index.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

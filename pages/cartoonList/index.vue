@@ -6,7 +6,7 @@
 		<view class="cartBox" v-for="(item,index) in calendar" :key='index'>
 			<view class="timeT">{{item.weekday.cn}}</view>
 			<view class="cartList" v-for="(val,int) in item.items" :key='val.id' @click="toDetail(val.id,val.images.large)">
-				<image :src="val.images.large" mode="widthFix"></image>
+				<image lazy-load :src="val.images.large" mode="widthFix"></image>
 				<view class="boxR">
 					<view class="textCart">{{val.name_cn?val.name_cn:val.name}}</view>
 					<view class="firstTime">

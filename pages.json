@@ -26,6 +26,12 @@
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom"
 			}
+		},{
+			"path": "pages/demo/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
