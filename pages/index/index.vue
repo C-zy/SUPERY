@@ -4,7 +4,7 @@
 		<view class="dynamicBox" :class="[indexPage==0?'dynamicOne':'',indexPage==2?'dynamicTwo':'']">
 			<!-- 初始状态 -->
 			<view class="initial WHs" v-if="indexPage==1" @click="txt">
-				我的设置
+				加入的第{{userTime}}天
 			</view>
 			<!-- 状态one -->
 			<view class="stateOne WHs" v-if="indexPage==0">
@@ -18,7 +18,7 @@
 			</view>
 			<!-- 状态two -->
 			<view class="stateTwo WHs" v-if="indexPage==2">
-				<image class="userImg" src="../../static/img/user/2.svg" mode=""></image>
+				<image class="userImg" src="../../static/img/user/2.svg" mode="" :style="this.rotate"></image>
 			</view>
 		</view>
 		<!-- 主体 -->
@@ -49,6 +49,7 @@
 						</view>
 					 	<view @click="isCardBgly(2)" class="cardBox" :class="[indexPage==0?'animate__animated animate__bounceInLeft delay1':'animate__animated animate__fadeOut']">
 							<!-- <image :src="ikon3" class="ikon ikon3" :class="[isCard==2?'animate__animated animate__headShake':'']"></image> -->
+							<view class="boxText">初音</view>
 						</view>
 					 	<view @click="isCardBgly(3)" class="cardBox" :class="[indexPage==0?'animate__animated animate__bounceInLeft delay2':'animate__animated animate__fadeOut']">
 							<!-- <image :src="ikon5" class="ikon ikon5" :class="[isCard==3?'animate__animated animate__flash':'']"></image> -->
@@ -57,6 +58,7 @@
 					 <view class="rightCardBox">
 					 	<view @click="isCardBgly(4)" class="cardBox" :class="[indexPage==0?'animate__animated animate__bounceInRight':'animate__animated animate__fadeOut']">
 							<!-- <image :src="ikon2" class="ikon ikon2" :class="[isCard==4?'animate__animated animate__pulse':'']"></image> -->
+							<view class="boxText">次元图片</view>
 						</view>
 					 	<view @click="isCardBgly(5)" class="cardBox" :class="[indexPage==0?'animate__animated animate__bounceInRight delay1':'animate__animated animate__fadeOut']">
 							<!-- <image :src="ikon4" class="ikon ikon4" :class="[isCard==5?'animate__animated animate__shakeY':'']"></image> -->
@@ -115,6 +117,7 @@
 					id:null
 				},
 				isCard:0,//选中的卡片
+				userTime:null,//用户已进入时间
 			}
 		},
 		onLoad() {
@@ -165,10 +168,17 @@
 			isCardBgly(e){
 				console.log(e,'选中的卡片')
 				this.isCard=e
-				// this.popupShow()
 				if(e==1){
 					uni.navigateTo({
 						url:'../cartoonList/index'
+					})
+				}else if(e==4){
+					uni.navigateTo({
+						url:'../wallpaper/index'
+					})
+				}else if(e==2){
+					uni.navigateTo({
+						url:'../webView/index'
 					})
 				}
 			},
@@ -179,17 +189,32 @@
 			},
 			//获取当前时间
 			 getTime(){
-				let time=new Date()
+				let time = new Date()
+				let year = time.getFullYear();       //年
+				let month = time.getMonth() + 1;     //月
+				let r = time.getDate();
 				let day=time.getDay()
 				let date={
-					month:time.getMonth()+1,
+					month:month,
 					date:time.getDate(),
 					id:day,
 					day:day==1?'一':day==2?'二':day==3?'三':day==4?'四':day==5?'五':day==6?'六':'日'
 				}
 				this.time=date
 				this.$store.state.time=date
+				let userTime = year+'.'+month+'.'+r
+				if(!uni.getStorageSync('userTime')){
+					uni.setStorageSync('userTime', userTime);
+				}
+				this.userTime = this.getDaysBetween(uni.getStorageSync('userTime'),userTime)
 			 },
+			 // 获取时间差
+			 getDaysBetween(dateString1,dateString2){
+			 	 var  startDate = Date.parse(dateString1);
+			 	 var  endDate = Date.parse(dateString2);
+			 	 var days=(endDate - startDate)/(1*24*60*60*1000)+1;
+			 	 return  days;
+			 }
 		}
 	}
 </script>

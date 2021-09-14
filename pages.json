@@ -27,6 +27,24 @@
 				"navigationStyle": "custom"
 			}
 		},{
+			"path": "pages/wallpaper/index",
+			"style": {
+				"navigationBarTitleText": "次元壁纸",
+				"navigationBarBackgroundColor":"#30475e",
+				"navigationBarTextStyle":"white",
+				"backgroundColor":"#30475e",
+				"enablePullDownRefresh": true
+			}
+		},{
+			"path": "pages/wallpaper/detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#30475e",
+				"navigationBarTextStyle":"white",
+				"backgroundColor":"#30475e",
+				"navigationStyle": "custom"
+			}
+		},{
 			"path": "pages/demo/index",
 			"style": {
 				"navigationBarTitleText": "",

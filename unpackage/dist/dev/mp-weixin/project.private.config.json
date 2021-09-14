@@ -13,14 +13,14 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/cartoonList/index",
-          "pathName": "pages/cartoonList/index",
+          "name": "pages/demo/index",
+          "pathName": "pages/demo/index",
           "query": "",
           "scene": null
         },
         {
-          "name": "pages/demo/index",
-          "pathName": "pages/demo/index",
+          "name": "pages/wallpaper/index",
+          "pathName": "pages/wallpaper/index",
           "query": "",
           "scene": null
         }

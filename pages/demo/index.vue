@@ -1,69 +1,106 @@
 <template>
 	<view class="container">
-		<image class="img" 
-		:style="rotate"
-		src="../../static/img/bgImg.png"></image>
-		<view class="demo">
-			{{x}}
+		<view class="searchModel" :class="openType ? 'boxOpen':''">
+			<view class="Box">
+				<view class="searchBox" @click="demo()">
+					<image src="../../static/img/search.png" mode="widthFix"></image>
+				</view>
+				<view class="iptBox" :class="openType ? 'iptBoxShow': ''">
+					<input class="ipt" type="text" v-model.trim="searchVal" placeholder='输入老婆名称' />
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {mixin} from '../../static/js/mixin.js'
-	export default {
-		mixins:[mixin],
-		data() {
-			return {
-				// x:0,
-				// y:0,
+import { mixin } from '../../static/js/mixin.js';
+export default {
+	mixins: [mixin],
+	data() {
+		return {
+			openType:false,
+			searchVal:'',
+		};
+	},
+	computed: {},
+	onLoad(e) {},
+	methods: {
+		demo() {
+			if(this.openType && this.searchVal){
+				this.searchVal = ''
 			}
+			this.openType = !this.openType;
 		},
-		computed:{
-			// rotate(){
-			// 	let num = this.x.toFixed(2)*4
-			// 	return "transform: translateX("+num+"rpx)"
-			// }
-		},
-		onLoad(e) {
-			// this.move()
-		},
-		methods: {
-			// move(){
-			// 	uni.startDeviceMotionListening({
-			// 		interval: 'ui',
-			// 	});
-			// 	uni.onDeviceMotionChange((result) => {
-			// 		var xVal = -(result.gamma).toFixed(2)/5;
-			// 		var yVal = -(result.beta - 30).toFixed(2)/5;
-			// 		this.x = xVal > 10 ? 10 : (xVal < -10 ? -10 : xVal)
-			// 		this.y = yVal > 10 ? 10 : (yVal < -10 ? -10 : yVal)
-			// 	})
-			// }
-		}
 	}
+};
 </script>
 
 <style lang="scss" scoped>
-.container{
-	width: 100%;
+.container {
 	height: 100vh;
-	display:flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
-// 	perspective: 500px;
-}
-.img{
-	height: 700rpx;
-	width: 500rpx;
-	margin: 40rpx auto;
-	// position: relative;
-	box-shadow: 0rpx 0rpx 20rpx #000000;
-}
-.demo{
-	position:absolute;
-	top: 30px;
-	left: 0px;
+	.searchModel{
+		width: 100%;
+		position: fixed;
+		width: 100%;
+		bottom: 100rpx;
+		transition: .4s;
+		.Box{
+			height: 100rpx;
+			position: relative;
+			.searchBox{
+				width: 100rpx;
+				height: 100rpx;
+				box-sizing: border-box;
+				background-color: #30475e;
+				opacity: .8;
+				border-radius: 50rpx;
+				position: absolute;
+				right: 60rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 3;
+				image{
+					width: 50rpx;
+					height: 50rpx;
+				}
+			}
+			.iptBox{
+				width: 100rpx;
+				height: 100rpx;
+				box-sizing: border-box;
+				background-color: #30475e;
+				opacity: .8;
+				border-radius: 50rpx;
+				z-index: 2;
+				transition: .4s;
+				overflow: hidden;
+				position: absolute;
+				right: 60rpx;
+				opacity: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0 40rpx;
+				.ipt{
+					width: 100%;
+					color: #fff;
+				}
+			}
+			.iptBoxShow{
+				opacity: .8;
+				width: 68%;
+				right: 26%;
+			}
+		}
+	}
+	.boxOpen{
+		bottom: 80%;
+	}
 }
 </style>

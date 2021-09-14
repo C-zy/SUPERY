@@ -4,6 +4,8 @@
     "pages/cartoonList/index",
     "pages/cartoonList/detail",
     "pages/webView/index",
+    "pages/wallpaper/index",
+    "pages/wallpaper/detail",
     "pages/demo/index"
   ],
   "subPackages": [],

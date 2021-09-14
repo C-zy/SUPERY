@@ -22,6 +22,7 @@ export const mixin={
 					ikon7:'',
 					ikon8:'',
 					ikon9:'',
+					Pimg:'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
 					x:0,
         }
     },
@@ -35,6 +36,7 @@ export const mixin={
 			this.move()
 		},
     methods: {
+			// 全局同态效果
 			move(){
 				uni.startDeviceMotionListening({
 					interval: 'ui',
@@ -44,6 +46,19 @@ export const mixin={
 					// var yVal = -(result.beta - 30).toFixed(2)/5;
 					this.x = xVal > 10 ? 10 : (xVal < -10 ? -10 : xVal)
 					// this.y = yVal > 10 ? 10 : (yVal < -10 ? -10 : yVal)
+				})
+			},
+			// base64图片转换
+			base64Img(url){
+				return new Promise(resolve => {
+					uni.request({
+					    url: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url='+url,
+					    method:'GET',
+							responseType : 'arraybuffer'
+					}).then(img => {
+						let base64_Img = uni.arrayBufferToBase64(img[1].data)
+						resolve('data:image/png;base64,' + base64_Img)
+					})
 				})
 			}
 		}

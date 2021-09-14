@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "次元壁纸",
+  "navigationBarBackgroundColor": "#30475e",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#30475e",
+  "enablePullDownRefresh": true,
+  "usingComponents": {}
+}
