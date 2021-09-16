@@ -872,7 +872,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7446,7 +7446,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7467,14 +7467,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7560,7 +7560,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"程序员","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8043,13 +8043,20 @@ var mixin = {
       ikon8: '',
       ikon9: '',
       Pimg: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
-      x: 0 };
+      x: 0,
+      y: 0 };
 
   },
   computed: {
     rotate: function rotate() {
-      var num = this.x.toFixed(2) * 4;
-      return "transform: translateX(" + num + "rpx)";
+      var numX = this.x.toFixed(2) * 4;
+      var numY = this.y.toFixed(2) * 2;
+      return "transform: translate(" + numX + "rpx," + numY + "rpx)";
+    },
+    rotateM: function rotateM() {
+      var numX = this.x.toFixed(2) * 2;
+      var numY = this.y.toFixed(2) * 2;
+      return "transform: translate(" + numX + "rpx," + numY + "rpx)";
     } },
 
   onLoad: function onLoad(e) {
@@ -8063,9 +8070,9 @@ var mixin = {
 
       uni.onDeviceMotionChange(function (result) {
         var xVal = -result.gamma.toFixed(2) / 5;
-        // var yVal = -(result.beta - 30).toFixed(2)/5;
+        var yVal = -(result.beta - 30).toFixed(2) / 5;
         _this.x = xVal > 10 ? 10 : xVal < -10 ? -10 : xVal;
-        // this.y = yVal > 10 ? 10 : (yVal < -10 ? -10 : yVal)
+        _this.y = yVal > 10 ? 10 : yVal < -10 ? -10 : yVal;
       });
     },
     // base64图片转换
@@ -8302,6 +8309,7 @@ var PORT3 = 'https://api.lolicon.app/setu/v2'; //图片接口Pixiv
 //接口文档： https://api.moedog.org/pixiv/v1.html
 // 随机图文档：https://api.lolicon.app/#/setu
 var PORT_Img = 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url='; //图片解析
+var PORT4 = 'https://api.qq.jsososo.com'; //qq音乐api 文档:https://jsososo.github.io/QQMusicApi/#/
 //${formatGetUri(params)}-----请求参数，GET请求时使用，会自动转换格式
 
 //使用方式：
@@ -8326,11 +8334,15 @@ api.getCalendar = function (params) {return _request.default.globalRequest("".co
 api.getDetail = function (params) {return _request.default.globalRequest("".concat(PORT1, "//subject/").concat(params), 'GET', {}, 1);};
 //获取章节数据
 api.getsSubject = function (params) {return _request.default.globalRequest("".concat(PORT1, "//subject/").concat(params, "/ep"), 'GET', {}, 1);};
+// 搜索番剧
+api.searchLy = function (params) {return _request.default.globalRequest("".concat(PORT1, "/search/subject/").concat(params), 'GET', {}, 1);};
 // Pixiv图片/解析
 api.PixivImg = function (params) {return _request.default.globalRequest("".concat(PORT_Img).concat(params), 'GET', {}, 3);};
 api.Pixiv1 = function (params) {return _request.default.globalRequest("".concat(PORT2), 'GET', params, 1);};
 //Pixiv图片
-api.Pixiv2 = function (params) {return _request.default.globalRequest("".concat(PORT3, "?r18=1&num=20"), 'GET', {}, 2);};var _default =
+api.Pixiv2 = function (params) {return _request.default.globalRequest("".concat(PORT3, "?r18=1&num=20"), 'GET', {}, 2);};
+// 音乐测试
+api.musicDemo = function (params) {return _request.default.globalRequest("".concat(PORT4, "/"), 'GET', params, 1);};var _default =
 
 api;exports.default = _default;
 

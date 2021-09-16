@@ -49,6 +49,14 @@ image.data-v-b5d220f4 {
   padding: 0 40rpx;
   margin-bottom: 100rpx;
 }
+.content .cartBox .ht.data-v-b5d220f4 {
+  width: 100%;
+  text-align: center;
+  margin-top: 40rpx;
+  font-size: 38rpx;
+  color: #fff;
+  opacity: 0.8;
+}
 .content .cartBox .timeT.data-v-b5d220f4 {
   width: 100%;
   font-size: 40rpx;
@@ -58,11 +66,38 @@ image.data-v-b5d220f4 {
   width: 100%;
   overflow: hidden;
   margin: 40rpx 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
 }
-.content .cartBox .cartList image.data-v-b5d220f4 {
+.content .cartBox .cartList .imgBox.data-v-b5d220f4 {
   width: 30%;
-  float: left;
+  height: 270rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
   border-radius: 10rpx;
+  background-color: rgba(119, 119, 119, 0.5);
+  overflow: hidden;
+}
+.content .cartBox .cartList .imgBox image.data-v-b5d220f4 {
+  width: 100%;
+  height: auto;
+  border-radius: 10rpx;
+}
+.content .cartBox .cartList .boxRt.data-v-b5d220f4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
 }
 .content .cartBox .cartList .boxR.data-v-b5d220f4 {
   width: 70%;
@@ -88,7 +123,7 @@ image.data-v-b5d220f4 {
 .content .cartBox .cartList .boxR .score .scoreK.data-v-b5d220f4 {
   font-size: 32rpx;
   color: #f9fcfb;
-  opacity: .8;
+  opacity: 0.8;
 }
 .content .cartBox .cartList .boxR .score .scoreN.data-v-b5d220f4 {
   font-size: 50rpx;
@@ -97,5 +132,81 @@ image.data-v-b5d220f4 {
 }
 .content .cartBox .cartList .boxR .score .scoreNmini.data-v-b5d220f4 {
   font-size: 32rpx;
+}
+.searchModel.data-v-b5d220f4 {
+  width: 100%;
+  position: fixed;
+  width: 100%;
+  bottom: 100rpx;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.searchModel .Box.data-v-b5d220f4 {
+  height: 100rpx;
+  position: relative;
+}
+.searchModel .Box .searchBox.data-v-b5d220f4 {
+  width: 100rpx;
+  height: 100rpx;
+  box-sizing: border-box;
+  background-color: #d1c145;
+  opacity: 0.8;
+  border-radius: 50rpx;
+  position: absolute;
+  right: 60rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  z-index: 3;
+}
+.searchModel .Box .searchBox image.data-v-b5d220f4 {
+  width: 50rpx;
+  height: 50rpx;
+}
+.searchModel .Box .iptBox.data-v-b5d220f4 {
+  width: 100rpx;
+  height: 100rpx;
+  box-sizing: border-box;
+  background-color: #d1c145;
+  border-radius: 50rpx;
+  z-index: 2;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  overflow: hidden;
+  position: absolute;
+  right: 60rpx;
+  opacity: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 40rpx;
+}
+.searchModel .Box .iptBox .ipt.data-v-b5d220f4 {
+  width: 100%;
+  color: #fff;
+}
+.searchModel .Box .iptBoxShow.data-v-b5d220f4 {
+  opacity: 0.9;
+  width: 68%;
+  right: 26%;
+}
+.boxOpen.data-v-b5d220f4 {
+  bottom: 60%;
+}
+.filterLy.data-v-b5d220f4 {
+  -webkit-filter: blur(8px);
+          filter: blur(8px);
 }
 

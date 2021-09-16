@@ -24,12 +24,19 @@ export const mixin={
 					ikon9:'',
 					Pimg:'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
 					x:0,
+					y:0,
         }
     },
 		computed:{
 			rotate(){
-				let num = this.x.toFixed(2)*4
-				return "transform: translateX("+num+"rpx)"
+				let numX = this.x.toFixed(2)*4;
+				let numY = this.y.toFixed(2)*2;
+				return "transform: translate("+numX+"rpx,"+numY+"rpx)"
+			},
+			rotateM(){
+				let numX = this.x.toFixed(2)*2;
+				let numY = this.y.toFixed(2)*2;
+				return "transform: translate("+numX+"rpx,"+numY+"rpx)"
 			}
 		},
 		onLoad(e) {
@@ -43,9 +50,9 @@ export const mixin={
 				});
 				uni.onDeviceMotionChange((result) => {
 					var xVal = -(result.gamma).toFixed(2)/5;
-					// var yVal = -(result.beta - 30).toFixed(2)/5;
+					var yVal = -(result.beta - 30).toFixed(2)/5;
 					this.x = xVal > 10 ? 10 : (xVal < -10 ? -10 : xVal)
-					// this.y = yVal > 10 ? 10 : (yVal < -10 ? -10 : yVal)
+					this.y = yVal > 10 ? 10 : (yVal < -10 ? -10 : yVal)
 				})
 			},
 			// base64图片转换

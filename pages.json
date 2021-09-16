@@ -12,7 +12,8 @@
 				"navigationBarTitleText": "",
 				"navigationBarBackgroundColor":"#30475e",
 				"navigationBarTextStyle":"white",
-				"backgroundColor":"#30475e"
+				"backgroundColor":"#30475e",
+				"enablePullDownRefresh": true
 			}
 		},{
 			"path": "pages/cartoonList/detail",
@@ -44,12 +45,20 @@
 				"backgroundColor":"#30475e",
 				"navigationStyle": "custom"
 			}
-		},{
-			"path": "pages/demo/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
+		}
+	],
+	"subPackages":[
+		{
+			"root":"pageA",
+			"pages":[
+				{
+					"path": "demo/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				}
+			]
 		}
 	],
 	"globalStyle": {

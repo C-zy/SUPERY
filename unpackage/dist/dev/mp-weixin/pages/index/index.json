@@ -1,7 +1,5 @@
 {
   "navigationBarTitleText": "番",
   "navigationStyle": "custom",
-  "usingComponents": {
-    "popup-page": "/pages/components/popupPage"
-  }
+  "usingComponents": {}
 }

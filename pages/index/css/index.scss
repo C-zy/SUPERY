@@ -24,9 +24,17 @@ image{
 		transition: .5s;
 		// 初始状态
 		.initial{
-			text-align: center;
-			line-height: 100rpx;
-			color: #ffffff;
+			display: flex;
+			justify-content: center;
+			font-size: 32rpx;
+			align-items: center;
+			color: rgba($color: #fff, $alpha: .7);
+			.day{
+				font-size: 38rpx;
+				font-weight: bold;
+				margin-left: 10rpx;
+				color: rgba($color: #30475e, $alpha: .7);
+			}
 		}
 		// 状态one
 		.stateOne{
@@ -47,8 +55,9 @@ image{
 			justify-content: center;
 			align-items: center;
 			.userImg{
-				width: 70%;
-				height: 70%;
+				width: 90%;
+				height: 90%;
+				border-radius: 50%;
 			}
 		}
 	}
@@ -161,12 +170,17 @@ image{
 					}
 				}
 			}
+			.botBox{
+				width: 100%;
+				height: 50vh;
+				margin-top: 56vh;
+			}
 			.leftCardBox{
 				width: 43%;
 				float: left;
 				margin-left: 4%;
 				// margin-top: 800rpx;
-				margin-top: 100%;
+				// margin-top: 100%;
 			}
 			.rightCardBox{
 				width: 43%;
@@ -175,25 +189,46 @@ image{
 				transform: none;
 				display: inline;
 				// margin-top: 800rpx;
-				margin-top: 100%;
+				// margin-top: 100%;
 			}
 			.cardBox{
 				width: 100%;
-				height: 170rpx;
+				height: 140rpx;
 				border-radius: 10rpx;
 				background: #d1c145;
 				transition: 1s;
-				margin-bottom: 60rpx;
+				margin-bottom: 40rpx;
 				position: relative;
+				.cyImg{
+					width: 120rpx;
+					height: 120rpx;
+					position: absolute;
+					right: 20rpx;
+					top: -20rpx;
+					z-index: 5;
+				}
 				.boxText{
 					width: 100%;
 					height: 100%;
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					font-size: 66rpx;
+					font-size: 46rpx;
 					font-weight: bold;
 					color: #30475e;
+				}
+				.boxTextLy{
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					display: flex;
+					align-items: center;
+					font-size: 38rpx;
+					font-weight: bold;
+					box-sizing: border-box;
+					padding-left: 40rpx;
+					color: rgba($color: #fff, $alpha:.8);
+					z-index: 2;
 				}
 				.ikon{
 					width: 200rpx;

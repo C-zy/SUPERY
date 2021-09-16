@@ -1,74 +1,159 @@
-image{
+image {
 	height: auto;
 }
-.content{
+.content {
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
 	background-color: #30475e;
 	color: #f9fcfb;
 	padding-bottom: 200rpx;
-	.headText{
+	.headText {
 		width: 100%;
 		font-size: 50rpx;
 		font-weight: bold;
 		box-sizing: border-box;
-		padding:0 40rpx;
+		padding: 0 40rpx;
 		margin-bottom: 40rpx;
 	}
-	.cartBox{
+	.cartBox {
 		width: 100%;
 		box-sizing: border-box;
 		padding: 0 40rpx;
 		margin-bottom: 100rpx;
-		.timeT{
+		.ht {
+			width: 100%;
+			text-align: center;
+			margin-top: 40rpx;
+			font-size: 38rpx;
+			color: #fff;
+			opacity: 0.8;
+		}
+		.timeT {
 			width: 100%;
 			font-size: 40rpx;
 			font-weight: bold;
 		}
-		.cartList{
+		.cartList {
 			width: 100%;
 			overflow: hidden;
 			margin: 40rpx 0;
-			image{
+			display: flex;
+			.imgBox {
 				width: 30%;
-				float: left;
+				height: 270rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				border-radius: 10rpx;
+				background-color: rgba($color: #777, $alpha: 0.5);
+				overflow: hidden;
+				image {
+					width: 100%;
+					height: auto;
+					border-radius: 10rpx;
+				}
 			}
-			.boxR{
+			.boxRt {
+				display: flex;
+				align-items: center;
+			}
+			.boxR {
 				width: 70%;
 				float: left;
 				box-sizing: border-box;
 				padding: 20rpx;
-				.textCart{
+				.textCart {
 					width: 100%;
 					font-size: 30rpx;
 					font-weight: bold;
 				}
-				.firstTime{
+				.firstTime {
 					font-size: 26rpx;
 					margin-top: 40rpx;
-					.fTime{
+					.fTime {
 						color: #d1c145;
 					}
 				}
-				.score{
+				.score {
 					margin-top: 40rpx;
-					.scoreK{
+					.scoreK {
 						font-size: 32rpx;
 						color: #f9fcfb;
-						opacity: .8;
+						opacity: 0.8;
 					}
-					.scoreN{
+					.scoreN {
 						font-size: 50rpx;
 						font-weight: bold;
 						color: #d1c145;
 					}
-					.scoreNmini{
+					.scoreNmini {
 						font-size: 32rpx;
 					}
 				}
 			}
 		}
 	}
+}
+// 搜索
+.searchModel {
+	width: 100%;
+	position: fixed;
+	width: 100%;
+	bottom: 100rpx;
+	transition: 0.4s;
+	.Box {
+		height: 100rpx;
+		position: relative;
+		.searchBox {
+			width: 100rpx;
+			height: 100rpx;
+			box-sizing: border-box;
+			background-color: #d1c145;
+			opacity: 0.8;
+			border-radius: 50rpx;
+			position: absolute;
+			right: 60rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 3;
+			image {
+				width: 50rpx;
+				height: 50rpx;
+			}
+		}
+		.iptBox {
+			width: 100rpx;
+			height: 100rpx;
+			box-sizing: border-box;
+			background-color: #d1c145;
+			border-radius: 50rpx;
+			z-index: 2;
+			transition: 0.4s;
+			overflow: hidden;
+			position: absolute;
+			right: 60rpx;
+			opacity: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0 40rpx;
+			.ipt {
+				width: 100%;
+				color: #fff;
+			}
+		}
+		.iptBoxShow {
+			opacity: 0.9;
+			width: 68%;
+			right: 26%;
+		}
+	}
+}
+.boxOpen {
+	bottom: 60%;
+}
+.filterLy {
+	filter: blur(8px);
 }

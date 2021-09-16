@@ -5,10 +5,16 @@
     "pages/cartoonList/detail",
     "pages/webView/index",
     "pages/wallpaper/index",
-    "pages/wallpaper/detail",
-    "pages/demo/index"
+    "pages/wallpaper/detail"
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "pageA",
+      "pages": [
+        "demo/index"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

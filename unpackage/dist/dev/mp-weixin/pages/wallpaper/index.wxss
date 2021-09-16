@@ -1,6 +1,6 @@
 
-page{
-	background-color:#30475e;
+page {
+	background-color: #30475e;
 }
 
 @charset "UTF-8";
@@ -72,9 +72,9 @@ page{
   padding: 4rpx 6rpx;
   background-color: rgba(48, 71, 94, 0.6);
   margin: 10rpx;
-  border-radius: 4rpx;
+  border-radius: 2px;
   max-width: 38%;
-  opacity: .8;
+  opacity: 0.8;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -84,8 +84,8 @@ page{
   position: fixed;
   width: 100%;
   bottom: 100rpx;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .searchModel .Box.data-v-452d509c {
   height: 100rpx;
@@ -96,7 +96,7 @@ page{
   height: 100rpx;
   box-sizing: border-box;
   background-color: #30475e;
-  opacity: .8;
+  opacity: 0.8;
   border-radius: 50rpx;
   position: absolute;
   right: 60rpx;
@@ -120,11 +120,10 @@ page{
   height: 100rpx;
   box-sizing: border-box;
   background-color: #30475e;
-  opacity: .8;
   border-radius: 50rpx;
   z-index: 2;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
   overflow: hidden;
   position: absolute;
   right: 60rpx;
@@ -145,11 +144,15 @@ page{
   color: #fff;
 }
 .searchModel .Box .iptBoxShow.data-v-452d509c {
-  opacity: .8;
+  opacity: 0.9;
   width: 68%;
   right: 26%;
 }
 .boxOpen.data-v-452d509c {
-  bottom: 86%;
+  bottom: 60%;
+}
+.filterLy.data-v-452d509c {
+  -webkit-filter: blur(8px);
+          filter: blur(8px);
 }
 

@@ -99,7 +99,33 @@ image.data-v-d3cbde66 {
 .content .scrollBox .textBox .abstract.data-v-d3cbde66 {
   font-size: 30rpx;
   margin-top: 20rpx;
+  margin-bottom: 40rpx;
+}
+.content .scrollBox .numListBox.data-v-d3cbde66 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 20rpx;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+  box-sizing: border-box;
   margin-bottom: 200rpx;
+}
+.content .scrollBox .numListBox .numBox.data-v-d3cbde66 {
+  width: 46%;
+  height: 60rpx;
+  margin: 10rpx 2%;
+  border-radius: 4px;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  line-height: 60rpx;
+  background-color: rgba(48, 71, 94, 0.5);
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .toBack.data-v-d3cbde66 {
   width: 100rpx;

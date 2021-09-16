@@ -13,8 +13,8 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/demo/index",
-          "pathName": "pages/demo/index",
+          "name": "pageA/demo/index",
+          "pathName": "pageA/demo/index",
           "query": "",
           "scene": null
         },
@@ -22,6 +22,18 @@
           "name": "pages/wallpaper/index",
           "pathName": "pages/wallpaper/index",
           "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/cartoonList/index",
+          "pathName": "pages/cartoonList/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/cartoonList/detail",
+          "pathName": "pages/cartoonList/detail",
+          "query": "id=227897&img=http%3A%2F%2Flain.bgm.tv%2Fpic%2Fcover%2Fl%2F86%2F50%2F227897_LP1X1.jpg",
           "scene": null
         }
       ]

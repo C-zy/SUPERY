@@ -124,6 +124,7 @@ export default {
 								duration: 2000
 							});
 							that.btnType = true;
+							uni.vibrateShort();
 						},
 						fail: function(err) {
 							uni.hideLoading();
