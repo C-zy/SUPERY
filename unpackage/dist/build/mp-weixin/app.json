@@ -1,0 +1,26 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/cartoonList/index",
+    "pages/cartoonList/detail",
+    "pages/webView/index",
+    "pages/wallpaper/index",
+    "pages/wallpaper/detail"
+  ],
+  "subPackages": [
+    {
+      "root": "pageA",
+      "pages": [
+        "demo/index"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

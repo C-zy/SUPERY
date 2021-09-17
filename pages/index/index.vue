@@ -27,7 +27,7 @@
 				</swiper>
 			</view>
 			<!-- 状态two -->
-			<view class="stateTwo WHs" v-if="indexPage == 2"><image class="userImg" :src="userInfo.avatarUrl ? userInfo.avatarUrl : '../../static/img/user/2.svg'" mode=""></image></view>
+			<view class="stateTwo WHs" v-if="indexPage == 2"><image class="userImg" @click="getUserInfo()" :src="userInfo.avatarUrl ? userInfo.avatarUrl : '../../static/img/user/2.svg'" mode=""></image></view>
 		</view>
 		<!-- 主体 -->
 		<swiper class="indexSwiper" current="1" @change="swiperChange">
@@ -72,7 +72,9 @@
 								</view>
 							</view>
 							<view @click="isCardBgly(3)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInLeft delay2' : 'animate__animated animate__fadeOut']">
-								<!-- <view class="boxText">次元图片</view> -->
+								<view class="EVABox" :style="rotateX">
+									<view class="eva-warning"><p class="eva-warning__message">alert</p></view>
+								</view>
 							</view>
 						</view>
 						<view class="rightCardBox">
@@ -99,16 +101,16 @@
 									</view>
 								</view>
 							</view>
-							<view
-								@click="isCardBgly(5)"
-								class="cardBox"
-								:class="[indexPage == 0 ? 'animate__animated animate__bounceInRight delay1' : 'animate__animated animate__fadeOut']"
-							></view>
-							<view
-								@click="isCardBgly(6)"
-								class="cardBox"
-								:class="[indexPage == 0 ? 'animate__animated animate__bounceInRight delay2' : 'animate__animated animate__fadeOut']"
-							></view>
+							<view @click="isCardBgly(5)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInRight delay1' : 'animate__animated animate__fadeOut']">
+								<view class="EVABox" :style="rotateX">
+									<view class="eva-warning"><p class="eva-warning__message">alert</p></view>
+								</view>
+							</view>
+							<view @click="isCardBgly(6)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInRight delay2' : 'animate__animated animate__fadeOut']">
+								<view class="EVABox" :style="rotateX">
+									<view class="eva-warning"><p class="eva-warning__message">alert</p></view>
+								</view>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -117,9 +119,13 @@
 			<swiper-item>
 				<view class="swiper-item swiperCont">
 					<image :src="bgImg" class="swiperContBg" mode=""></image>
+					<!-- 首页随机角色 -->
+					<view v-if="comicImg" class="comicImgBox" :class="indexPage == 1 ? 'timeBox animate__animated animate__fadeInRight' : 'animate__animated animate__fadeOutLeft'">
+						<image @click="setComic()" :src="comicImg" mode="widthFix" :style="rotate" class="comicImg"></image>
+					</view>
 					<!-- 底部组件框 -->
 					<view class="cardBox">
-						<view @click="txt" :class="indexPage == 1 ? 'timeBox animate__animated animate__slideInUp' : 'animate__animated animate__fadeOutDown timeBox'">
+						<view :class="indexPage == 1 ? 'timeBox animate__animated animate__slideInUp' : 'animate__animated animate__fadeOutDown timeBox'">
 							{{ time.month }} 月 {{ time.date }} 日 周{{ time.day }}
 						</view>
 					</view>
@@ -160,8 +166,8 @@ export default {
 			isCard: 0, //选中的卡片
 			userTime: null, //用户已进入时间
 			isDaylight: false, //判断白天还是夜晚
-			userInfo: null ,//用户信息
-			strArr:[],//计算缓存
+			userInfo: null, //用户信息
+			strArr: [] //计算缓存
 		};
 	},
 	onLoad() {
@@ -193,19 +199,19 @@ export default {
 				});
 			}
 		},
-		setUserName(val){
-			let str = val.split(' ')
+		setUserName(val) {
+			let str = val.split(' ');
 			str.forEach(v => {
-				this.setStr(v)
-			})
-			return this.strArr.join(' ')
+				this.setStr(v);
+			});
+			return this.strArr.join(' ');
 		},
-		setStr(strL){
-			if(strL.length > 4){
-				this.strArr.push(strL.slice(0, 4))
-				this.setStr(strL.slice(4))
-			}else{
-				this.strArr.push(strL)
+		setStr(strL) {
+			if (strL.length > 4) {
+				this.strArr.push(strL.slice(0, 4));
+				this.setStr(strL.slice(4));
+			} else {
+				this.strArr.push(strL);
 			}
 		},
 		// 首页标签点击

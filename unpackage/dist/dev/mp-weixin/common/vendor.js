@@ -8018,13 +8018,13 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.mixin = void 0; // 全局调用文件，打开小程序时执行，获取后台设置的全局参数在需要的页面进行引用
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.mixin = void 0;
+var _jrPencil = __webpack_require__(/*! ../../static/js/jrPencil.js */ 9); // 全局调用文件，打开小程序时执行，获取后台设置的全局参数在需要的页面进行引用
 var mixin = {
   data: function data() {
     return {
       mixinBg: uni.getStorageSync('timColor').bgC, //#222831
       // 图片
-      // bgImg:'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg5dMQMuP25MchlHFG7JCtGHVhbMD5e9n5ug1kFzYfMLN1gOgcfD3VpHxcucqONYNjWjP2TRR0icqmw/0?wx_fmt=png',
       bgImg: '../../static/img/bgImg.png',
       // 颜色
       bgColor1: '#d1c145',
@@ -8032,16 +8032,7 @@ var mixin = {
       bgColor3: '#30475e',
       // 数据
       calendar: null,
-      // 插画
-      ikon1: 'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgjG8RfjohRnChQa5Lkiby4WFGDTwTQkr897oUpib34GOqerYiawGcXJAxCA/0?wx_fmt=png',
-      ikon2: 'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgjCgTUvu0RIYdL96ncbC7B7tSIWmXmUNtY53mJicHZDxEVcY6TILte9pQ/0?wx_fmt=png',
-      ikon3: 'https://mmbiz.qlogo.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgj6ibBGE9kibXBTppVicVgKprOniaAFCO9EYazXqZrvKL1glyCpha70RIzbg/0?wx_fmt=png',
-      ikon4: 'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgjwUulrSFg8xVpbQriaJJVqC9qia0rAaVsibWEaMSPrrs7TblnKKyp8JLqw/0?wx_fmt=png',
-      ikon5: 'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgjrwbbDGiblj2vyLMgv5e75vfY9ODiaoqMcBdFr7oQD6rstFPo1qeCicKPQ/0?wx_fmt=png',
-      ikon6: 'https://mmbiz.qpic.cn/mmbiz_png/1vTZx1SXKg6ibZvJ3Hy6mibwb9cmxMAVgj6b9wUGlLYvuXAMujXibu7voLSQ4dDYsndOnMkygMrKDLcyjty1kLWuQ/0?wx_fmt=png',
-      ikon7: '',
-      ikon8: '',
-      ikon9: '',
+      comicImg: uni.getStorageSync('comicImg'), //首页插画
       Pimg: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
       x: 0,
       y: 0 };
@@ -8057,10 +8048,17 @@ var mixin = {
       var numX = this.x.toFixed(2) * 2;
       var numY = this.y.toFixed(2) * 2;
       return "transform: translate(" + numX + "rpx," + numY + "rpx)";
+    },
+    rotateX: function rotateX() {
+      var numX = this.x.toFixed(2) * 3;
+      return "transform: translateX(" + numX + "rpx)";
     } },
 
   onLoad: function onLoad(e) {
     this.move();
+    if (!this.comicImg) {
+      this.setComic();
+    }
   },
   methods: {
     // 全局同态效果
@@ -8087,13 +8085,46 @@ var mixin = {
           resolve('data:image/png;base64,' + base64_Img);
         });
       });
+    },
+    // 角色切换
+    setComic: function setComic() {
+      var num = Math.floor(Math.random() * _jrPencil.jrPencil.length);
+      var url = _jrPencil.jrPencil[num];
+      uni.setStorageSync('comicImg', url);
+      uni.vibrateShort();
+      this.comicImg = url;
     } } };exports.mixin = mixin;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 9 */,
+/* 9 */
+/*!********************************************!*\
+  !*** E:/myzy/SUPERY/static/js/jrPencil.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.jrPencil = void 0;var jrPencil = [
+'https://supery.work/jrPencil/yuanshen/jr-ys1.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys2.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys3.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys4.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys5.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys6.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys7.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys8.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys9.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys10.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys11.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys12.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys13.png',
+'https://supery.work/jrPencil/yuanshen/jr-ys14.png'];exports.jrPencil = jrPencil;
+
+/***/ }),
 /* 10 */,
-/* 11 */
+/* 11 */,
+/* 12 */
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
   \**********************************************************************************************************/
@@ -8221,7 +8252,7 @@ function normalizeComponent (
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /*!****************************************!*\
   !*** E:/myzy/SUPERY/common/request.js ***!
   \****************************************/
@@ -8290,7 +8321,7 @@ request;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 13 */
+/* 14 */
 /*!***********************************!*\
   !*** E:/myzy/SUPERY/api/index.js ***!
   \***********************************/
@@ -8299,7 +8330,7 @@ request;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-var _request = _interopRequireDefault(__webpack_require__(/*! @/common/request.js */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} // 接口配置
+var _request = _interopRequireDefault(__webpack_require__(/*! @/common/request.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} // 接口配置
 // import { formatGetUri } from '@/common/util.js'
 
 var api = {};
@@ -8347,7 +8378,7 @@ api.musicDemo = function (params) {return _request.default.globalRequest("".conc
 api;exports.default = _default;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /*!***************************************!*\
   !*** E:/myzy/SUPERY/common/config.js ***!
   \***************************************/
@@ -8366,7 +8397,7 @@ if (true) {
 url_config;exports.default = _default;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /*!*************************************!*\
   !*** E:/myzy/SUPERY/store/index.js ***!
   \*************************************/
@@ -8375,7 +8406,7 @@ url_config;exports.default = _default;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 _vue.default.use(_vuex.default);
 var store = new _vuex.default.Store({
   state: {
@@ -8388,7 +8419,7 @@ var store = new _vuex.default.Store({
 store;exports.default = _default;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/

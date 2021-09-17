@@ -1,0 +1,113 @@
+image{
+	height: auto;
+}
+.content{
+	width: 100%;
+	height: 100vh;
+	position: relative;
+	.bgImg{
+		width: 120%;
+		height: 120%;
+		filter: blur(15px);
+		position: fixed;
+		// position: absolute;
+		top: -10%;
+		right: -10%;
+		z-index: -1;
+	}
+	.scrollBox{
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		color: #f9fcfb;
+		box-sizing: border-box;
+		.headImgBox{
+			width: 100%;
+			// height: 400rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			image{
+				width: 300rpx;
+				border-radius: 20rpx;
+				margin-top: 200rpx;
+			}
+		}
+		.textBox{
+			box-sizing: border-box;
+			padding: 0 40rpx;
+			.score{
+				margin-top: 40rpx;
+				font-size: 30rpx;
+				.scoreK{
+					font-size: 32rpx;
+					color: #f9fcfb;
+					// opacity: .8;
+				}
+				.scoreN{
+					font-size: 50rpx;
+					font-weight: bold;
+					color: #d1c145;
+				}
+				.scoreNmini{
+					font-size: 32rpx;
+				}
+			}
+			.airTime{
+				font-size: 30rpx;
+				margin-top: 20rpx;
+				.airTimeK{
+					color: #f9fcfb;
+					// opacity: .8;
+				}
+				.airTimeN{
+					color: #d1c145;
+				}
+			}
+			.abstract{
+				font-size: 30rpx;
+				margin-top: 20rpx;
+				margin-bottom: 40rpx;
+			}
+		}
+		// 集数
+		.numListBox{
+			width: 100%;
+			display: flex;
+			padding: 20rpx;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			margin-bottom: 200rpx;
+			.numBox{
+				width: 46%;
+				height: 60rpx;
+				margin: 10rpx 2%;
+				border-radius: 4px;
+				font-size: 28rpx;
+				padding: 0 20rpx;
+				box-sizing: border-box;
+				line-height: 60rpx;
+				background-color: rgba($color: #30475e, $alpha: .5);
+				color: #fff;
+				overflow:hidden;
+				text-overflow:ellipsis;
+				white-space:nowrap; 
+			}
+		}
+	}
+}
+// 返回组件
+.toBack{
+	width: 100rpx;
+	height: 100rpx;
+	background-color: #d1c145;
+	border-radius: 50rpx;
+	position: fixed;
+	right: 60rpx;
+	bottom: 100rpx;
+	image{
+		width: 50rpx;
+		height: 50rpx;
+		margin: 25rpx 24rpx;
+	}
+}

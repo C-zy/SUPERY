@@ -323,6 +323,17 @@ image.data-v-57280228 {
   top: 2400rpx;
   opacity: .8;
 }
+.comicImgBox.data-v-57280228 {
+  position: fixed;
+  top: 18vh;
+  right: 80rpx;
+  width: 260rpx;
+  height: 260rpx;
+}
+.comicImgBox .comicImg.data-v-57280228 {
+  width: 100%;
+  height: 100%;
+}
 
 @charset "UTF-8";
 /**
@@ -898,5 +909,69 @@ image.data-v-57280228 {
   text-align: center;
   background: -webkit-radial-gradient(1.4% 1.4%, circle, var(--color-1) 0.8%, transparent 0.8%), -webkit-radial-gradient(5.5% 3%, circle, var(--color-2) 0.45%, transparent 0.45%), -webkit-radial-gradient(2.5% 3.5%, circle, var(--color-3) 0.5%, transparent 0.5%), -webkit-radial-gradient(4.5% 1.2%, circle, var(--color-4) 0.25%, transparent 0.25%), -webkit-radial-gradient(98% 98%, circle, var(--color-1) 0.8%, transparent 0.8%), -webkit-radial-gradient(95% 95%, circle, var(--color-2) 0.45%, transparent 0.45%), -webkit-radial-gradient(94.5% 97.5%, circle, var(--color-3) 0.5%, transparent 0.5%), -webkit-radial-gradient(98.5% 95.5%, circle, var(--color-4) 0.25%, transparent 0.25%);
   background: radial-gradient(circle at 1.4% 1.4%, var(--color-1) 0.8%, transparent 0.8%), radial-gradient(circle at 5.5% 3%, var(--color-2) 0.45%, transparent 0.45%), radial-gradient(circle at 2.5% 3.5%, var(--color-3) 0.5%, transparent 0.5%), radial-gradient(circle at 4.5% 1.2%, var(--color-4) 0.25%, transparent 0.25%), radial-gradient(circle at 98% 98%, var(--color-1) 0.8%, transparent 0.8%), radial-gradient(circle at 95% 95%, var(--color-2) 0.45%, transparent 0.45%), radial-gradient(circle at 94.5% 97.5%, var(--color-3) 0.5%, transparent 0.5%), radial-gradient(circle at 98.5% 95.5%, var(--color-4) 0.25%, transparent 0.25%);
+}
+.EVABox.data-v-57280228 {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.eva-warning.data-v-57280228 {
+  width: 300rpx;
+  margin-top: 10%;
+  background-color: red;
+  overflow: hidden;
+  box-shadow: 0 0 10px black;
+  opacity: 0.75;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.eva-warning.data-v-57280228:before, .eva-warning.data-v-57280228:after {
+  float: left;
+  clear: both;
+  content: ' ';
+  width: 100%;
+  background-color: red;
+  box-shadow: 0 0 0 1px black;
+}
+.eva-warning.data-v-57280228:before {
+  border-top: dotted 10rpx black;
+  -webkit-transform: skew(-50deg);
+          transform: skew(-50deg);
+  padding-bottom: 1px;
+}
+.eva-warning.data-v-57280228:after {
+  border-bottom: dotted 10rpx black;
+  -webkit-transform: skew(50deg);
+          transform: skew(50deg);
+  padding-top: 1px;
+}
+.eva-warning__message.data-v-57280228 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Arial, Helvetica;
+  font-size: 36rpx;
+  -webkit-animation: blink-data-v-57280228 2s infinite;
+          animation: blink-data-v-57280228 2s infinite;
+}
+@-webkit-keyframes blink-data-v-57280228 {
+25% {
+    color: transparent;
+    background-color: red;
+}
+50% {
+    background-color: black;
+}
+}
+@keyframes blink-data-v-57280228 {
+25% {
+    color: transparent;
+    background-color: red;
+}
+50% {
+    background-color: black;
+}
 }
 

@@ -81,11 +81,9 @@ image{
 		}
 		// 中间页面
 		.swiperCont{
-			// background-color: #d1c145;
 			.box{
 				width: 200rpx;
 				height: 200rpx;
-				// background-color: #007AFF;
 			}
 			.swiperContBg{
 				width: 100%;
@@ -108,7 +106,6 @@ image{
 				.timeBox{
 					width: 40%;
 					height: 140rpx;
-					// background-color: rgba(39,33,46,.7);
 					border-radius: 10rpx;
 					text-align: center;
 					line-height: 140rpx;
@@ -297,4 +294,17 @@ image{
 .popupPageHidden{
 	top: 2400rpx;
 	opacity: .8;
+}
+
+// 角色
+.comicImgBox{
+	position: fixed;
+	top: 18vh;
+	right: 80rpx;
+	width: 260rpx;
+	height: 260rpx;
+	.comicImg{
+		width: 100%;
+		height: 100%;
+	}
 }

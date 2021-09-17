@@ -24,4 +24,63 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.eva-warning.data-v-5bbe5651 {
+  width: 300rpx;
+  margin-top: 10%;
+  background-color: red;
+  overflow: hidden;
+  box-shadow: 0 0 10px black;
+  opacity: 0.75;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.eva-warning.data-v-5bbe5651:before, .eva-warning.data-v-5bbe5651:after {
+  float: left;
+  clear: both;
+  content: ' ';
+  width: 100%;
+  background-color: red;
+  box-shadow: 0 0 0 1px black;
+}
+.eva-warning.data-v-5bbe5651:before {
+  border-top: dotted 10rpx black;
+  -webkit-transform: skew(-50deg);
+          transform: skew(-50deg);
+  padding-bottom: 1px;
+}
+.eva-warning.data-v-5bbe5651:after {
+  border-bottom: dotted 10rpx black;
+  -webkit-transform: skew(50deg);
+          transform: skew(50deg);
+  padding-top: 1px;
+}
+.eva-warning__message.data-v-5bbe5651 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: Arial, Helvetica;
+  font-size: 25rpx;
+  -webkit-animation: blink-data-v-5bbe5651 2s infinite;
+          animation: blink-data-v-5bbe5651 2s infinite;
+}
+@-webkit-keyframes blink-data-v-5bbe5651 {
+25% {
+    color: transparent;
+    background-color: red;
+}
+50% {
+    background-color: black;
+}
+}
+@keyframes blink-data-v-5bbe5651 {
+25% {
+    color: transparent;
+    background-color: red;
+}
+50% {
+    background-color: black;
+}
+}
 
