@@ -1,7 +1,9 @@
 <template>
 	<view class="container">
-		<view class="" @click="demo()">123</view>
-		<div class="eva-warning"><p class="eva-warning__message">alert</p></div>
+		<view class="demo" @click="demo()">123</view>
+		<!-- <image :src="imgList[0].urls.original" mode=""></image> -->
+		<!-- <web-view :src="webView"></web-view> -->
+		<!-- <image :src="imgUrl" mode=""></image> -->
 	</view>
 </template>
 
@@ -11,13 +13,101 @@ export default {
 	mixins: [mixin],
 	data() {
 		return {
-			strArr: []
+			webView: 'http://192.168.1.82:3000/static/books/202109001/第002卷.pdf',
+			imgUrl: '',
+			imgList: [],
+			bgUrl: uni.getStorageSync('imgPageBg'),
 		};
 	},
 	computed: {},
 	onLoad(e) {},
 	methods: {
-		demo() {}
+		demo() {
+			// let pr = {
+			// 	num:10
+			// }
+			// this.$api.txt(pr).then(res => {
+			// 	console.log(res)
+			// 	this.imgList = res.data.data
+			// });
+			uni.getUserProfile({
+				desc: 'Wexin',
+				success: res => {
+					console.log(res)
+					let val = {
+						name:res.userInfo.nickName,
+						img:res.userInfo.avatarUrl,
+						login_time:'1231',
+						gender:res.userInfo.gender,
+						city:res.userInfo.city,
+						province:res.userInfo.province
+					}
+					this.$api.loginwx(val).then(res => {
+						console.log(res)
+					});
+				}
+			});
+			// switch (uni.getSystemInfoSync().platform) {
+			// 	case 'android':
+			// 		console.log('运行Android上');
+			// 		this.openReport(this.webView);
+			// 		break;
+			// 	case 'ios':
+			// 		console.log('运行iOS上');
+			// 		uni.navigateTo({
+			// 			url: '../../pages/webView/index'
+			// 		});
+			// 		break;
+			// 	default:
+			// 		console.log('运行在开发者工具上');
+			// 		break;
+			// }
+			
+		},
+		quest(val){
+			// uni.request({
+			//     url: 'https://supery.work/api/v1/login',
+			//     method:'POST',
+			//     data:val
+			// }).then(res => {
+			// 	console.log(res)
+			// })
+		},
+		openReport(url) {
+			uni.showLoading({
+				title: '加载中',
+				mask: true
+			});
+			wx.downloadFile({
+				url: url,
+				success: function(res) {
+					console.log(res);
+					uni.hideLoading();
+					var filePath = res.tempFilePath;
+					uni.showLoading({
+						title: '正在打开',
+						mask: true
+					});
+					wx.openDocument({
+						filePath: filePath,
+						fileType: 'pdf',
+						success: function(res) {
+							console.log(res);
+							uni.hideLoading();
+							console.log('打开文档成功');
+						},
+						fail: function(err) {
+							uni.hideLoading();
+							console.log('fail:' + JSON.stringify(err));
+						}
+					});
+				},
+				fail: function(err) {
+					uni.hideLoading();
+					console.log('fail:' + JSON.stringify(err));
+				}
+			});
+		}
 	}
 };
 </script>
@@ -26,57 +116,7 @@ export default {
 .container {
 	// height: 100vh;
 }
-$border: dotted 10rpx black;
-.eva-warning {
-	width: 300rpx;
-	margin-top: 10%;
-	background-color: red;
-	overflow: hidden;
-	box-shadow: 0 0 10px black;
-	opacity: 0.75;
-	transform: rotate(-45deg);
-
-	&:before,
-	&:after {
-		float: left;
-		clear: both;
-		content: ' ';
-		width: 100%;
-		background-color: red;
-		box-shadow: 0 0 0 1px black;
-	}
-
-	&:before {
-		border-top: $border;
-		transform: skew(-50deg);
-		padding-bottom: 1px;
-	}
-
-	&:after {
-		border-bottom: $border;
-		transform: skew(50deg);
-		padding-top: 1px;
-	}
-}
-
-.eva-warning__message {
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-family: Arial, Helvetica;
-	font-size: 25rpx;
-	animation: blink 2s infinite;
-}
-
-@keyframes blink {
-	25% {
-		color: transparent;
-		background-color: red;
-	}
-	50% {
-		background-color: black;
-	}
+.demo {
+	margin-top: 200rpx;
 }
 </style>

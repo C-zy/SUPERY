@@ -8034,6 +8034,7 @@ var mixin = {
       calendar: null,
       comicImg: uni.getStorageSync('comicImg'), //首页插画
       Pimg: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
+      // Ping:'https://supery.work/api/v1/getPixiv1P?val=',
       x: 0,
       y: 0 };
 
@@ -8077,7 +8078,7 @@ var mixin = {
     base64Img: function base64Img(url) {
       return new Promise(function (resolve) {
         uni.request({
-          url: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=' + url,
+          url: 'https://supery.work/api/v1/getPixiv1P?val=' + url,
           method: 'GET',
           responseType: 'arraybuffer' }).
         then(function (img) {
@@ -8106,20 +8107,20 @@ var mixin = {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.jrPencil = void 0;var jrPencil = [
-'https://supery.work/jrPencil/yuanshen/jr-ys1.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys2.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys3.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys4.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys5.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys6.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys7.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys8.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys9.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys10.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys11.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys12.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys13.png',
-'https://supery.work/jrPencil/yuanshen/jr-ys14.png'];exports.jrPencil = jrPencil;
+'https://supery.work/img/jrPencil/yuanshen/jr-ys1.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys2.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys3.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys4.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys5.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys6.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys7.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys8.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys9.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys10.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys11.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys12.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys13.png',
+'https://supery.work/img/jrPencil/yuanshen/jr-ys14.png'];exports.jrPencil = jrPencil;
 
 /***/ }),
 /* 10 */,
@@ -8334,14 +8335,13 @@ var _request = _interopRequireDefault(__webpack_require__(/*! @/common/request.j
 // import { formatGetUri } from '@/common/util.js'
 
 var api = {};
+var PORT = 'https://supery.work/api/v1/';
 var PORT1 = 'https://api.bgm.tv';
 var PORT2 = 'https://api.moedog.org/pixiv/v2/'; //图片接口Pixiv
 var PORT3 = 'https://api.lolicon.app/setu/v2'; //图片接口Pixiv
 //接口文档： https://api.moedog.org/pixiv/v1.html
 // 随机图文档：https://api.lolicon.app/#/setu
 var PORT_Img = 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url='; //图片解析
-var PORT4 = 'https://api.qq.jsososo.com'; //qq音乐api 文档:https://jsososo.github.io/QQMusicApi/#/
-//${formatGetUri(params)}-----请求参数，GET请求时使用，会自动转换格式
 
 //使用方式：
 // let params={
@@ -8354,26 +8354,30 @@ var PORT4 = 'https://api.qq.jsososo.com'; //qq音乐api 文档:https://jsososo.g
 
 
 // POST请求方式模板
-api.register = function (params) {return _request.default.globalRequest("".concat(PORT1, "/mobile/signUp"), 'POST', params, 1);};
+// api.register = params => request.globalRequest(`${PORT1}/mobile/signUp`, 'POST', params, 1)
 // GET请求方式模板
-api.register = function (params) {return _request.default.globalRequest("".concat(PORT1, "/mobile/signUp").concat(formatGetUri(params)), 'GET', {}, 1);};
+// api.register = params => request.globalRequest(`${PORT1}/mobile/signUp${formatGetUri(params)}`, 'GET',{}, 1)
 // 测试
-api.txt = function (params) {return _request.default.globalRequest("".concat(PORT2, "?type=").concat(params.type), 'GET', {}, 1);};
+api.txt = function (params) {return _request.default.globalRequest("http://192.168.1.82:3000/api/V1/demo", 'GET', params, 1);};
+// 登录
+api.loginwx = function (params) {return _request.default.globalRequest("".concat(PORT, "/login"), 'POST', params, 1);};
 // 每日放送
-api.getCalendar = function (params) {return _request.default.globalRequest("".concat(PORT1, "/calendar"), 'GET', {}, 1);};
+api.getCalendar = function (params) {return _request.default.globalRequest("".concat(PORT, "calendar"), 'GET', {}, 1);};
 //获取详情数据
-api.getDetail = function (params) {return _request.default.globalRequest("".concat(PORT1, "//subject/").concat(params), 'GET', {}, 1);};
+api.getDetail = function (params) {return _request.default.globalRequest("".concat(PORT, "calendarDetail?id=").concat(params), 'GET', {}, 1);};
 //获取章节数据
-api.getsSubject = function (params) {return _request.default.globalRequest("".concat(PORT1, "//subject/").concat(params, "/ep"), 'GET', {}, 1);};
+api.getsSubject = function (params) {return _request.default.globalRequest("".concat(PORT, "calendarEp?id=").concat(params), 'GET', {}, 1);};
 // 搜索番剧
-api.searchLy = function (params) {return _request.default.globalRequest("".concat(PORT1, "/search/subject/").concat(params), 'GET', {}, 1);};
+api.searchLy = function (params) {return _request.default.globalRequest("".concat(PORT, "calendarSearch?val=").concat(params), 'GET', {}, 1);};
 // Pixiv图片/解析
 api.PixivImg = function (params) {return _request.default.globalRequest("".concat(PORT_Img).concat(params), 'GET', {}, 3);};
-api.Pixiv1 = function (params) {return _request.default.globalRequest("".concat(PORT2), 'GET', params, 1);};
+api.Pixiv1 = function (params) {return _request.default.globalRequest("".concat(PORT, "getPixiv1"), 'GET', params, 1);};
 //Pixiv图片
 api.Pixiv2 = function (params) {return _request.default.globalRequest("".concat(PORT3, "?r18=1&num=20"), 'GET', {}, 2);};
-// 音乐测试
-api.musicDemo = function (params) {return _request.default.globalRequest("".concat(PORT4, "/"), 'GET', params, 1);};var _default =
+// 获取漫画列表
+api.getCartoon = function (params) {return _request.default.globalRequest("".concat(PORT, "getCartoon"), 'GET', params, 1);};
+// 获取漫画详情
+api.getCartoonDetail = function (params) {return _request.default.globalRequest("".concat(PORT, "getFile"), 'GET', params, 1);};var _default =
 
 api;exports.default = _default;
 

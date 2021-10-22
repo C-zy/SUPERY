@@ -68,14 +68,14 @@
 							<view @click="isCardBgly(2)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInLeft delay1' : 'animate__animated animate__fadeOut']">
 								<image src="../../static/img/cy4.png" :style="rotate" class="cyImg"></image>
 								<view class="waveBox">
-									<view class="wave"><view class="boxTextLy" style="color: #66FFCC; z-index: 4;">初音</view></view>
+									<view class="wave"><view class="boxTextLy" style="color: #66FFCC; z-index: 4;">次元漫画</view></view>
 								</view>
 							</view>
-							<view @click="isCardBgly(3)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInLeft delay2' : 'animate__animated animate__fadeOut']">
+							<!-- <view @click="isCardBgly(3)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInLeft delay2' : 'animate__animated animate__fadeOut']">
 								<view class="EVABox" :style="rotateX">
 									<view class="eva-warning"><p class="eva-warning__message">alert</p></view>
 								</view>
-							</view>
+							</view> -->
 						</view>
 						<view class="rightCardBox">
 							<view @click="isCardBgly(4)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInRight' : 'animate__animated animate__fadeOut']">
@@ -106,11 +106,11 @@
 									<view class="eva-warning"><p class="eva-warning__message">alert</p></view>
 								</view>
 							</view>
-							<view @click="isCardBgly(6)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInRight delay2' : 'animate__animated animate__fadeOut']">
+							<!-- <view @click="isCardBgly(6)" class="cardBox" :class="[indexPage == 0 ? 'animate__animated animate__bounceInRight delay2' : 'animate__animated animate__fadeOut']">
 								<view class="EVABox" :style="rotateX">
 									<view class="eva-warning"><p class="eva-warning__message">alert</p></view>
 								</view>
-							</view>
+							</view> -->
 						</view>
 					</view>
 				</view>
@@ -167,7 +167,8 @@ export default {
 			userTime: null, //用户已进入时间
 			isDaylight: false, //判断白天还是夜晚
 			userInfo: null, //用户信息
-			strArr: [] //计算缓存
+			strArr: [], //计算缓存
+			newTime:'',//当前时间
 		};
 	},
 	onLoad() {
@@ -176,12 +177,6 @@ export default {
 		this.userInfo = JSON.parse(uni.getStorageSync('userInfo'));
 	},
 	methods: {
-		txt() {
-			console.log(this.time);
-			uni.navigateTo({
-				url: '../webView/index'
-			});
-		},
 		// 获取用户信息
 		getUserInfo() {
 			uni.vibrateShort();
@@ -195,6 +190,17 @@ export default {
 						};
 						uni.setStorageSync('userInfo', JSON.stringify(userInfo));
 						this.userInfo = userInfo;
+						let val = {
+							name:res.userInfo.nickName,
+							img:res.userInfo.avatarUrl,
+							login_time:this.newTime,
+							gender:res.userInfo.gender,
+							city:res.userInfo.city,
+							province:res.userInfo.province
+						}
+						this.$api.loginwx(val).then(res => {
+							// console.log(res)
+						});
 					}
 				});
 			}
@@ -259,8 +265,12 @@ export default {
 				});
 			} else if (e == 2) {
 				uni.navigateTo({
-					url: '../webView/index'
+					url: '../../pageA/cartoon/index'
 				});
+				// uni.showToast({
+				// 	title: '功能暂未开放',
+				// 	icon: 'none',
+				// });
 			}
 		},
 		// 轮播图切换
@@ -284,6 +294,7 @@ export default {
 			this.time = date;
 			this.$store.state.time = date;
 			let userTime = year + '.' + month + '.' + r;
+			this.newTime = userTime
 			if (!uni.getStorageSync('userTime')) {
 				uni.setStorageSync('userTime', userTime);
 			}
@@ -306,9 +317,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './css/index.scss';
-</style>
-
-<style lang="scss" scoped>
-@import './css/weather.scss';
+	@import './css/index.scss';
+	@import './css/weather.scss';
 </style>

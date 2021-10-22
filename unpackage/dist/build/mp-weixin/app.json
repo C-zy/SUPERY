@@ -3,7 +3,6 @@
     "pages/index/index",
     "pages/cartoonList/index",
     "pages/cartoonList/detail",
-    "pages/webView/index",
     "pages/wallpaper/index",
     "pages/wallpaper/detail"
   ],
@@ -11,7 +10,8 @@
     {
       "root": "pageA",
       "pages": [
-        "demo/index"
+        "demo/index",
+        "webView/index"
       ]
     }
   ],

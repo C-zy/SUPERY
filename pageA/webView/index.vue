@@ -8,10 +8,11 @@
 		mixins:[mixin],
 		data() {
 			return {
-				webView:'https://aidn.jp/mikutap/'
+				webView:uni.getStorageSync('webView')
 			}
 		},
 		onLoad(e) {
+			
 		},
 		methods: {
 		}

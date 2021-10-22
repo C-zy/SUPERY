@@ -35,7 +35,10 @@ image{
 		}
 		.textBox{
 			box-sizing: border-box;
-			padding: 0 40rpx;
+			padding: 20rpx;
+			margin: 40rpx;
+			background-color: rgba($color: #30475e, $alpha: .4);
+			border-radius: 10rpx;
 			.score{
 				margin-top: 40rpx;
 				font-size: 30rpx;
@@ -68,6 +71,7 @@ image{
 				font-size: 30rpx;
 				margin-top: 20rpx;
 				margin-bottom: 40rpx;
+				line-height: 46rpx;
 			}
 		}
 		// 集数
@@ -87,7 +91,7 @@ image{
 				padding: 0 20rpx;
 				box-sizing: border-box;
 				line-height: 60rpx;
-				background-color: rgba($color: #30475e, $alpha: .5);
+				background-color: rgba($color: #30475e, $alpha: .4);
 				color: #fff;
 				overflow:hidden;
 				text-overflow:ellipsis;

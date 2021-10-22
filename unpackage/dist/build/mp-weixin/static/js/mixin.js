@@ -14,6 +14,7 @@ export const mixin={
 					calendar:null,
 					comicImg:uni.getStorageSync('comicImg'),//首页插画
 					Pimg:'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
+					// Ping:'https://supery.work/api/v1/getPixiv1P?val=',
 					x:0,
 					y:0,
         }
@@ -57,7 +58,7 @@ export const mixin={
 			base64Img(url){
 				return new Promise(resolve => {
 					uni.request({
-					    url: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url='+url,
+					    url: 'https://supery.work/api/v1/getPixiv1P?val='+url,
 					    method:'GET',
 							responseType : 'arraybuffer'
 					}).then(img => {

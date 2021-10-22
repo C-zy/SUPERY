@@ -54,7 +54,6 @@ export default {
 			}
 			obj.singleImg = singleImg;
 			this.imgData = obj;
-			// console.log('图片信息', obj);
 		},
 		imageLoad() {
 			this.loadImg = false;

@@ -1,0 +1,85 @@
+.content {
+		position: relative;
+		width: 100%;
+		min-height: 100vh;
+		background-color: #30475e;
+		color: #f9fcfb;
+		padding-bottom: 200rpx;
+		.headText {
+			width: 100%;
+			font-size: 50rpx;
+			font-weight: bold;
+			box-sizing: border-box;
+			padding: 0 40rpx;
+			margin-bottom: 40rpx;
+		}
+		.cartBox {
+			width: 100%;
+			box-sizing: border-box;
+			padding: 0 40rpx;
+			margin-bottom: 100rpx;
+			.ht {
+				width: 100%;
+				text-align: center;
+				margin-top: 40rpx;
+				font-size: 38rpx;
+				color: #fff;
+				opacity: 0.8;
+			}
+			.timeT {
+				width: 100%;
+				font-size: 40rpx;
+				font-weight: bold;
+			}
+			.cartList {
+				width: 100%;
+				overflow: hidden;
+				margin: 40rpx 0;
+				display: flex;
+				.imgBox {
+					width: 30%;
+					height: 270rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					border-radius: 10rpx;
+					background-color: rgba($color: #777, $alpha: 0.5);
+					overflow: hidden;
+					image {
+						width: 100%;
+						height: auto;
+						border-radius: 10rpx;
+					}
+				}
+				.boxRt {
+					display: flex;
+					align-items: center;
+				}
+				.boxR {
+					width: 70%;
+					float: left;
+					box-sizing: border-box;
+					padding: 20rpx;
+					.textCart {
+						width: 100%;
+						font-size: 30rpx;
+						font-weight: bold;
+						margin-bottom: 20rpx;
+					}
+					.firstTime {
+						font-size: 26rpx;
+						margin-top: 10rpx;
+						.fTime {
+							color: #d1c145;
+						}
+						.col-1{
+							color: #1aad19;
+						}
+						.col-2{
+							color: #ff3333;
+						}
+					}
+				}
+			}
+		}
+	}

@@ -22,12 +22,6 @@
 				"navigationStyle": "custom"
 			}
 		},{
-			"path": "pages/webView/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		},{
 			"path": "pages/wallpaper/index",
 			"style": {
 				"navigationBarTitleText": "次元壁纸",
@@ -53,6 +47,27 @@
 			"pages":[
 				{
 					"path": "demo/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				},{
+					"path": "webView/index",
+					"style": {
+						"navigationBarTitleText": "SUPERY",
+						"navigationStyle": "custom"
+					}
+				},{
+					"path": "cartoon/index",
+					"style": {
+						"navigationBarTitleText": "次元漫画",
+						"navigationBarBackgroundColor":"#30475e",
+						"navigationBarTextStyle":"white",
+						"backgroundColor":"#30475e",
+						"enablePullDownRefresh": true
+					}
+				},{
+					"path": "cartoon/cartoonDetail",
 					"style": {
 						"navigationBarTitleText": "",
 						"navigationStyle": "custom"

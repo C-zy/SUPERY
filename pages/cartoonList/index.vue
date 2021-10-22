@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="headText">{{ isScerch ? searchVal : '热播新番导视' }}</view>
+		<view class="headText">{{ isScerch ? headVal : '热播新番导视' }}</view>
 		<!-- 当前热播 -->
 		<view v-if="!isScerch" class="cartBox" v-for="(item, index) in calendar" :key="index">
 			<view class="timeT">{{ item.weekday.cn }}</view>
@@ -53,6 +53,7 @@ export default {
 			time: null,
 			openType: false,
 			searchVal: '',
+			headVal:'',
 			isScerch: false
 		};
 	},
@@ -69,8 +70,8 @@ export default {
 		}, 500);
 	},
 	onLoad() {
-		this.calendar = this.$store.state.calendar;
 		this.time = this.$store.state.time;
+		this.getCalendar()
 	},
 	methods: {
 		// 跳转详情
@@ -79,29 +80,42 @@ export default {
 				url: './detail?id=' + id + '&img=' + img
 			});
 		},
+		// 对数据进行排序
+		sortDate(e){
+			let str = "星期"+this.time.day
+			let dateList = e;
+			for(let i = 0 ; i<dateList.length; i++){
+				if(dateList[i].weekday.cn == str){
+					let val=dateList.splice(i,1)
+					this.calendar = [...val,...dateList]
+				}
+			}
+		},
 		// 刷新列表每日放送
 		getCalendar() {
 			uni.showNavigationBarLoading();
 			this.$api.getCalendar().then(res => {
-				this.calendar = res.data;
+				this.sortDate(res.data);
 				uni.hideNavigationBarLoading();
 				uni.stopPullDownRefresh();
 			});
 		},
 		// 搜索
 		search() {
-			if (this.openType && this.searchVal) {
+			if (this.searchVal == 'SUPERY') {
+				this.calendar = []
+				uni.setStorageSync('searchShow', true);
+				this.headVal = '潘多拉魔盒已打开!';
+				this.searchVal = ''
+				uni.vibrateLong();
+			}else if (this.openType && this.searchVal) {
 				this.isScerch = true;
 				uni.vibrateShort();
 				this.$api.searchLy(this.searchVal).then(res => {
 					this.calendar = res.data.list;
+					this.headVal = this.searchVal
+					this.searchVal = ''
 				});
-			}
-			if (this.searchVal == 'SUPERY') {
-				this.calendar = []
-				uni.setStorageSync('searchShow', true);
-				this.searchVal = '潘多拉魔盒已打开!';
-				uni.vibrateLong();
 			}
 			this.openType = !this.openType;
 		}

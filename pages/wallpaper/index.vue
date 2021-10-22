@@ -94,7 +94,6 @@ export default {
 				this.parame = {
 					page: 1,
 					type: 'search',
-					per_page: 12,
 					word: this.searchVal
 				};
 				this.searchVal = '';
@@ -124,7 +123,7 @@ page {
 		box-sizing: border-box;
 		.imgBox {
 			width: 48%;
-			height: 500rpx;
+			// height: 480rpx;
 			border-radius: 10rpx;
 			margin: 10rpx 1%;
 			background-color: rgba($color: #777, $alpha: 0.5);

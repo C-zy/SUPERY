@@ -68,7 +68,10 @@ image.data-v-d3cbde66 {
 }
 .content .scrollBox .textBox.data-v-d3cbde66 {
   box-sizing: border-box;
-  padding: 0 40rpx;
+  padding: 20rpx;
+  margin: 40rpx;
+  background-color: rgba(48, 71, 94, 0.4);
+  border-radius: 10rpx;
 }
 .content .scrollBox .textBox .score.data-v-d3cbde66 {
   margin-top: 40rpx;
@@ -100,6 +103,7 @@ image.data-v-d3cbde66 {
   font-size: 30rpx;
   margin-top: 20rpx;
   margin-bottom: 40rpx;
+  line-height: 46rpx;
 }
 .content .scrollBox .numListBox.data-v-d3cbde66 {
   width: 100%;
@@ -121,7 +125,7 @@ image.data-v-d3cbde66 {
   padding: 0 20rpx;
   box-sizing: border-box;
   line-height: 60rpx;
-  background-color: rgba(48, 71, 94, 0.5);
+  background-color: rgba(48, 71, 94, 0.4);
   color: #fff;
   overflow: hidden;
   text-overflow: ellipsis;

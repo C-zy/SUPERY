@@ -3,7 +3,6 @@
     "pages/index/index",
     "pages/cartoonList/index",
     "pages/cartoonList/detail",
-    "pages/webView/index",
     "pages/wallpaper/index",
     "pages/wallpaper/detail"
   ],
@@ -11,7 +10,10 @@
     {
       "root": "pageA",
       "pages": [
-        "demo/index"
+        "demo/index",
+        "webView/index",
+        "cartoon/index",
+        "cartoon/cartoonDetail"
       ]
     }
   ],
@@ -21,6 +23,5 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

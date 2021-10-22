@@ -1,1 +1,1 @@
-<view class="container data-v-5bbe5651"><view data-event-opts="{{[['tap',[['demo']]]]}}" bindtap="__e" class="data-v-5bbe5651">123</view><view class="eva-warning _div data-v-5bbe5651"><view class="eva-warning__message _p data-v-5bbe5651">alert</view></view></view>
+<view class="container data-v-5bbe5651"><view data-event-opts="{{[['tap',[['demo']]]]}}" class="demo data-v-5bbe5651" bindtap="__e">123</view></view>
