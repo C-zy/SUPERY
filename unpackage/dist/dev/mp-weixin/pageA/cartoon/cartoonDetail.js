@@ -226,26 +226,26 @@ var _default = { mixins: [_mixin.mixin], data: function data() {return { isPopup
       numList: [] };}, onLoad: function onLoad(e) {var data = JSON.parse(uni.getStorageSync('pageData'));this.date = data;this.bgImg = data.img;this.getDate();}, methods: { //弹出层隐藏
     popupShow: function popupShow() {uni.navigateBack({ url: '-1' });}, // 获取漫画详情
     getDate: function getDate() {var _this = this;var par = { id: this.date.id };this.$api.getCartoonDetail(par).then(function (res) {_this.numList = res.data;});}, // 打开文件
-    openPDF: function openPDF(e) {uni.setStorageSync('webView', e);switch (uni.getSystemInfoSync().platform) {case 'android':console.log('运行Android上');this.openReport(e);break;case 'ios':console.log('运行iOS上');uni.navigateTo({ url: '../webView/index' });break;default:console.log('运行在开发者工具上');uni.navigateTo({ url: '../webView/index' });
-
-          break;}
-
-    },
-    openReport: function openReport(url) {
-      uni.showLoading({
-        title: '加载中',
-        mask: true });
-
-      wx.downloadFile({
-        url: url,
-        success: function success(res) {
-          console.log(res);
-          uni.hideLoading();
-          var filePath = res.tempFilePath;
-          uni.showLoading({
-            title: '正在打开',
-            mask: true });
-
+    openPDF: function openPDF(e) {// uni.setStorageSync('webView', e);
+      // switch (uni.getSystemInfoSync().platform) {
+      // 	case 'android':
+      // 		console.log('运行Android上');
+      // 		this.openReport(e);
+      // 		break;
+      // 	case 'ios':
+      // 		console.log('运行iOS上');
+      // 		uni.navigateTo({
+      // 			url: '../webView/index'
+      // 		});
+      // 		break;
+      // 	default:
+      // 		console.log('运行在开发者工具上');
+      // 		uni.navigateTo({
+      // 			url: '../webView/index'
+      // 		});
+      // 		break;
+      // }
+    }, openReport: function openReport(url) {uni.showLoading({ title: '加载中', mask: true });wx.downloadFile({ url: url, success: function success(res) {console.log(res);uni.hideLoading();var filePath = res.tempFilePath;uni.showLoading({ title: '正在打开', mask: true });
           wx.openDocument({
             filePath: filePath,
             fileType: 'pdf',

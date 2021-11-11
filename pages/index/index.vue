@@ -293,7 +293,7 @@ export default {
 			};
 			this.time = date;
 			this.$store.state.time = date;
-			let userTime = year + '.' + month + '.' + r;
+			let userTime = year + '/' + month + '/' + r;
 			this.newTime = userTime
 			if (!uni.getStorageSync('userTime')) {
 				uni.setStorageSync('userTime', userTime);

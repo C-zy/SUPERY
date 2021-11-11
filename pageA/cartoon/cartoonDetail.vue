@@ -79,25 +79,25 @@ export default {
 		},
 		// 打开文件
 		openPDF(e){
-			uni.setStorageSync('webView', e);
-			switch (uni.getSystemInfoSync().platform) {
-				case 'android':
-					console.log('运行Android上');
-					this.openReport(e);
-					break;
-				case 'ios':
-					console.log('运行iOS上');
-					uni.navigateTo({
-						url: '../webView/index'
-					});
-					break;
-				default:
-					console.log('运行在开发者工具上');
-					uni.navigateTo({
-						url: '../webView/index'
-					});
-					break;
-			}
+			// uni.setStorageSync('webView', e);
+			// switch (uni.getSystemInfoSync().platform) {
+			// 	case 'android':
+			// 		console.log('运行Android上');
+			// 		this.openReport(e);
+			// 		break;
+			// 	case 'ios':
+			// 		console.log('运行iOS上');
+			// 		uni.navigateTo({
+			// 			url: '../webView/index'
+			// 		});
+			// 		break;
+			// 	default:
+			// 		console.log('运行在开发者工具上');
+			// 		uni.navigateTo({
+			// 			url: '../webView/index'
+			// 		});
+			// 		break;
+			// }
 		},
 		openReport(url) {
 			uni.showLoading({
