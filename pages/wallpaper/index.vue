@@ -24,8 +24,10 @@
 </template>
 
 <script>
-import { mixin } from '../../static/js/mixin.js';
-let timer = null;
+import { mixin } from '../../static/js/mixin.js'
+
+let timer = null
+
 export default {
 	mixins: [mixin],
 	data() {
@@ -38,73 +40,79 @@ export default {
 			openType: false,
 			searchVal: '',
 			searchShow: uni.getStorageSync('searchShow')
-		};
+		}
 	},
 	onPullDownRefresh() {
-		//触发上拉刷新函数
 		if (timer != null) {
-			clearTimeout(timer);
+			clearTimeout(timer)
 		}
 		timer = setTimeout(() => {
 			this.parame = {
 				type: 'rank',
 				page: 1
-			};
-			this.dataList = [];
-			this.getImgList();
-		}, 500);
+			}
+			this.dataList = []
+			this.getImgList()
+		}, 500)
 	},
 	onReachBottom() {
-		//监听页面触底函数
 		if (timer != null) {
-			clearTimeout(timer);
+			clearTimeout(timer)
 		}
 		timer = setTimeout(() => {
-			this.parame.page++;
-			this.getImgList();
-		}, 500);
+			this.parame.page++
+			this.getImgList()
+		}, 500)
 	},
-	onLoad(e) {
-		uni.startPullDownRefresh();
+	onLoad() {
+		uni.startPullDownRefresh()
+	},
+	onUnload() {
+		if (timer != null) {
+			clearTimeout(timer)
+			timer = null
+		}
 	},
 	methods: {
-		// 获取数据
 		getImgList() {
-			uni.showNavigationBarLoading(); //导航栏显示加载动画
-			let parame = this.parame;
-			this.$api.Pixiv1(parame).then(res => {
-				this.dataList = [...this.dataList, ...res.data.illusts];
-				uni.hideNavigationBarLoading(); //导航栏停止加载动画
-				uni.stopPullDownRefresh();
-			});
+			uni.showNavigationBarLoading()
+			this.$api.Pixiv1(this.parame).then(res => {
+				this.dataList = [...this.dataList, ...res.data.illusts]
+			}).catch(() => {}).finally(() => {
+				uni.hideNavigationBarLoading()
+				uni.stopPullDownRefresh()
+			})
 		},
-		// 跳转详情
 		toDetail(e) {
 			this.base64Img(e.image_urls.medium).then(res => {
-				uni.setStorageSync('imgPageBg', res);
-				uni.setStorageSync('pageData', JSON.stringify(e));
+				uni.setStorageSync('imgPageBg', res)
+				uni.setStorageSync('pageData', JSON.stringify(e))
 				uni.navigateTo({
-					url: `./detail`
-				});
-			});
+					url: './detail'
+				})
+			}).catch(() => {
+				uni.showToast({
+					title: '图片加载失败',
+					icon: 'none'
+				})
+			})
 		},
-		// 搜索
 		search() {
 			if (this.openType && this.searchVal) {
 				this.parame = {
 					page: 1,
 					type: 'search',
 					word: this.searchVal
-				};
-				this.searchVal = '';
-				this.dataList = [];
-				this.getImgList();
-				uni.vibrateShort();
+				}
+				this.searchVal = ''
+				this.dataList = []
+				this.getImgList()
+				uni.vibrateShort()
 			}
-			this.openType = !this.openType;
+			this.openType = !this.openType
 		}
 	}
-};
+}
 </script>
 
 <style>

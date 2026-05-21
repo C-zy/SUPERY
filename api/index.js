@@ -1,50 +1,153 @@
-// 接口配置
 import request from '@/common/request.js'
-// import { formatGetUri } from '@/common/util.js'
+import urlConfig from '@/common/config.js'
 
 const api = {}
-const PORT = 'https://supery.work/api/v1/'
-const PORT1 = 'https://api.bgm.tv'
-const PORT2 = 'https://api.moedog.org/pixiv/v2/' //图片接口Pixiv
-const PORT3 = 'https://api.lolicon.app/setu/v2' //图片接口Pixiv
-//接口文档： https://api.moedog.org/pixiv/v1.html
-// 随机图文档：https://api.lolicon.app/#/setu
-const PORT_Img = 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=' //图片解析
+const API_HOST_V2 = urlConfig + '/api/v2'
 
-//使用方式：
-// let params={
-// 	host:'www.baidu.com'
-// }
-// this.$api.txt(params).then(res => {
-//    // 获得数据 
-//    console.log(res,'成功') 
-// })
+/**
+ * 微信授权登录接口
+ * @param {Object} data - 请求参数
+ * @param {string} data.code - 微信登录 code
+ * @param {Object} [data.userInfo] - 用户信息对象
+ * @param {string} [data.userInfo.nickName] - 用户昵称
+ * @param {string} [data.userInfo.avatarUrl] - 头像URL
+ * @param {number} [data.userInfo.gender] - 性别 0-未知 1-男 2-女
+ * @param {string} [data.userInfo.country] - 国家
+ * @param {string} [data.userInfo.province] - 省份
+ * @param {string} [data.userInfo.city] - 城市
+ * @returns {Promise} 返回登录结果，包含 token、expiresAt、isNewUser 和用户信息
+ */
+api.login = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/login', 'POST', data)
+}
 
+/**
+ * 验证Token有效性接口
+ * @returns {Promise} 返回验证结果，包含用户信息
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.verifyToken = () => {
+	return request.globalRequest(API_HOST_V2 + '/token/verify', 'POST')
+}
 
-// POST请求方式模板
-// api.register = params => request.globalRequest(`${PORT1}/mobile/signUp`, 'POST', params, 1)
-// GET请求方式模板
-// api.register = params => request.globalRequest(`${PORT1}/mobile/signUp${formatGetUri(params)}`, 'GET',{}, 1)
-// 测试
-api.txt = params => request.globalRequest(`http://192.168.1.82:3000/api/V1/demo`,'GET',params, 1)
-// 登录
-api.loginwx = params => request.globalRequest(`${PORT}/login`, 'POST', params, 1)
-// 每日放送
-api.getCalendar = params => request.globalRequest(`${PORT}calendar`, 'GET',{}, 1)
-//获取详情数据
-api.getDetail = params => request.globalRequest(`${PORT}calendarDetail?id=${params}`, 'GET',{}, 1)
-//获取章节数据
-api.getsSubject = params => request.globalRequest(`${PORT}calendarEp?id=${params}`, 'GET',{}, 1)
-// 搜索番剧
-api.searchLy = params => request.globalRequest(`${PORT}calendarSearch?val=${params}`, 'GET',{}, 1)
-// Pixiv图片/解析
-api.PixivImg = params => request.globalRequest(`${PORT_Img}${params}`, 'GET',{}, 3)
-api.Pixiv1 = params => request.globalRequest(`${PORT}getPixiv1`,'GET',params, 1)
-//Pixiv图片
-api.Pixiv2 = params => request.globalRequest(`${PORT3}?r18=1&num=20`,'GET',{}, 2)
-// 获取漫画列表
-api.getCartoon = params => request.globalRequest(`${PORT}getCartoon`,'GET',params, 1)
-// 获取漫画详情
-api.getCartoonDetail = params => request.globalRequest(`${PORT}getFile`,'GET',params, 1)
+/**
+ * 刷新Token接口
+ * @returns {Promise} 返回新的token和expiresAt，刷新后旧Token失效
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.refreshToken = () => {
+	return request.globalRequest(API_HOST_V2 + '/token/refresh', 'POST')
+}
+
+/**
+ * 退出登录接口
+ * @returns {Promise} 返回退出结果
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.logout = () => {
+	return request.globalRequest(API_HOST_V2 + '/logout', 'POST')
+}
+
+/**
+ * 更新用户信息接口
+ * @param {Object} data - 请求参数
+ * @param {string} [data.nickname] - 新昵称
+ * @param {string} [data.avatarUrl] - 新头像URL
+ * @param {number} [data.gender] - 性别 0-未知 1-男 2-女
+ * @param {string} [data.phone] - 手机号
+ * @param {string} [data.country] - 国家
+ * @param {string} [data.province] - 省份
+ * @param {string} [data.city] - 城市
+ * @returns {Promise} 返回更新结果
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.updateUserInfo = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/user/info', 'PUT', data)
+}
+
+/**
+ * 上传图片接口
+ * @param {string} filePath - 图片文件路径
+ * @param {Object} formData - 附加表单数据
+ * @param {string} formData.image_type - 图片类型（必填），如avatar/product/banner/certificate等
+ * @param {string} [formData.description] - 图片描述（可选）
+ * @returns {Promise} 返回上传结果，包含图片信息
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.uploadImage = (filePath, formData) => {
+	return request.uploadFile(API_HOST_V2 + '/image/upload', filePath, 'image', formData)
+}
+
+/**
+ * 获取图片列表接口
+ * @param {Object} [data] - 请求参数
+ * @param {string} [data.image_type] - 图片类型筛选（可选）
+ * @param {number} [data.page] - 页码（可选），默认1
+ * @param {number} [data.pageSize] - 每页数量（可选），默认20
+ * @returns {Promise} 返回图片列表及分页信息
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.getImageList = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/image/list', 'GET', data)
+}
+
+/**
+ * 删除图片接口
+ * @param {string|number} id - 图片 ID（路径参数）
+ * @returns {Promise} 返回删除结果
+ * @description Token通过请求头 Authorization: Bearer &lt;token&gt; 传递
+ */
+api.deleteImage = (id) => {
+	return request.globalRequest(API_HOST_V2 + '/image/' + id, 'DELETE')
+}
+
+/**
+ * 更新图片信息接口
+ * @param {string|number} id - 图片ID（路径参数）
+ * @param {Object} data - 请求参数
+ * @param {string} [data.image_type] - 图片类型（可选）
+ * @param {string} [data.description] - 图片描述（可选）
+ * @returns {Promise} - 返回更新结果
+ * @description Token通过请求头Authorization: Bearer <token>传递
+ */
+api.updateImageInfo = (id, data) => {
+	return request.globalRequest(API_HOST_V2 + '/image/' + id, 'PUT', data)
+}
+
+/**
+ * 保存AI图片接口
+ * @param {Object} data - 请求参数
+ * @param {string} data.image_url - 图片URL（必填）
+ * @param {string} data.image_type - 图片类型（必填）
+ * @param {string} [data.description] - 图片描述（可选）
+ * @returns {Promise} - 返回保存结果
+ * @description Token通过请求头Authorization: Bearer <token>传递
+ */
+api.saveAiImage = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/ai/image/save', 'POST', data)
+}
+
+/**
+ * 查询AI图片列表接口
+ * @param {Object} [data] - 请求参数
+ * @param {string} [data.image_type] - 图片类型筛选（可选）
+ * @param {number} [data.page] - 页码（可选），默认1
+ * @param {number} [data.pageSize] - 每页数量（可选），默认20
+ * @returns {Promise} - 返回图片列表及分页信息
+ * @description Token通过请求头Authorization: Bearer <token>传递
+ */
+api.getAiImageList = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/ai/image/list', 'GET', data)
+}
+
+/**
+ * 删除AI图片接口
+ * @param {string|number} id - 图片ID（路径参数）
+ * @returns {Promise} - 返回删除结果
+ * @description Token通过请求头Authorization: Bearer <token>传递
+ */
+api.deleteAiImage = (id) => {
+	return request.globalRequest(API_HOST_V2 + '/ai/image/' + id, 'DELETE')
+}
 
 export default api

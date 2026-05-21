@@ -3,42 +3,16 @@ page {
 	background-color: #30475e;
 }
 
-@charset "UTF-8";
-/**
- * 这里是uni-app内置的常用样式变量
- *
- * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
- * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
- *
- */
-/**
- * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
- *
- * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
- */
-/* 颜色变量 */
-/* 行为相关颜色 */
-/* 文字基本颜色 */
-/* 背景颜色 */
-/* 边框颜色 */
-/* 尺寸变量 */
-/* 文字尺寸 */
-/* 图片尺寸 */
-/* Border Radius */
-/* 水平间距 */
-/* 垂直间距 */
-/* 透明度 */
-/* 文章场景相关 */
+.hove.data-v-452d509c {
+  opacity: 0.8;
+}
 .container.data-v-452d509c {
   width: 100%;
 }
 .container .wallpaperBox.data-v-452d509c {
   width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-wrap: wrap;
-          flex-wrap: wrap;
+  flex-wrap: wrap;
   padding: 0 20rpx;
   box-sizing: border-box;
 }
@@ -48,15 +22,9 @@ page {
   margin: 10rpx 1%;
   background-color: rgba(119, 119, 119, 0.5);
   overflow: hidden;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   position: relative;
 }
 .container .wallpaperBox .imgBox .tagBox.data-v-452d509c {
@@ -83,7 +51,6 @@ page {
   position: fixed;
   width: 100%;
   bottom: 100rpx;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 .searchModel .Box.data-v-452d509c {
@@ -99,15 +66,9 @@ page {
   border-radius: 50rpx;
   position: absolute;
   right: 60rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   z-index: 3;
 }
 .searchModel .Box .searchBox image.data-v-452d509c {
@@ -121,21 +82,14 @@ page {
   background-color: #30475e;
   border-radius: 50rpx;
   z-index: 2;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
   overflow: hidden;
   position: absolute;
   right: 60rpx;
   opacity: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   padding: 0 40rpx;
 }
 .searchModel .Box .iptBox .ipt.data-v-452d509c {
@@ -154,4 +108,3 @@ page {
   -webkit-filter: blur(8px);
           filter: blur(8px);
 }
-

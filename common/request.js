@@ -1,58 +1,112 @@
-//uni.request封装
-// import urlConfig from './config.js'
-// import getdata from './tenant.js'
-
 const request = {}
 const headers = {}
-const PORT1 = '/baseinfo'
-   
-   var _this = this
-let responseType ='json'
-request.globalRequest = (url, method, data, power) => {
-/*     权限判断 因为有的接口请求头可能需要添加的参数不一样，所以这里做了区分
-    1 == 不通过access_token校验的接口
-    2 == 文件下载接口列表
-    3 == 验证码登录 */
-        
-    switch (power){
-        case 1:
-            headers['Authorization'] = 'Basic '
-            break;
-        case 2:
-            headers['content-type'] = 'json'
-            break;
-        case 3:
-            responseType = 'arraybuffer'
-            break;
-        default:
-            headers['Authorization'] = `Bearer ${
-                this.$store.getters.userInfo
-            }`
-            headers['TENANT-ID'] = this.$store.getters.userInfo.tenant_id
-            break;
-    }
-    return uni.request({ 
-        url: url,
-        method,
-        data: data,
-				header:headers,
-        dataType: 'json'
-    }).then(res => {
-		return res[1]
-    }).catch(parmas => {
-　　　　　　switch (parmas.code) {
-　　　　　　　　case 401:
-　　　　　　　　　　uni.clearStorageSync()
-　　　　　　　　　　break
-　　　　　　　　default:
-　　　　　　　　　　uni.showToast({
-　　　　　　　　　　　　title: parmas.message,
-　　　　　　　　　　　　icon: 'none'
-　　　　　　　　　　})
-　　　　　　　　　　return Promise.reject()
-　　　　　　　　　　break
-　　　　　　}
 
-　　})
- }
- export default request
+request.globalRequest = (url, method, data, power) => {
+	const config = {
+		url,
+		method,
+		data,
+		header: {},
+		dataType: 'json'
+	}
+
+	switch (power) {
+		case 1:
+			config.header['Authorization'] = 'Basic '
+			break
+		case 2:
+			config.header['content-type'] = 'application/json'
+			break
+		case 3:
+			config.responseType = 'arraybuffer'
+			break
+		default:
+			break
+	}
+
+	const token = uni.getStorageSync('token')
+	if (token) {
+		config.header['Authorization'] = 'Bearer ' + token
+	}
+
+	return new Promise((resolve, reject) => {
+		uni.request({
+			...config,
+			success: (res) => {
+				const response = res.data
+				if (response.err === 0) {
+					resolve(response)
+				} else {
+					if (response.msg && response.msg.includes('Token')) {
+						uni.clearStorageSync()
+						uni.showToast({
+							title: '请重新登录',
+							icon: 'none'
+						})
+					} else {
+						uni.showToast({
+							title: response.msg || '请求失败',
+							icon: 'none'
+						})
+					}
+					reject(response)
+				}
+			},
+			fail: (err) => {
+				const code = (err && err.statusCode) || 0
+				if (code === 401) {
+					uni.clearStorageSync()
+					uni.showToast({
+						title: '请重新登录',
+						icon: 'none'
+					})
+				} else {
+					uni.showToast({
+						title: (err && err.errMsg) || '网络错误',
+						icon: 'none'
+					})
+				}
+				reject(err)
+			}
+		})
+	})
+}
+
+request.uploadFile = (url, filePath, name, formData) => {
+	return new Promise((resolve, reject) => {
+		const header = {}
+		const token = uni.getStorageSync('token')
+		if (token) {
+			header['Authorization'] = 'Bearer ' + token
+		}
+
+		uni.uploadFile({
+			url,
+			filePath,
+			name,
+			header,
+			formData,
+			success: (res) => {
+				const data = JSON.parse(res.data)
+				if (data.err === 0) {
+					resolve(data)
+				} else {
+					uni.showToast({
+						title: data.msg || '上传失败',
+						icon: 'none'
+					})
+					reject(data)
+				}
+			},
+			fail: (err) => {
+				uni.showToast({
+					title: '上传失败',
+					icon: 'none'
+				})
+				reject(err)
+			}
+		})
+	})
+}
+
+export default request

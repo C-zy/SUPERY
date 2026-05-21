@@ -3,7 +3,7 @@
 		<!-- 背景图 -->
 		<image :src="bgImg" class="bgImg"></image>
 		<!-- 顶部 -->
-		<scroll-view v-if="date" class="scrollBox" scroll-y="true" @scroll="scrollLy">
+		<scroll-view v-if="date" class="scrollBox" scroll-y="true">
 			<view class="headImgBox"><image :src="bgImg" mode="widthFix"></image></view>
 			<view class="textBox">
 				<view class="score">
@@ -34,43 +34,38 @@
 </template>
 
 <script>
-import { mixin } from '../../static/js/mixin.js';
+import { mixin } from '../../static/js/mixin.js'
+
 export default {
 	mixins: [mixin],
 	data() {
 		return {
 			isPopup: true,
-			date: null, //数据
-			bgImg: null, //背景图
+			date: null,
+			bgImg: null,
 			numList: []
-		};
+		}
 	},
 	onLoad(e) {
-		this.getDate(e.id, e.img);
+		this.getDate(e.id, e.img)
 	},
 	methods: {
-		// 滚动事件
-		scrollLy(e) {
-			// console.log('111',e.detail.scrollTop)
-		},
-		//弹出层隐藏
 		popupShow() {
 			uni.navigateBack({
 				url: '-1'
-			});
+			})
 		},
-		// 请求数据
 		getDate(e, img = null) {
-			this.bgImg = img;
+			this.bgImg = img
 			this.$api.getDetail(e).then(res => {
-				this.date = res.data;
-			});
+				this.date = res.data
+			}).catch(() => {})
 			this.$api.getsSubject(e).then(res => {
-				this.numList = res.data.eps;
-			});
+				this.numList = res.data.eps
+			}).catch(() => {})
 		}
 	}
-};
+}
 </script>
 
 <style lang="scss" scoped>

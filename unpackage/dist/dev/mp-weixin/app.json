@@ -4,7 +4,9 @@
     "pages/cartoonList/index",
     "pages/cartoonList/detail",
     "pages/wallpaper/index",
-    "pages/wallpaper/detail"
+    "pages/wallpaper/detail",
+    "pages/ai/index",
+    "pages/aiImgList/index"
   ],
   "subPackages": [
     {
@@ -23,6 +25,5 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

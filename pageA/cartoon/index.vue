@@ -20,47 +20,53 @@
 </template>
 
 <script>
-import { mixin } from '../../static/js/mixin.js';
-let timer = null;
+import { mixin } from '../../static/js/mixin.js'
+
+let timer = null
+
 export default {
 	mixins: [mixin],
 	data() {
 		return {
-			img:'https://supery.work/static/img/booksCover/202109002.png',
-			cartoonList:[],
-		};
+			img: 'https://supery.work/static/img/booksCover/202109002.png',
+			cartoonList: []
+		}
 	},
 	onPullDownRefresh() {
-		//触发上拉刷新函数
 		if (timer != null) {
-			clearTimeout(timer);
+			clearTimeout(timer)
 		}
 		timer = setTimeout(() => {
 			this.getCartoonList()
-		}, 500);
+		}, 500)
 	},
 	onLoad() {
 		this.getCartoonList()
 	},
+	onUnload() {
+		if (timer != null) {
+			clearTimeout(timer)
+			timer = null
+		}
+	},
 	methods: {
-		// 获取漫画列表
-		getCartoonList(){
-			uni.showNavigationBarLoading();
+		getCartoonList() {
+			uni.showNavigationBarLoading()
 			this.$api.getCartoon().then(res => {
 				this.cartoonList = res.data
-				uni.hideNavigationBarLoading();
-				uni.stopPullDownRefresh();
-			});
+			}).catch(() => {}).finally(() => {
+				uni.hideNavigationBarLoading()
+				uni.stopPullDownRefresh()
+			})
 		},
-		// 跳转详情
 		toDetail(val) {
-			uni.setStorageSync('pageData', JSON.stringify(val));
+			uni.setStorageSync('pageData', JSON.stringify(val))
 			uni.navigateTo({
 				url: './cartoonDetail'
-			});
-		},
+			})
+		}
 	}
-};
+}
 </script>
 
 <style>

@@ -1,27 +1,20 @@
 {
   "setting": {},
   "condition": {
-    "plugin": {
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "gamePlugin": {
-      "list": []
-    },
     "miniprogram": {
       "list": [
         {
-          "name": "pageA/demo/index",
-          "pathName": "pageA/demo/index",
+          "name": "pages/aiImgList/index",
+          "pathName": "pages/aiImgList/index",
           "query": "",
-          "scene": null
+          "scene": null,
+          "launchMode": "default"
         },
         {
-          "name": "pageA/cartoon/index",
-          "pathName": "pageA/cartoon/index",
+          "name": "pages/ai/index",
+          "pathName": "pages/ai/index",
           "query": "",
+          "launchMode": "default",
           "scene": null
         }
       ]

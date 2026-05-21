@@ -23,7 +23,8 @@
 </template>
 
 <script>
-import { mixin } from '../../static/js/mixin.js';
+import { mixin } from '../../static/js/mixin.js'
+
 export default {
 	mixins: [mixin],
 	data() {
@@ -34,109 +35,107 @@ export default {
 			loadImg: true,
 			show: false,
 			btnType: false,
-			openSettingBtnHidden: true //是否授权
-		};
+			openSettingBtnHidden: true
+		}
 	},
-	onLoad(e) {
-		let data = JSON.parse(uni.getStorageSync('pageData'));
-		this.cache = data;
-		this.getSingleImg();
+	onLoad() {
+		const data = JSON.parse(uni.getStorageSync('pageData'))
+		this.cache = data
+		this.getSingleImg()
 	},
 	methods: {
-		// 图片设置
 		getSingleImg() {
-			let obj = this.cache;
-			let singleImg = obj.image_urls.large;
-			if (obj.meta_pages.length > 0) {
-				singleImg = obj.meta_pages[0].image_urls.original;
-			} else {
-				singleImg = obj.meta_single_page.original_image_url;
+			const obj = this.cache
+			let singleImg = obj.image_urls.large
+			if (obj.meta_pages && obj.meta_pages.length > 0) {
+				singleImg = obj.meta_pages[0].image_urls.original
+			} else if (obj.meta_single_page) {
+				singleImg = obj.meta_single_page.original_image_url
 			}
-			obj.singleImg = singleImg;
-			this.imgData = obj;
+			obj.singleImg = singleImg
+			this.imgData = obj
 		},
 		imageLoad() {
-			this.loadImg = false;
+			this.loadImg = false
 		},
 		setModel() {
-			this.show = !this.show;
+			this.show = !this.show
 		},
-		// 下载
 		download() {
 			if (!this.btnType) {
 				uni.showLoading({
 					title: '下载中',
 					mask: true
-				});
+				})
 				this.base64Img(this.imgData.singleImg).then(res => {
-					this.ewmImg = res;
-					uni.hideLoading();
-					this.saveEwm();
-				});
+					this.ewmImg = res
+					uni.hideLoading()
+					this.saveEwm()
+				}).catch(() => {
+					uni.hideLoading()
+					uni.showToast({
+						title: '下载失败',
+						icon: 'none'
+					})
+				})
 			}
 		},
 		saveEwm() {
-			let that = this;
-			//获取相册授权
 			uni.getSetting({
-				success(res) {
+				success: (res) => {
 					if (!res.authSetting['scope.writePhotosAlbum']) {
 						uni.authorize({
 							scope: 'scope.writePhotosAlbum',
-							success() {
-								//这里是用户同意授权后的回调
-								that.saveBase64Img();
+							success: () => {
+								this.saveBase64Img()
 							},
-							fail() {
-								//这里是用户拒绝授权后的回调
-								that.openSettingBtnHidden = false;
+							fail: () => {
+								this.openSettingBtnHidden = false
 							}
-						});
+						})
 					} else {
-						//用户已经授权过了
-						that.saveBase64Img();
+						this.saveBase64Img()
 					}
 				}
-			});
+			})
 		},
 		saveBase64Img() {
-			let that = this;
-			let name = Date.parse(new Date());
-			let base64 = this.ewmImg.replace(/^data:image\/\w+;base64,/, ''); //去掉data:image/png;base64,
-			let filePath = wx.env.USER_DATA_PATH + '/' + name + '.png';
+			const name = Date.now()
+			const base64 = this.ewmImg.replace(/^data:image\/\w+;base64,/, '')
+			const filePath = wx.env.USER_DATA_PATH + '/' + name + '.png'
 			uni.showLoading({
 				title: '保存中',
 				mask: true
-			});
+			})
 			uni.getFileSystemManager().writeFile({
-				filePath: filePath, //创建一个临时文件名
-				data: base64, //写入的文本或二进制数据
-				encoding: 'base64', //写入当前文件的字符编码
-				success: res => {
+				filePath,
+				data: base64,
+				encoding: 'base64',
+				success: () => {
 					uni.saveImageToPhotosAlbum({
-						filePath: filePath,
-						success: function(res2) {
-							uni.hideLoading();
+						filePath,
+						success: () => {
+							uni.hideLoading()
 							uni.showToast({
 								title: '保存成功',
 								icon: 'none',
 								duration: 2000
-							});
-							that.btnType = true;
-							uni.vibrateShort();
+							})
+							this.btnType = true
+							uni.vibrateShort()
 						},
-						fail: function(err) {
-							uni.hideLoading();
+						fail: () => {
+							uni.hideLoading()
 						}
-					});
+					})
 				},
-				fail: err => {
-					uni.hideLoading();
+				fail: () => {
+					uni.hideLoading()
 				}
-			});
+			})
 		}
 	}
-};
+}
 </script>
 
 <style>

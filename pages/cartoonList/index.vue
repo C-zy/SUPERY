@@ -43,84 +43,89 @@
 </template>
 
 <script>
-import { mixin } from '../../static/js/mixin.js';
-let timer = null;
+import { mixin } from '../../static/js/mixin.js'
+
+let timer = null
+
 export default {
 	mixins: [mixin],
 	data() {
 		return {
-			calendar: [], //每日放送数据
+			calendar: [],
 			time: null,
 			openType: false,
 			searchVal: '',
-			headVal:'',
+			headVal: '',
 			isScerch: false
-		};
+		}
 	},
 	onPullDownRefresh() {
-		//触发上拉刷新函数
 		if (timer != null) {
-			clearTimeout(timer);
+			clearTimeout(timer)
 		}
 		timer = setTimeout(() => {
-			this.isScerch = false;
-			this.searchVal = '';
-			this.calendar = [];
-			this.getCalendar();
-		}, 500);
+			this.isScerch = false
+			this.searchVal = ''
+			this.calendar = []
+			this.getCalendar()
+		}, 500)
 	},
 	onLoad() {
-		this.time = this.$store.state.time;
+		this.time = this.$store.state.time
 		this.getCalendar()
 	},
+	onUnload() {
+		if (timer != null) {
+			clearTimeout(timer)
+			timer = null
+		}
+	},
 	methods: {
-		// 跳转详情
 		toDetail(id, img) {
 			uni.navigateTo({
-				url: './detail?id=' + id + '&img=' + img
-			});
+				url: `./detail?id=${id}&img=${img}`
+			})
 		},
-		// 对数据进行排序
-		sortDate(e){
-			let str = "星期"+this.time.day
-			let dateList = e;
-			for(let i = 0 ; i<dateList.length; i++){
-				if(dateList[i].weekday.cn == str){
-					let val=dateList.splice(i,1)
-					this.calendar = [...val,...dateList]
+		sortDate(e) {
+			const str = `星期${this.time.day}`
+			const dateList = [...e]
+			for (let i = 0; i < dateList.length; i++) {
+				if (dateList[i].weekday.cn === str) {
+					const val = dateList.splice(i, 1)
+					this.calendar = [...val, ...dateList]
+					return
 				}
 			}
 		},
-		// 刷新列表每日放送
 		getCalendar() {
-			uni.showNavigationBarLoading();
+			uni.showNavigationBarLoading()
 			this.$api.getCalendar().then(res => {
-				this.sortDate(res.data);
-				uni.hideNavigationBarLoading();
-				uni.stopPullDownRefresh();
-			});
+				this.sortDate(res.data)
+			}).catch(() => {}).finally(() => {
+				uni.hideNavigationBarLoading()
+				uni.stopPullDownRefresh()
+			})
 		},
-		// 搜索
 		search() {
-			if (this.searchVal == 'SUPERY') {
+			if (this.searchVal === 'SUPERY') {
 				this.calendar = []
-				uni.setStorageSync('searchShow', true);
-				this.headVal = '潘多拉魔盒已打开!';
+				uni.setStorageSync('searchShow', true)
+				this.headVal = '潘多拉魔盒已打开!'
 				this.searchVal = ''
-				uni.vibrateLong();
-			}else if (this.openType && this.searchVal) {
-				this.isScerch = true;
-				uni.vibrateShort();
+				uni.vibrateLong()
+			} else if (this.openType && this.searchVal) {
+				this.isScerch = true
+				uni.vibrateShort()
 				this.$api.searchLy(this.searchVal).then(res => {
-					this.calendar = res.data.list;
+					this.calendar = res.data.list
 					this.headVal = this.searchVal
 					this.searchVal = ''
-				});
+				})
 			}
-			this.openType = !this.openType;
+			this.openType = !this.openType
 		}
 	}
-};
+}
 </script>
 
 <style lang="scss" scoped>

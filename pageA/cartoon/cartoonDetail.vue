@@ -44,98 +44,38 @@
 </template>
 
 <script>
-import { mixin } from '../../static/js/mixin.js';
+import { mixin } from '../../static/js/mixin.js'
+
 export default {
 	mixins: [mixin],
 	data() {
 		return {
 			isPopup: true,
-			date: null, //数据
-			bgImg: null, //背景图
+			date: null,
+			bgImg: null,
 			numList: []
-		};
+		}
 	},
-	onLoad(e) {
-		let data = JSON.parse(uni.getStorageSync('pageData'));
+	onLoad() {
+		const data = JSON.parse(uni.getStorageSync('pageData'))
 		this.date = data
 		this.bgImg = data.img
 		this.getDate()
 	},
 	methods: {
-		//弹出层隐藏
 		popupShow() {
 			uni.navigateBack({
 				url: '-1'
-			});
+			})
 		},
-		// 获取漫画详情
 		getDate() {
-			let par = {
-				id:this.date.id
-			}
-			this.$api.getCartoonDetail(par).then(res => {
-				this.numList = res.data;
-			});
+			this.$api.getCartoonDetail({ id: this.date.id }).then(res => {
+				this.numList = res.data
+			}).catch(() => {})
 		},
-		// 打开文件
-		openPDF(e){
-			// uni.setStorageSync('webView', e);
-			// switch (uni.getSystemInfoSync().platform) {
-			// 	case 'android':
-			// 		console.log('运行Android上');
-			// 		this.openReport(e);
-			// 		break;
-			// 	case 'ios':
-			// 		console.log('运行iOS上');
-			// 		uni.navigateTo({
-			// 			url: '../webView/index'
-			// 		});
-			// 		break;
-			// 	default:
-			// 		console.log('运行在开发者工具上');
-			// 		uni.navigateTo({
-			// 			url: '../webView/index'
-			// 		});
-			// 		break;
-			// }
-		},
-		openReport(url) {
-			uni.showLoading({
-				title: '加载中',
-				mask: true
-			});
-			wx.downloadFile({
-				url: url,
-				success: function(res) {
-					console.log(res);
-					uni.hideLoading();
-					var filePath = res.tempFilePath;
-					uni.showLoading({
-						title: '正在打开',
-						mask: true
-					});
-					wx.openDocument({
-						filePath: filePath,
-						fileType: 'pdf',
-						success: function(res) {
-							console.log(res);
-							uni.hideLoading();
-							console.log('打开文档成功');
-						},
-						fail: function(err) {
-							uni.hideLoading();
-							console.log('fail:' + JSON.stringify(err));
-						}
-					});
-				},
-				fail: function(err) {
-					uni.hideLoading();
-					console.log('fail:' + JSON.stringify(err));
-				}
-			});
-		}
+		openPDF() {}
 	}
-};
+}
 </script>
 
 <style lang="scss" scoped>
