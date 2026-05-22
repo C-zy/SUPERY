@@ -17,7 +17,8 @@
           <view 
             v-for="(item, index) in imageList" 
             :key="item.id" 
-            class="image-item"
+            class="image-item animate__animated animate__fadeInUp"
+            :style="{ animationDelay: (index * 0.1) + 's' }"
           >
             <image 
               :src="item.image_url" 
@@ -39,7 +40,7 @@
     </scroll-view>
     <view class="footer" :style="{ paddingBottom: safeAreaBottom + 'px' }">
       <view 
-        class="footer-item" 
+        class="footer-item animate__animated animate__fadeInUp" 
         :class="btnAnimation"
         @click="handleBtnClick"
         @touchstart="handleTouchStart"
