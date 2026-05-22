@@ -12281,6 +12281,38 @@ api.getAiImageList = function (data) {
 api.deleteAiImage = function (id) {
   return _request.default.globalRequest(API_HOST_V2 + '/ai/image/' + id, 'DELETE');
 };
+
+/**
+ * 获取用户能量接口
+ * @returns {Promise} 返回能量信息，包含 energy 和 lastEnergyRefresh
+ * @description Token通过请求头 Authorization: Bearer <token> 传递
+ */
+api.getEnergy = function () {
+  return _request.default.globalRequest(API_HOST_V2 + '/energy', 'GET');
+};
+
+/**
+ * 消耗用户能量接口
+ * @param {Object} data - 请求参数
+ * @param {number} data.amount - 消耗的能量值，必须大于0
+ * @returns {Promise} 返回消耗结果，包含剩余能量
+ * @description Token通过请求头 Authorization: Bearer <token> 传递
+ */
+api.consumeEnergy = function (data) {
+  return _request.default.globalRequest(API_HOST_V2 + '/energy/consume', 'POST', data);
+};
+
+/**
+ * 获取分享码接口
+ * @param {Object} [data] - 请求参数
+ * @param {string} [data.page] - 小程序页面路径，默认 "pages/index/index"
+ * @param {number} [data.width] - 二维码宽度（像素），默认 430
+ * @returns {Promise} 返回分享码信息，包含 shareFrom、scene、imageUrl 等
+ * @description Token通过请求头 Authorization: Bearer <token> 传递
+ */
+api.getShareQrcode = function (data) {
+  return _request.default.globalRequest(API_HOST_V2 + '/share/qrcode', 'POST', data);
+};
 var _default = api;
 exports.default = _default;
 
@@ -14183,6 +14215,101 @@ function _asyncToGenerator(fn) {
   };
 }
 module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */
+/*!****************************************************!*\
+  !*** D:/demo/SUPERY/components/uni-popup/popup.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 159));
+// 定义 type 类型:弹出类型：top/bottom/center
+var config = {
+  // 顶部弹出
+  top: 'top',
+  // 底部弹出
+  bottom: 'bottom',
+  // 居中弹出
+  center: 'center',
+  // 消息提示
+  message: 'top',
+  // 对话框
+  dialog: 'center',
+  // 分享
+  share: 'bottom'
+};
+var _default = {
+  data: function data() {
+    return {
+      config: config
+    };
+  },
+  mixins: [_message.default]
+};
+exports.default = _default;
+
+/***/ }),
+/* 159 */
+/*!******************************************************!*\
+  !*** D:/demo/SUPERY/components/uni-popup/message.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  created: function created() {
+    if (this.type === 'message') {
+      // 不显示遮罩
+      this.maskShow = false;
+      // 获取子组件对象
+      this.childrenMsg = null;
+    }
+  },
+  methods: {
+    customOpen: function customOpen() {
+      if (this.childrenMsg) {
+        this.childrenMsg.open();
+      }
+    },
+    customClose: function customClose() {
+      if (this.childrenMsg) {
+        this.childrenMsg.close();
+      }
+    }
+  }
+};
+exports.default = _default;
 
 /***/ })
 ]]);

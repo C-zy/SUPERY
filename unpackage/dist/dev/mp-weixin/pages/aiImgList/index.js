@@ -163,9 +163,41 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 141));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ 5));
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 143));
 var _index = _interopRequireDefault(__webpack_require__(/*! @/api/index.js */ 38));
+var _config = _interopRequireDefault(__webpack_require__(/*! @/common/config.js */ 39));
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -232,7 +264,13 @@ var _default = {
       total: 0,
       loading: false,
       noMore: false,
-      btnAnimation: ''
+      btnAnimation: '',
+      shareQrcodeUrl: '',
+      currentShareItem: null,
+      canvasWidth: 300,
+      canvasHeight: 300,
+      showSharePreview: false,
+      sharePreviewPath: ''
     };
   },
   onLoad: function onLoad() {
@@ -340,7 +378,7 @@ var _default = {
           if (res.tapIndex === 0) {
             _this3.saveImage(item.image_url);
           } else if (res.tapIndex === 1) {
-            _this3.shareImage(item.image_url);
+            _this3.shareImage(item);
           }
         }
       });
@@ -419,12 +457,238 @@ var _default = {
         }
       });
     },
-    shareImage: function shareImage(imageUrl) {
-      // 分享功能，这里可以根据实际需求实现
-      uni.showToast({
-        title: '分享功能开发中',
-        icon: 'none'
+    shareImage: function shareImage(item) {
+      var _this5 = this;
+      this.currentShareItem = item;
+      uni.showLoading({
+        title: '正在生成分享图...',
+        mask: true
       });
+      _index.default.getShareQrcode({
+        page: 'pages/index/index',
+        width: 200
+      }).then( /*#__PURE__*/function () {
+        var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(res) {
+          var host, qrcodeUrl, _yield$Promise$all, _yield$Promise$all2, imgRes, qrRes, compositePath;
+          return _regenerator.default.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  if (!(res.err !== 0 || !res.data || !res.data.imageUrl)) {
+                    _context2.next = 3;
+                    break;
+                  }
+                  uni.hideLoading();
+                  return _context2.abrupt("return", uni.showToast({
+                    title: '获取分享码失败',
+                    icon: 'none'
+                  }));
+                case 3:
+                  _this5.shareQrcodeUrl = res.data.imageUrl;
+                  host = _config.default;
+                  qrcodeUrl = _this5.shareQrcodeUrl.startsWith('http') ? _this5.shareQrcodeUrl : host + _this5.shareQrcodeUrl;
+                  _context2.next = 8;
+                  return Promise.all([_this5.downloadFile(item.image_url), _this5.downloadFile(qrcodeUrl)]);
+                case 8:
+                  _yield$Promise$all = _context2.sent;
+                  _yield$Promise$all2 = (0, _slicedToArray2.default)(_yield$Promise$all, 2);
+                  imgRes = _yield$Promise$all2[0];
+                  qrRes = _yield$Promise$all2[1];
+                  uni.hideLoading();
+                  if (!(!imgRes || !qrRes)) {
+                    _context2.next = 15;
+                    break;
+                  }
+                  return _context2.abrupt("return", uni.showToast({
+                    title: '图片下载失败',
+                    icon: 'none'
+                  }));
+                case 15:
+                  _context2.next = 17;
+                  return _this5.composeShareImage(imgRes, qrRes);
+                case 17:
+                  compositePath = _context2.sent;
+                  if (compositePath) {
+                    _context2.next = 20;
+                    break;
+                  }
+                  return _context2.abrupt("return", uni.showToast({
+                    title: '合成图片失败',
+                    icon: 'none'
+                  }));
+                case 20:
+                  _this5.sharePreviewPath = compositePath;
+                  _this5.showSharePreview = true;
+                case 22:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }));
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }()).catch(function () {
+        uni.hideLoading();
+        uni.showToast({
+          title: '获取分享码失败',
+          icon: 'none'
+        });
+      });
+    },
+    downloadFile: function downloadFile(url) {
+      return new Promise(function (resolve) {
+        if (url.startsWith('data:')) {
+          var fs = wx.getFileSystemManager();
+          var filePath = "".concat(wx.env.USER_DATA_PATH, "/share_").concat(Date.now(), ".png");
+          var base64Data = url.replace(/^data:image\/\w+;base64,/, '');
+          fs.writeFile({
+            filePath: filePath,
+            data: base64Data,
+            encoding: 'base64',
+            success: function success() {
+              return resolve(filePath);
+            },
+            fail: function fail() {
+              return resolve(null);
+            }
+          });
+        } else {
+          uni.downloadFile({
+            url: url,
+            success: function success(res) {
+              resolve(res.statusCode === 200 ? res.tempFilePath : null);
+            },
+            fail: function fail() {
+              return resolve(null);
+            }
+          });
+        }
+      });
+    },
+    composeShareImage: function composeShareImage(imgPath, qrPath) {
+      var _this6 = this;
+      var MAX_SIDE = 1200;
+      return new Promise(function (resolve) {
+        var sys = uni.getSystemInfoSync();
+        var dpr = sys.pixelRatio || 2;
+        uni.getImageInfo({
+          src: imgPath,
+          success: function success(imgInfo) {
+            var w = imgInfo.width;
+            var h = imgInfo.height;
+            if (w > MAX_SIDE || h > MAX_SIDE) {
+              var scale = Math.min(MAX_SIDE / w, MAX_SIDE / h);
+              w = Math.floor(w * scale);
+              h = Math.floor(h * scale);
+            }
+            _this6.canvasWidth = w;
+            _this6.canvasHeight = h;
+            _this6.$nextTick(function () {
+              setTimeout(function () {
+                var ctx = uni.createCanvasContext('shareCanvas', _this6);
+                ctx.clearRect(0, 0, w, h);
+                ctx.drawImage(imgPath, 0, 0, w, h);
+                var qrSize = Math.min(w, h) * 0.25;
+                var padding = 20;
+                var x = w - qrSize - padding;
+                var y = h - qrSize - padding;
+                ctx.setFillStyle('#ffffff');
+                ctx.fillRect(x - 10, y - 10, qrSize + 20, qrSize + 20);
+                ctx.drawImage(qrPath, x, y, qrSize, qrSize);
+                ctx.draw(false, function () {
+                  setTimeout(function () {
+                    uni.canvasToTempFilePath({
+                      canvasId: 'shareCanvas',
+                      x: 0,
+                      y: 0,
+                      width: w,
+                      height: h,
+                      destWidth: w * dpr,
+                      destHeight: h * dpr,
+                      fileType: 'png',
+                      quality: 1,
+                      success: function success(res) {
+                        return resolve(res.tempFilePath);
+                      },
+                      fail: function fail(err) {
+                        console.error('canvasToTempFilePath fail:', err);
+                        resolve(null);
+                      }
+                    }, _this6);
+                  }, 300);
+                });
+              }, 200);
+            });
+          },
+          fail: function fail(err) {
+            console.error('getImageInfo fail:', err);
+            resolve(null);
+          }
+        });
+      });
+    },
+    closeSharePreview: function closeSharePreview() {
+      this.showSharePreview = false;
+      this.sharePreviewPath = '';
+    },
+    saveSharePreview: function saveSharePreview() {
+      if (!this.sharePreviewPath) return;
+      this.saveToAlbum(this.sharePreviewPath);
+    },
+    shareToFriend: function shareToFriend() {
+      this.shareImageByWeixin(this.sharePreviewPath, 'friend');
+    },
+    shareToTimeline: function shareToTimeline() {
+      this.shareImageByWeixin(this.sharePreviewPath, 'timeline');
+    },
+    shareImageByWeixin: function shareImageByWeixin(filePath, target) {
+      if (!filePath) {
+        uni.showToast({
+          title: '分享图不存在',
+          icon: 'none'
+        });
+        return;
+      }
+      var hint = target === 'timeline' ? '请选择「分享到朋友圈」' : '请选择「发送给朋友」';
+      this.openWeixinShareMenu(filePath, hint);
+    },
+    openWeixinShareMenu: function openWeixinShareMenu(filePath, hint) {
+      if (wx.showShareImageMenu) {
+        wx.showShareImageMenu({
+          path: filePath,
+          success: function success() {
+            if (hint) {
+              uni.showToast({
+                title: hint,
+                icon: 'none',
+                duration: 2500
+              });
+            }
+          },
+          fail: function fail(err) {
+            console.error('showShareImageMenu fail:', err);
+            uni.previewImage({
+              urls: [filePath],
+              current: filePath
+            });
+            uni.showToast({
+              title: '请长按图片保存后分享',
+              icon: 'none'
+            });
+          }
+        });
+      } else {
+        uni.previewImage({
+          urls: [filePath],
+          current: filePath
+        });
+        uni.showToast({
+          title: '请长按图片保存后分享',
+          icon: 'none'
+        });
+      }
     }
   }
 };

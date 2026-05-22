@@ -1,6 +1,10 @@
 <script>
 export default {
   onLaunch: function () {
+    uni.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
   },
   methods: {
     getTime() {

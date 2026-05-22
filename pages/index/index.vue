@@ -149,7 +149,7 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	// padding: 60rpx 30rpx 40rpx;
+	padding: 60rpx 30rpx 40rpx;
 	box-sizing: border-box;
 	gap: 40rpx;
 }

@@ -109,7 +109,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _default = {
-  onLaunch: function onLaunch() {},
+  onLaunch: function onLaunch() {
+    uni.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
+  },
   methods: {
     getTime: function getTime() {
       var hour = new Date().getHours();

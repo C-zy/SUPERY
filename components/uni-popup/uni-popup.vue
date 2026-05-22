@@ -222,7 +222,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background-color: $uni-bg-color-mask;
+		background-color: rgba(0, 0, 0, 0.4);
 		opacity: 0;
 	}
 
@@ -268,11 +268,6 @@
 		display: block;
 		/* #endif */
 		position: relative;
-		/* iphonex 等安全区设置，底部安全区适配 */
-		/* #ifndef APP-NVUE */
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
-		/* #endif */
 	}
 
 	.content-ani {

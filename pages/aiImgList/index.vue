@@ -10,6 +10,10 @@
       :lower-threshold="100"
     >
       <view class="content">
+        <view class="time-notice">
+          <view class="notice-icon">⏰</view>
+          <view class="notice-text">当前记录仅显示 24 小时内的文件，超出时间将自动清除，请尽快保存至本地</view>
+        </view>
         <view v-if="imageList.length === 0" class="empty-state">
           暂无记录
         </view>
@@ -50,11 +54,38 @@
         <view class="footer-item-text">返回</view>
       </view>
     </view>
+    <canvas 
+      canvas-id="shareCanvas" 
+      class="share-canvas"
+      :style="{ width: canvasWidth + 'px', height: canvasHeight + 'px' }"
+    />
+    <!-- 分享海报预览 -->
+    <view v-if="showSharePreview" class="share-preview-mask" @click="closeSharePreview">
+      <view class="share-preview-box" @click.stop>
+        <view class="share-preview-title">分享海报</view>
+        <scroll-view scroll-y class="share-preview-scroll">
+          <image
+            v-if="sharePreviewPath"
+            :src="sharePreviewPath"
+            mode="widthFix"
+            class="share-preview-img"
+            show-menu-by-longpress
+          />
+        </scroll-view>
+        <view class="share-preview-actions">
+          <view class="share-action-btn" @click="saveSharePreview">保存图片</view>
+          <view class="share-action-btn primary" @click="shareToFriend">发送给朋友</view>
+          <view class="share-action-btn primary" @click="shareToTimeline">分享到朋友圈</view>
+        </view>
+        <view class="share-preview-close" @click="closeSharePreview">关闭</view>
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
 import api from "@/api/index.js";
+import urlConfig from "@/common/config.js";
 
 export default {
   data() {
@@ -67,7 +98,13 @@ export default {
       total: 0,
       loading: false,
       noMore: false,
-      btnAnimation: ''
+      btnAnimation: '',
+      shareQrcodeUrl: '',
+      currentShareItem: null,
+      canvasWidth: 300,
+      canvasHeight: 300,
+      showSharePreview: false,
+      sharePreviewPath: ''
     };
   },
   onLoad() {
@@ -149,7 +186,7 @@ export default {
           if (res.tapIndex === 0) {
             this.saveImage(item.image_url);
           } else if (res.tapIndex === 1) {
-            this.shareImage(item.image_url);
+            this.shareImage(item);
           }
         }
       });
@@ -229,12 +266,205 @@ export default {
         }
       });
     },
-    shareImage(imageUrl) {
-      // 分享功能，这里可以根据实际需求实现
-      uni.showToast({
-        title: '分享功能开发中',
-        icon: 'none'
+    shareImage(item) {
+      this.currentShareItem = item;
+      uni.showLoading({ title: '正在生成分享图...', mask: true });
+
+      api.getShareQrcode({ page: 'pages/index/index', width: 200 })
+        .then(async (res) => {
+          if (res.err !== 0 || !res.data || !res.data.imageUrl) {
+            uni.hideLoading();
+            return uni.showToast({ title: '获取分享码失败', icon: 'none' });
+          }
+
+          this.shareQrcodeUrl = res.data.imageUrl;
+          const host = urlConfig;
+          const qrcodeUrl = this.shareQrcodeUrl.startsWith('http')
+            ? this.shareQrcodeUrl
+            : host + this.shareQrcodeUrl;
+
+          const [imgRes, qrRes] = await Promise.all([
+            this.downloadFile(item.image_url),
+            this.downloadFile(qrcodeUrl)
+          ]);
+
+          uni.hideLoading();
+          if (!imgRes || !qrRes) {
+            return uni.showToast({ title: '图片下载失败', icon: 'none' });
+          }
+
+          const compositePath = await this.composeShareImage(imgRes, qrRes);
+          if (!compositePath) {
+            return uni.showToast({ title: '合成图片失败', icon: 'none' });
+          }
+
+          this.sharePreviewPath = compositePath;
+          this.showSharePreview = true;
+        })
+        .catch(() => {
+          uni.hideLoading();
+          uni.showToast({ title: '获取分享码失败', icon: 'none' });
+        });
+    },
+    downloadFile(url) {
+      return new Promise((resolve) => {
+        if (url.startsWith('data:')) {
+          const fs = wx.getFileSystemManager();
+          const filePath = `${wx.env.USER_DATA_PATH}/share_${Date.now()}.png`;
+          const base64Data = url.replace(/^data:image\/\w+;base64,/, '');
+          fs.writeFile({
+            filePath,
+            data: base64Data,
+            encoding: 'base64',
+            success: () => resolve(filePath),
+            fail: () => resolve(null)
+          });
+        } else {
+          uni.downloadFile({
+            url,
+            success: (res) => {
+              resolve(res.statusCode === 200 ? res.tempFilePath : null);
+            },
+            fail: () => resolve(null)
+          });
+        }
       });
+    },
+    composeShareImage(imgPath, qrPath) {
+      const MAX_SIDE = 1200;
+      return new Promise((resolve) => {
+        const sys = uni.getSystemInfoSync();
+        const dpr = sys.pixelRatio || 2;
+
+        uni.getImageInfo({
+          src: imgPath,
+          success: (imgInfo) => {
+            let w = imgInfo.width;
+            let h = imgInfo.height;
+            if (w > MAX_SIDE || h > MAX_SIDE) {
+              const scale = Math.min(MAX_SIDE / w, MAX_SIDE / h);
+              w = Math.floor(w * scale);
+              h = Math.floor(h * scale);
+            }
+
+            this.canvasWidth = w;
+            this.canvasHeight = h;
+
+            this.$nextTick(() => {
+              setTimeout(() => {
+                const ctx = uni.createCanvasContext('shareCanvas', this);
+
+                ctx.clearRect(0, 0, w, h);
+                ctx.drawImage(imgPath, 0, 0, w, h);
+
+                const qrSize = Math.min(w, h) * 0.25;
+                const padding = 20;
+                const x = w - qrSize - padding;
+                const y = h - qrSize - padding;
+
+                ctx.setFillStyle('#ffffff');
+                ctx.fillRect(x - 10, y - 10, qrSize + 20, qrSize + 20);
+                ctx.drawImage(qrPath, x, y, qrSize, qrSize);
+
+                ctx.draw(false, () => {
+                  setTimeout(() => {
+                    uni.canvasToTempFilePath({
+                      canvasId: 'shareCanvas',
+                      x: 0,
+                      y: 0,
+                      width: w,
+                      height: h,
+                      destWidth: w * dpr,
+                      destHeight: h * dpr,
+                      fileType: 'png',
+                      quality: 1,
+                      success: (res) => resolve(res.tempFilePath),
+                      fail: (err) => {
+                        console.error('canvasToTempFilePath fail:', err);
+                        resolve(null);
+                      }
+                    }, this);
+                  }, 300);
+                });
+              }, 200);
+            });
+          },
+          fail: (err) => {
+            console.error('getImageInfo fail:', err);
+            resolve(null);
+          }
+        });
+      });
+    },
+    closeSharePreview() {
+      this.showSharePreview = false;
+      this.sharePreviewPath = '';
+    },
+    saveSharePreview() {
+      if (!this.sharePreviewPath) return;
+      this.saveToAlbum(this.sharePreviewPath);
+    },
+    shareToFriend() {
+      this.shareImageByWeixin(this.sharePreviewPath, 'friend');
+    },
+    shareToTimeline() {
+      this.shareImageByWeixin(this.sharePreviewPath, 'timeline');
+    },
+    shareImageByWeixin(filePath, target) {
+      if (!filePath) {
+        uni.showToast({ title: '分享图不存在', icon: 'none' });
+        return;
+      }
+      // #ifdef MP-WEIXIN
+      const hint = target === 'timeline' ? '请选择「分享到朋友圈」' : '请选择「发送给朋友」';
+      this.openWeixinShareMenu(filePath, hint);
+      // #endif
+      // #ifdef APP-PLUS
+      const scene = target === 'timeline' ? 'WXSceneTimeline' : 'WXSceneSession';
+      uni.share({
+        provider: 'weixin',
+        type: 2,
+        imageUrl: filePath,
+        scene,
+        success: () => {
+          uni.showToast({ title: '分享成功', icon: 'success' });
+        },
+        fail: () => {
+          uni.showToast({ title: '分享失败，请保存后手动分享', icon: 'none' });
+        }
+      });
+      // #endif
+      // #ifndef MP-WEIXIN || APP-PLUS
+      uni.previewImage({
+        urls: [filePath],
+        current: filePath,
+        success: () => {
+          uni.showToast({ title: '长按图片可保存分享', icon: 'none' });
+        }
+      });
+      // #endif
+    },
+    openWeixinShareMenu(filePath, hint) {
+      // #ifdef MP-WEIXIN
+      if (wx.showShareImageMenu) {
+        wx.showShareImageMenu({
+          path: filePath,
+          success: () => {
+            if (hint) {
+              uni.showToast({ title: hint, icon: 'none', duration: 2500 });
+            }
+          },
+          fail: (err) => {
+            console.error('showShareImageMenu fail:', err);
+            uni.previewImage({ urls: [filePath], current: filePath });
+            uni.showToast({ title: '请长按图片保存后分享', icon: 'none' });
+          }
+        });
+      } else {
+        uni.previewImage({ urls: [filePath], current: filePath });
+        uni.showToast({ title: '请长按图片保存后分享', icon: 'none' });
+      }
+      // #endif
     }
   },
 };
@@ -288,6 +518,30 @@ export default {
   padding: 100rpx 0;
   color: #999;
   font-size: 28rpx;
+}
+
+.time-notice {
+  display: flex;
+  align-items: flex-start;
+  padding: 20rpx 24rpx;
+  background-color: #fff3e0;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+  border-left: 6rpx solid #ff9800;
+}
+
+.notice-icon {
+  font-size: 32rpx;
+  flex-shrink: 0;
+  line-height: 1.4;
+  margin-right: 16rpx;
+}
+
+.notice-text {
+  flex: 1;
+  font-size: 24rpx;
+  color: #e65100;
+  line-height: 1.6;
 }
 
 .image-list {
@@ -346,5 +600,84 @@ export default {
   font-size: 30rpx;
   font-weight: bold;
   color: #1e88e5;
+}
+
+.share-canvas {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  pointer-events: none;
+}
+
+.share-preview-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.share-preview-box {
+  width: 100%;
+  max-width: 640rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+.share-preview-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24rpx;
+  color: #333;
+}
+
+.share-preview-scroll {
+  max-height: 50vh;
+}
+
+.share-preview-img {
+  width: 100%;
+  border-radius: 12rpx;
+  display: block;
+}
+
+.share-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 28rpx;
+}
+
+.share-action-btn {
+  flex: 1;
+  min-width: 28%;
+  text-align: center;
+  padding: 20rpx 12rpx;
+  font-size: 26rpx;
+  color: #1e88e5;
+  background: #e3f2fd;
+  border-radius: 40rpx;
+}
+
+.share-action-btn.primary {
+  color: #fff;
+  background: #1e88e5;
+}
+
+.share-preview-close {
+  text-align: center;
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: #999;
 }
 </style>

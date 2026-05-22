@@ -10,34 +10,42 @@
     </view>
 
     <!-- 原图预览 -->
-    <view class="previewBox" v-if="uploadedImageUrl">
-      <view class="previewHeader">
-        <view class="previewLabel">原图</view>
-        <view class="reuploadBtn" @click.stop="chooseImage">重新上传</view>
+    <view class="card-box" v-if="uploadedImageUrl">
+      <view class="section-header">
+        <view class="section-label">原图</view>
+        <view class="action-btn" @click.stop="chooseImage">重新上传</view>
       </view>
       <image :src="uploadedImageUrl" mode="aspectFit" class="previewImg" />
       <view class="imageInfo" v-if="imageSize">{{ imageSize }}</view>
     </view>
 
     <!-- 风格选择 -->
-    <view class="styleBox" v-if="uploadedImageUrl">
-      <view class="styleLabel">选择风格</view>
-      <view class="styleList">
-        <view
-          class="styleItem"
-          v-for="(item, index) in styleOptions"
-          :key="index"
-          :class="{ active: selectedStyle === index }"
-          @click="selectedStyle = index"
-        >
-          {{ item.name }}
+    <view class="card-box" v-if="uploadedImageUrl">
+      <view class="section-label">选择风格</view>
+      <!-- 当前选中风格展示 -->
+      <view class="currentStyle" @click="openStylePopup">
+        <image :src="styleOptions[selectedStyle].image" mode="aspectFill" class="currentStyleImg" />
+        <view class="currentStyleInfo">
+          <view class="currentStyleName">{{ styleOptions[selectedStyle].name }}</view>
+          <view class="currentStyleHint">点击切换风格</view>
+        </view>
+        <view class="currentStyleArrow">
+          <text>›</text>
         </view>
       </view>
     </view>
 
+    <!-- 风格选择弹窗 -->
+    <style-select-popup
+      ref="stylePopup"
+      :style-options="styleOptions"
+      :selected-index="selectedStyle"
+      @select="onStyleSelect"
+    />
+
     <!-- 自定义提示词 -->
-    <view class="promptBox" v-if="uploadedImageUrl">
-      <view class="promptLabel">自定义描述（可选）</view>
+    <view class="card-box" v-if="uploadedImageUrl">
+      <view class="section-label">自定义描述（可选）</view>
       <textarea
         class="promptInput"
         v-model="promptText"
@@ -50,13 +58,18 @@
 
     <!-- 生成按钮 -->
     <view class="btnGroup">
+      <view class="energyInfo" v-if="uploadedImageUrl">
+        <text class="energyLabel">剩余能量：</text>
+        <text class="energyValue" :class="{ low: energy < energyCost }">{{ energy }}</text>
+        <text class="energyCost"> / 本次消耗 {{ energyCost }}</text>
+      </view>
       <view
         class="btnBox"
         hover-class="hover"
         @click="generateImage"
-        :class="{ loading: isLoading, disabled: !uploadedImageUrl }"
+        :class="{ loading: isLoading, disabled: !uploadedImageUrl || energy < energyCost }"
       >
-        {{ isLoading ? "AI 处理中..." : "开始 AI 创作" }}
+        {{ isLoading ? "AI 处理中..." : "一键生成" }}
       </view>
     </view>
 
@@ -74,10 +87,10 @@
     </view>
 
     <!-- 生成结果展示 -->
-    <view class="resultBox" v-if="resultImageUrl">
-      <view class="resultHeader">
-        <view class="previewLabel">AI 生成结果</view>
-        <view class="saveBtn" @click.stop="saveImage">保存到相册</view>
+    <view class="card-box resultCard" v-if="resultImageUrl">
+      <view class="section-header">
+        <view class="section-label">AI 生成结果</view>
+        <view class="action-btn" @click.stop="saveImage">保存到相册</view>
       </view>
       <image :src="resultImageUrl" mode="widthFix" class="resultImg" />
       <view class="saveHint">长按图片也可保存到相册</view>
@@ -87,6 +100,7 @@
 
 <script>
 import api from "@/api/index.js";
+import StyleSelectPopup from "./style-select-popup.vue";
 
 // AI API 配置
 const API_CONFIG = {
@@ -103,18 +117,24 @@ const IMAGE_CONFIG = {
   sizeType: ["compressed"],
 };
 
+// 单次AI生成消耗能量
+const ENERGY_COST = 10;
+
 // 风格选项配置
 const STYLE_OPTIONS = [
   {
     name: "线稿1",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop",
     prompt: `保留机器人模型，去除模型支架、人手与背景，整体替换为 近代复杂手稿 ，设计图纸质感背景，机器人模型的关键结构额外分解展示在一旁，显示复杂的机械结构和一系列公式，整个画面为精致的彩色手绘风格 图片风格为版画，`,
   },
   {
     name: "线稿2",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
     prompt: `保留机器人模型，去除模型支架、人手与背景，整体替换为近代复杂手稿，设计图纸质感背景，机器人模型的关键结构额外分解展示在一旁，显示复杂的机械结构和一系列公式，将机器人对称分割，右半边结构换为复杂的透视机械解构线稿，线稿部分要展示内部透视机械细节，整个画面为精致的彩色手绘风格。图片风格为版画。原比例。`,
   },
   {
     name: "旧化",
+    image: "https://images.unsplash.com/photo-1602080858428-57174f9431cf?w=400&h=300&fit=crop",
     prompt: `保留原图高达模型的完整结构、轮廓比例、装甲布局和所有机械细节，不改变任何部件的位置和形状。
 将整体材质处理为超现实做旧风格，照片级真实感，8K超高清画质。
 金属表面重度生锈（heavy rust），氧化金属（oxidized metal），油漆大面积剥落（peeling paint），露出底层暗灰色金属，表面布满划痕（scratches）、凹痕（dents）、弹孔痕迹（bullet hole marks）。
@@ -124,13 +144,18 @@ const STYLE_OPTIONS = [
   },
   {
     name:'涂鸦',
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=300&fit=crop",
     prompt:`杰作，最高画质，速写风格，线稿，动态姿势，机甲，文字颜色为图片颜色相近色，机械细节丰富，笔触锋利，涂鸦式乱线背景，白色背景，文字涂鸦，皇冠符号，星星，箭头，动感氛围，高对比度，粗黑轮廓线，动漫机甲插画，voxcat画风`
   }
 ];
 
 export default {
+  components: {
+    StyleSelectPopup,
+  },
   data() {
     return {
+      statusBarHeight: 0,
       uploadedImageUrl: "", // 上传的图片路径
       resultImageUrl: "", // AI生成的图片路径
       isLoading: false, // 是否加载中
@@ -139,9 +164,48 @@ export default {
       imageSize: "", // 图片大小
       selectedStyle: 0, // 当前选中的风格索引
       styleOptions: STYLE_OPTIONS, // 风格选项
+      energy: 0, // 当前剩余能量
+      energyCost: ENERGY_COST, // 单次消耗能量
     };
   },
+  onLoad() {
+    const systemInfo = uni.getSystemInfoSync();
+    this.statusBarHeight = systemInfo.statusBarHeight || 20;
+  },
+  onShow() {
+    this.fetchEnergy();
+  },
   methods: {
+    // 获取用户能量
+    async fetchEnergy() {
+      try {
+        const res = await api.getEnergy();
+        if (res.data && typeof res.data.energy === 'number') {
+          this.energy = res.data.energy;
+        }
+      } catch (err) {
+        console.log("获取能量失败:", err);
+      }
+    },
+    // 消耗能量
+    async doConsumeEnergy() {
+      try {
+        const res = await api.consumeEnergy({ amount: this.energyCost });
+        if (res.data && typeof res.data.energy === 'number') {
+          this.energy = res.data.energy;
+        }
+      } catch (err) {
+        console.log("消耗能量失败:", err);
+      }
+    },
+    // 选择风格
+    onStyleSelect(index) {
+      this.selectedStyle = index;
+    },
+    // 弹出风格选择弹窗
+    openStylePopup() {
+      this.$refs.stylePopup.open();
+    },
     // 选择图片
     chooseImage() {
       uni.chooseImage({
@@ -212,31 +276,13 @@ export default {
       });
     },
 
-    // Base64转图片文件
-    base64ToImageFile(base64Data) {
-      return new Promise((resolve, reject) => {
-        const fs = wx.getFileSystemManager();
-        const filePath = `${wx.env.USER_DATA_PATH}/ai_upload_${Date.now()}.png`;
-        const base64Content = base64Data.replace(/^data:image\/\w+;base64,/, "");
-
-        fs.writeFile({
-          filePath,
-          data: base64Content,
-          encoding: "base64",
-          success: () => {
-            resolve(filePath);
-          },
-          fail: (err) => {
-            reject(err);
-          },
-        });
-      });
-    },
-
     // 调用AI API生成图片
     callApiGenerateImage(base64Image) {
-      // 优先使用自定义提示词，否则使用选中的风格
-      const finalPrompt = this.promptText.trim() || this.styleOptions[this.selectedStyle].prompt;
+      // 将自定义提示词拼接到已选择风格的提示词后面
+      const stylePrompt = this.styleOptions[this.selectedStyle].prompt;
+      const finalPrompt = this.promptText.trim()
+        ? stylePrompt + this.promptText.trim()
+        : stylePrompt;
 
       return new Promise((resolve, reject) => {
         uni.request({
@@ -278,17 +324,10 @@ export default {
 
     // 静默上传用户选择的原始图片到服务器
     uploadOriginalImageSilently(filePath) {
-      try {
-        // 上传到服务器（静默，不影响用户体验）
-        api.uploadImage(filePath, {
-          image_type: 'gundam_ai',
-          description: '用户上传图片'
-        }).catch(() => {
-          console.log("静默上传失败，不影响用户体验");
-        });
-      } catch (err) {
-        console.log("静默上传异常:", err);
-      }
+      api.uploadImage(filePath, {
+        image_type: 'gundam_ai',
+        description: '用户上传图片'
+      }).catch(() => {});
     },
 
     // 解析API错误
@@ -316,8 +355,19 @@ export default {
         return;
       }
 
+      // 验证能量是否充足
+      if (this.energy < this.energyCost) {
+        uni.showToast({
+          title: `能量不足，需要${this.energyCost}能量，当前剩余${this.energy}`,
+          icon: "none",
+          duration: 2000,
+        });
+        return;
+      }
+
       if (this.isLoading) return;
 
+      uni.vibrateShort();
       // 初始化状态
       this.isLoading = true;
       this.resultImageUrl = "";
@@ -362,6 +412,9 @@ export default {
           title: "生成成功",
           icon: "success",
         });
+
+        // 消耗能量
+        this.doConsumeEnergy();
 
         // 滚动到结果区域
         uni.pageScrollTo({
@@ -495,14 +548,14 @@ export default {
   text-align: center;
   font-size: 44rpx;
   font-weight: bold;
-  color: #30475e;
+  color: rgb(12, 104, 188);
   margin-bottom: 40rpx;
 }
 
 .uploadArea {
   width: 100%;
   height: 400rpx;
-  border: 4rpx dashed #d1c145;
+  border: 4rpx dashed rgb(12, 104, 188);
   border-radius: 20rpx;
   display: flex;
   flex-direction: column;
@@ -514,14 +567,14 @@ export default {
 
 .uploadIcon {
   font-size: 120rpx;
-  color: #d1c145;
+  color: rgb(12, 104, 188);
   line-height: 1;
   font-weight: 300;
 }
 
 .uploadText {
   font-size: 32rpx;
-  color: #30475e;
+  color: rgb(12, 104, 188);
   margin-top: 20rpx;
 }
 
@@ -531,7 +584,9 @@ export default {
   margin-top: 10rpx;
 }
 
-.previewBox {
+// ========== 共享样式 ==========
+
+.card-box {
   width: 100%;
   background-color: #fff;
   border-radius: 20rpx;
@@ -540,28 +595,40 @@ export default {
   margin-bottom: 30rpx;
 }
 
-.previewHeader {
+.card-box.resultCard {
+  margin-top: 30rpx;
+  margin-bottom: 0;
+}
+
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20rpx;
 }
 
-.previewLabel {
+.section-label {
   font-size: 30rpx;
   font-weight: bold;
-  color: #30475e;
+  color: rgb(12, 104, 188);
   padding-left: 10rpx;
-  border-left: 6rpx solid #d1c145;
+  border-left: 6rpx solid rgb(12, 104, 188);
+  margin-bottom: 20rpx;
 }
 
-.reuploadBtn {
+.section-header .section-label {
+  margin-bottom: 0;
+}
+
+.action-btn {
   font-size: 26rpx;
-  color: #009933;
+  color: rgb(12, 104, 188);
   padding: 10rpx 20rpx;
-  border: 2rpx solid #009933;
+  border: 2rpx solid rgb(12, 104, 188);
   border-radius: 30rpx;
 }
+
+// ========== 各模块独有样式 ==========
 
 .previewImg {
   width: 100%;
@@ -576,67 +643,60 @@ export default {
   margin-top: 10rpx;
 }
 
-.styleBox {
-  width: 100%;
-  background-color: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
-  box-sizing: border-box;
-  margin-bottom: 30rpx;
-}
-
-.styleLabel {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #30475e;
-  padding-left: 10rpx;
-  border-left: 6rpx solid #d1c145;
-  margin-bottom: 20rpx;
-}
-
-.styleList {
+// 当前选择风格展示
+.currentStyle {
   display: flex;
-  gap: 20rpx;
-  flex-wrap: wrap;
-}
-
-.styleItem {
-  flex: 1;
-  min-width: 140rpx;
-  height: 70rpx;
-  border: 2rpx solid #ddd;
-  border-radius: 35rpx;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 28rpx;
-  color: #666;
-  transition: all 0.3s;
-  background-color: #f9f9f9;
-}
-
-.styleItem.active {
-  background: linear-gradient(135deg, #009933, #00b33c);
-  color: #fff;
-  border-color: #009933;
-}
-
-.promptBox {
-  width: 100%;
-  background-color: #fff;
+  background-color: #f5f7fa;
   border-radius: 20rpx;
-  padding: 20rpx;
-  box-sizing: border-box;
-  margin-bottom: 30rpx;
+  padding: 16rpx;
+  transition: all 0.3s;
+  border: 2rpx solid transparent;
 }
 
-.promptLabel {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #30475e;
-  padding-left: 10rpx;
-  border-left: 6rpx solid #d1c145;
-  margin-bottom: 20rpx;
+.currentStyle:active {
+  opacity: 0.85;
+  background-color: #e9edf2;
+  border-color: rgb(12, 104, 188);
+}
+
+.currentStyleImg {
+  width: 160rpx;
+  height: 200rpx;
+  border-radius: 16rpx;
+  margin-right: 16rpx;
+}
+
+.currentStyleInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 16rpx;
+}
+
+.currentStyleName {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.currentStyleHint {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.currentStyleArrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgb(12, 104, 188);
+}
+
+.currentStyleArrow text {
+  font-size: 36rpx;
+  font-weight: 300;
 }
 
 .promptInput {
@@ -647,7 +707,7 @@ export default {
   background-color: #f5f7fa;
   border-radius: 10rpx;
   font-size: 28rpx;
-  color: #30475e;
+  color: rgb(12, 104, 188);
   box-sizing: border-box;
 }
 
@@ -663,19 +723,43 @@ export default {
   margin: 30rpx 0;
 }
 
+.energyInfo {
+  text-align: center;
+  margin-bottom: 20rpx;
+  font-size: 26rpx;
+}
+
+.energyLabel {
+  color: #666;
+}
+
+.energyValue {
+  color: rgb(12, 104, 188);
+  font-weight: bold;
+  font-size: 30rpx;
+}
+
+.energyValue.low {
+  color: #e74c3c;
+}
+
+.energyCost {
+  color: #999;
+}
+
 .btnBox {
   width: 100%;
   height: 90rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #009933, #00b33c);
+  background: linear-gradient(135deg, rgb(12, 104, 188), rgb(20, 120, 200));
   border-radius: 45rpx;
   font-size: 34rpx;
   color: #fff;
   font-weight: bold;
   transition: all 0.3s;
-  box-shadow: 0 8rpx 20rpx rgba(0, 153, 51, 0.3);
+  box-shadow: 0 8rpx 20rpx rgba(12, 104, 188, 0.3);
 }
 
 .btnBox.disabled {
@@ -704,15 +788,19 @@ export default {
 
 .loadingAnim {
   display: flex;
-  gap: 20rpx;
 }
 
 .dot {
   width: 24rpx;
   height: 24rpx;
   border-radius: 50%;
-  background-color: #d1c145;
+  background-color: rgb(12, 104, 188);
   animation: bounce 1.4s infinite ease-in-out both;
+  margin-right: 20rpx;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 @keyframes bounce {
@@ -732,30 +820,6 @@ export default {
   font-size: 28rpx;
   color: #666;
   margin-top: 20rpx;
-}
-
-.resultBox {
-  width: 100%;
-  background-color: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
-  box-sizing: border-box;
-  margin-top: 30rpx;
-}
-
-.resultHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20rpx;
-}
-
-.saveBtn {
-  font-size: 26rpx;
-  color: #009933;
-  padding: 10rpx 20rpx;
-  border: 2rpx solid #009933;
-  border-radius: 30rpx;
 }
 
 .resultImg {

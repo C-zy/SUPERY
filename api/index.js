@@ -150,4 +150,36 @@ api.deleteAiImage = (id) => {
 	return request.globalRequest(API_HOST_V2 + '/ai/image/' + id, 'DELETE')
 }
 
+/**
+ * 获取用户能量接口
+ * @returns {Promise} 返回能量信息，包含 energy 和 lastEnergyRefresh
+ * @description Token通过请求头 Authorization: Bearer <token> 传递
+ */
+api.getEnergy = () => {
+	return request.globalRequest(API_HOST_V2 + '/energy', 'GET')
+}
+
+/**
+ * 消耗用户能量接口
+ * @param {Object} data - 请求参数
+ * @param {number} data.amount - 消耗的能量值，必须大于0
+ * @returns {Promise} 返回消耗结果，包含剩余能量
+ * @description Token通过请求头 Authorization: Bearer <token> 传递
+ */
+api.consumeEnergy = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/energy/consume', 'POST', data)
+}
+
+/**
+ * 获取分享码接口
+ * @param {Object} [data] - 请求参数
+ * @param {string} [data.page] - 小程序页面路径，默认 "pages/index/index"
+ * @param {number} [data.width] - 二维码宽度（像素），默认 430
+ * @returns {Promise} 返回分享码信息，包含 shareFrom、scene、imageUrl 等
+ * @description Token通过请求头 Authorization: Bearer <token> 传递
+ */
+api.getShareQrcode = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/share/qrcode', 'POST', data)
+}
+
 export default api

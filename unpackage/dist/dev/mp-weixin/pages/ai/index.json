@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "AI",
-  "usingComponents": {}
+  "navigationBarTitleText": "GUNDAMAI",
+  "usingComponents": {
+    "style-select-popup": "/pages/ai/style-select-popup"
+  }
 }
