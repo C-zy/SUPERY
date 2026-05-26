@@ -1,12 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/cartoonList/index",
-    "pages/cartoonList/detail",
-    "pages/wallpaper/index",
-    "pages/wallpaper/detail",
     "pages/ai/index",
-    "pages/aiImgList/index"
+    "pages/aiImgList/index",
+    "pages/feedback/index"
   ],
   "subPackages": [
     {

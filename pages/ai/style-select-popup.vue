@@ -66,10 +66,10 @@ export default {
       });
     },
     close() {
+      uni.vibrateShort();
       this.showAnimate = false;
       this.$refs.popup.close();
     },
-    // 选择风格
     selectStyle(index) {
       this.$emit("select", index);
       this.close();
@@ -104,7 +104,7 @@ export default {
 
 .style-popup-title {
   font-size: 36rpx;
-  font-weight: bold;
+  // font-weight: bold;
   color: rgb(12, 104, 188);
 }
 

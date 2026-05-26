@@ -29,6 +29,7 @@
               class="item-image" 
               mode="aspectFit"
               lazy-load
+              @click="previewImage(index)"
               @longpress="showActionSheet(item)"
             />
             <view class="item-time">{{ formatTime(item.created_at) }}</view>
@@ -86,6 +87,7 @@
 <script>
 import api from "@/api/index.js";
 import urlConfig from "@/common/config.js";
+import { saveImageToAlbum, downloadFile } from "@/common/imageUtil.js";
 
 export default {
   data() {
@@ -179,7 +181,15 @@ export default {
     handleTouchEnd() {
       this.btnAnimation = '';
     },
+    previewImage(index) {
+      uni.vibrateShort()
+      uni.previewImage({
+        urls: this.imageList.map(item => item.image_url),
+        current: index
+      })
+    },
     showActionSheet(item) {
+      uni.vibrateShort();
       uni.showActionSheet({
         itemList: ['保存图片', '分享'],
         success: (res) => {
@@ -192,82 +202,13 @@ export default {
       });
     },
     saveImage(imageUrl) {
-      if (!imageUrl) return;
-
-      uni.showLoading({
-        title: '保存中...',
-        mask: true
-      });
-
-      // 处理Base64格式的图片
-      if (imageUrl.startsWith('data:')) {
-        const fs = wx.getFileSystemManager();
-        const filePath = `${wx.env.USER_DATA_PATH}/ai_result_${Date.now()}.png`;
-        const base64Data = imageUrl.replace(/^data:image\/\w+;base64,/, '');
-
-        fs.writeFile({
-          filePath,
-          data: base64Data,
-          encoding: 'base64',
-          success: () => {
-            this.saveToAlbum(filePath);
-          },
-          fail: () => {
-            uni.hideLoading();
-            uni.showToast({
-              title: '保存失败',
-              icon: 'none'
-            });
-          }
-        });
-      } 
-      // 处理URL格式的图片
-      else {
-        uni.downloadFile({
-          url: imageUrl,
-          success: (res) => {
-            if (res.statusCode === 200) {
-              this.saveToAlbum(res.tempFilePath);
-            } else {
-              uni.hideLoading();
-              uni.showToast({
-                title: '下载失败',
-                icon: 'none'
-              });
-            }
-          },
-          fail: () => {
-            uni.hideLoading();
-            uni.showToast({
-              title: '下载失败',
-              icon: 'none'
-            });
-          }
-        });
-      }
-    },
-    // 保存到相册
-    saveToAlbum(filePath) {
-      uni.saveImageToPhotosAlbum({
-        filePath,
-        success: () => {
-          uni.hideLoading();
-          uni.showToast({
-            title: '已保存到相册',
-            icon: 'success'
-          });
-        },
-        fail: () => {
-          uni.hideLoading();
-          uni.showToast({
-            title: '保存失败',
-            icon: 'none'
-          });
-        }
-      });
+      if (!imageUrl) return
+      uni.vibrateShort()
+      saveImageToAlbum(imageUrl)
     },
     shareImage(item) {
       this.currentShareItem = item;
+      uni.vibrateShort();
       uni.showLoading({ title: '正在生成分享图...', mask: true });
 
       api.getShareQrcode({ page: 'pages/index/index', width: 200 })
@@ -284,8 +225,8 @@ export default {
             : host + this.shareQrcodeUrl;
 
           const [imgRes, qrRes] = await Promise.all([
-            this.downloadFile(item.image_url),
-            this.downloadFile(qrcodeUrl)
+            downloadFile(item.image_url),
+            downloadFile(qrcodeUrl)
           ]);
 
           uni.hideLoading();
@@ -305,30 +246,6 @@ export default {
           uni.hideLoading();
           uni.showToast({ title: '获取分享码失败', icon: 'none' });
         });
-    },
-    downloadFile(url) {
-      return new Promise((resolve) => {
-        if (url.startsWith('data:')) {
-          const fs = wx.getFileSystemManager();
-          const filePath = `${wx.env.USER_DATA_PATH}/share_${Date.now()}.png`;
-          const base64Data = url.replace(/^data:image\/\w+;base64,/, '');
-          fs.writeFile({
-            filePath,
-            data: base64Data,
-            encoding: 'base64',
-            success: () => resolve(filePath),
-            fail: () => resolve(null)
-          });
-        } else {
-          uni.downloadFile({
-            url,
-            success: (res) => {
-              resolve(res.statusCode === 200 ? res.tempFilePath : null);
-            },
-            fail: () => resolve(null)
-          });
-        }
-      });
     },
     composeShareImage(imgPath, qrPath) {
       const MAX_SIDE = 1200;
@@ -397,11 +314,13 @@ export default {
       });
     },
     closeSharePreview() {
+      uni.vibrateShort();
       this.showSharePreview = false;
       this.sharePreviewPath = '';
     },
     saveSharePreview() {
       if (!this.sharePreviewPath) return;
+      uni.vibrateShort();
       this.saveToAlbum(this.sharePreviewPath);
     },
     shareToFriend() {
@@ -489,7 +408,7 @@ export default {
 
 .title {
   font-size: 36rpx;
-  font-weight: bold;
+  // font-weight: bold;
   color: #ffffff;
   text-align: center;
 }
@@ -598,7 +517,7 @@ export default {
 
 .footer-item-text {
   font-size: 30rpx;
-  font-weight: bold;
+  // font-weight: bold;
   color: #1e88e5;
 }
 
@@ -635,7 +554,7 @@ export default {
 
 .share-preview-title {
   font-size: 32rpx;
-  font-weight: bold;
+  // font-weight: bold;
   text-align: center;
   margin-bottom: 24rpx;
   color: #333;

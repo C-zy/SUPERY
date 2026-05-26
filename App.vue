@@ -1,6 +1,11 @@
 <script>
+import { loadAppFont } from '@/common/loadFont.js'
+
 export default {
   onLaunch: function () {
+    loadAppFont()
+      .then(() => console.log('字体加载成功'))
+      .catch((err) => console.error('字体加载失败', err));
     uni.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -21,7 +26,14 @@ export default {
 
 <style>
 @import url("./static/css/animate.min.css");
-/* page { */
-  /* background-color: #30475e; */
-/* } */
+@import url("./static/css/shared-animations.scss");
+
+page,
+view,
+text,
+navigator,
+input,
+textarea {
+  font-family: 'AaJiJiaHei';
+}
 </style>

@@ -182,4 +182,15 @@ api.getShareQrcode = (data) => {
 	return request.globalRequest(API_HOST_V2 + '/share/qrcode', 'POST', data)
 }
 
+/**
+ * 提交用户反馈接口
+ * @param {Object} data - 请求参数
+ * @param {string} data.content - 反馈内容（必填）
+ * @param {string[]} [data.images] - 反馈图片URL数组（可选，最多5张）
+ * @returns {Promise} 返回提交结果
+ */
+api.submitFeedback = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/feedback', 'POST', data)
+}
+
 export default api

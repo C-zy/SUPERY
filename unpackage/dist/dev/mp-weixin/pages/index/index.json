@@ -1,5 +1,6 @@
 {
-  "navigationBarTitleText": "番",
+  "navigationBarTitleText": "SUPERY",
   "navigationStyle": "custom",
+  "disableScroll": true,
   "usingComponents": {}
 }

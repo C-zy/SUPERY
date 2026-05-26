@@ -3,45 +3,9 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "番",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/cartoonList/index",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationBarBackgroundColor": "#30475e",
-        "navigationBarTextStyle": "white",
-        "backgroundColor": "#30475e",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
-      "path": "pages/cartoonList/detail",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/wallpaper/index",
-      "style": {
-        "navigationBarTitleText": "次元壁纸",
-        "navigationBarBackgroundColor": "#30475e",
-        "navigationBarTextStyle": "white",
-        "backgroundColor": "#30475e",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
-      "path": "pages/wallpaper/detail",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationBarBackgroundColor": "#30475e",
-        "navigationBarTextStyle": "white",
-        "backgroundColor": "#30475e",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "SUPERY",
+        "navigationStyle": "custom",
+        "disableScroll": true
       }
     },
     {
@@ -54,6 +18,13 @@
       "path": "pages/aiImgList/index",
       "style": {
         "navigationBarTitleText": "记录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/feedback/index",
+      "style": {
+        "navigationBarTitleText": "反馈",
         "navigationStyle": "custom"
       }
     }

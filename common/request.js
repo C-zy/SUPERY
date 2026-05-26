@@ -1,6 +1,33 @@
 const request = {}
 const headers = {}
 
+const AUTH_KEYWORDS = ['Token', 'token', '登录', '未登录', '授权', 'expired', 'Unauthorized']
+
+function isAuthError(msg) {
+	if (!msg) return false
+	return AUTH_KEYWORDS.some(k => msg.includes(k))
+}
+
+function clearAuth() {
+	uni.removeStorageSync('token')
+	uni.removeStorageSync('userInfo')
+	uni.showToast({
+		title: '登录已过期，请重新登录',
+		icon: 'none'
+	})
+}
+
+function handleErrResponse(response) {
+	if (isAuthError(response.msg)) {
+		clearAuth()
+	} else {
+		uni.showToast({
+			title: response.msg || '请求失败',
+			icon: 'none'
+		})
+	}
+}
+
 request.globalRequest = (url, method, data, power) => {
 	const config = {
 		url,
@@ -37,29 +64,14 @@ request.globalRequest = (url, method, data, power) => {
 				if (response.err === 0) {
 					resolve(response)
 				} else {
-					if (response.msg && response.msg.includes('Token')) {
-						uni.clearStorageSync()
-						uni.showToast({
-							title: '请重新登录',
-							icon: 'none'
-						})
-					} else {
-						uni.showToast({
-							title: response.msg || '请求失败',
-							icon: 'none'
-						})
-					}
+					handleErrResponse(response)
 					reject(response)
 				}
 			},
 			fail: (err) => {
 				const code = (err && err.statusCode) || 0
 				if (code === 401) {
-					uni.clearStorageSync()
-					uni.showToast({
-						title: '请重新登录',
-						icon: 'none'
-					})
+					clearAuth()
 				} else {
 					uni.showToast({
 						title: (err && err.errMsg) || '网络错误',
@@ -91,10 +103,7 @@ request.uploadFile = (url, filePath, name, formData) => {
 				if (data.err === 0) {
 					resolve(data)
 				} else {
-					uni.showToast({
-						title: data.msg || '上传失败',
-						icon: 'none'
-					})
+					handleErrResponse(data)
 					reject(data)
 				}
 			},

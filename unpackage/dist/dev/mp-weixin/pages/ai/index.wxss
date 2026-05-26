@@ -15,7 +15,6 @@
   width: 100%;
   text-align: center;
   font-size: 44rpx;
-  font-weight: bold;
   color: #0c68bc;
   margin-bottom: 40rpx;
 }
@@ -30,6 +29,10 @@
   align-items: center;
   background-color: #fff;
   transition: all 0.3s;
+}
+.uploadArea.data-v-2e7a9c24:active {
+  border-color: rgba(12, 104, 188, 0.6);
+  background-color: rgba(12, 104, 188, 0.03);
 }
 .uploadIcon.data-v-2e7a9c24 {
   font-size: 120rpx;
@@ -47,41 +50,9 @@
   color: #999;
   margin-top: 10rpx;
 }
-.card-box.data-v-2e7a9c24 {
-  width: 100%;
-  background-color: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
-  box-sizing: border-box;
-  margin-bottom: 30rpx;
-}
 .card-box.resultCard.data-v-2e7a9c24 {
   margin-top: 30rpx;
   margin-bottom: 0;
-}
-.section-header.data-v-2e7a9c24 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20rpx;
-}
-.section-label.data-v-2e7a9c24 {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #0c68bc;
-  padding-left: 10rpx;
-  border-left: 6rpx solid #0c68bc;
-  margin-bottom: 20rpx;
-}
-.section-header .section-label.data-v-2e7a9c24 {
-  margin-bottom: 0;
-}
-.action-btn.data-v-2e7a9c24 {
-  font-size: 26rpx;
-  color: #0c68bc;
-  padding: 10rpx 20rpx;
-  border: 2rpx solid #0c68bc;
-  border-radius: 30rpx;
 }
 .previewImg.data-v-2e7a9c24 {
   width: 100%;
@@ -151,6 +122,12 @@
   font-size: 28rpx;
   color: #0c68bc;
   box-sizing: border-box;
+  border: 2rpx solid transparent;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.promptInput.data-v-2e7a9c24:focus {
+  border-color: rgba(12, 104, 188, 0.3);
+  box-shadow: 0 0 0 4rpx rgba(12, 104, 188, 0.08);
 }
 .promptCount.data-v-2e7a9c24 {
   font-size: 24rpx;
@@ -172,7 +149,6 @@
 }
 .energyValue.data-v-2e7a9c24 {
   color: #0c68bc;
-  font-weight: bold;
   font-size: 30rpx;
 }
 .energyValue.low.data-v-2e7a9c24 {
@@ -180,34 +156,6 @@
 }
 .energyCost.data-v-2e7a9c24 {
   color: #999;
-}
-.btnBox.data-v-2e7a9c24 {
-  width: 100%;
-  height: 90rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #0c68bc, #1478c8);
-  border-radius: 45rpx;
-  font-size: 34rpx;
-  color: #fff;
-  font-weight: bold;
-  transition: all 0.3s;
-  box-shadow: 0 8rpx 20rpx rgba(12, 104, 188, 0.3);
-}
-.btnBox.disabled.data-v-2e7a9c24 {
-  background: #ccc;
-  box-shadow: none;
-  pointer-events: none;
-}
-.btnBox.loading.data-v-2e7a9c24 {
-  opacity: 0.8;
-  pointer-events: none;
-}
-.hover.data-v-2e7a9c24 {
-  opacity: 0.85;
-  -webkit-transform: scale(0.98);
-          transform: scale(0.98);
 }
 .loadingBox.data-v-2e7a9c24 {
   width: 100%;
@@ -263,11 +211,11 @@
 .resultImg.data-v-2e7a9c24 {
   width: 100%;
   height: auto;
-  border-radius: 10rpx;
+  border-radius: 16rpx;
 }
 .saveHint.data-v-2e7a9c24 {
   text-align: center;
   font-size: 24rpx;
   color: #999;
-  margin-top: 20rpx;
+  margin-top: 16rpx;
 }

@@ -1,5 +1,4 @@
 {
-  "setting": {},
   "condition": {
     "miniprogram": {
       "list": [
@@ -13,6 +12,13 @@
         {
           "name": "pages/ai/index",
           "pathName": "pages/ai/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/feedback/index",
+          "pathName": "pages/feedback/index",
           "query": "",
           "launchMode": "default",
           "scene": null
