@@ -26,7 +26,7 @@
     </view>
 
     <!-- 风格选择 -->
-    <view class="card-box animate-card" :class="{ 'card-show': cardShow }" :style="{ animationDelay: '0.2s' }" v-if="uploadedImageUrl">
+    <view class="card-box animate-card" :class="{ 'card-show': cardShow }" :style="{ animationDelay: '0.2s' }" v-if="uploadedImageUrl && styleOptions.length">
       <view class="section-label">选择风格</view>
       <view class="currentStyle" @click="openStylePopup">
         <image :src="styleOptions[selectedStyle].image" mode="aspectFill" class="currentStyleImg" />
@@ -129,35 +129,6 @@ const IMAGE_CONFIG = {
 // 单次AI生成消耗能量
 const ENERGY_COST = 10;
 
-// 风格选项配置
-const STYLE_OPTIONS = [
-  {
-    name: "旧化",
-    image: "https://img.cdn1.vip/i/6a13ef4c6c2d1_1779691340.webp",
-    prompt: `保留原图高达模型的完整结构、轮廓比例、装甲布局和所有机械细节，不改变任何部件的位置和形状。
-将整体材质处理为超现实做旧风格，照片级真实感，8K超高清画质。
-金属表面重度生锈（heavy rust），氧化金属（oxidized metal），油漆大面积剥落（peeling paint），露出底层暗灰色金属，表面布满划痕（scratches）、凹痕（dents）、弹孔痕迹（bullet hole marks）。
-关节连接处有油污（oil stains）和灰尘堆积（dirt accumulation），装甲边缘磨损明显（edge wear），锈迹从装甲接缝处向下流淌（rust streaks flowing downward from seams）。
-局部露出金属原色光泽（exposed bare metal with subtle sheen），展现真实的岁月痕迹和战场旧化效果。
-电影级光影（cinematic lighting），HDR高动态范围，锐利对焦（sharp focus），金属反光自然真实（natural metallic reflections），工业复古质感（industrial vintage texture），史诗级战场氛围（epic battlefield atmosphere）。`,
-  },
-  {
-    name: "线稿1",
-    image: "https://img.cdn1.vip/i/6a13ef4f6b519_1779691343.webp",
-    prompt: `保留机器人模型，去除模型支架、人手与背景，整体替换为 近代复杂手稿 ，设计图纸质感背景，机器人模型的关键结构额外分解展示在一旁，显示复杂的机械结构和一系列公式，整个画面为精致的彩色手绘风格 图片风格为版画，`,
-  },
-  {
-    name: "线稿2",
-    image: "https://img.cdn1.vip/i/6a13ef5370d4a_1779691347.webp",
-    prompt: `保留机器人模型，去除模型支架、人手与背景，整体替换为近代复杂手稿，设计图纸质感背景，机器人模型的关键结构额外分解展示在一旁，显示复杂的机械结构和一系列公式，将机器人对称分割，右半边结构换为复杂的透视机械解构线稿，线稿部分要展示内部透视机械细节，整个画面为精致的彩色手绘风格。图片风格为版画。原比例。`,
-  },
-  {
-    name:'涂鸦',
-    image: "https://img.cdn1.vip/i/6a13ef4d341e9_1779691341.webp",
-    prompt:`杰作，最高画质，速写风格，线稿，动态姿势，机甲，文字颜色为图片颜色相近色，机械细节丰富，笔触锋利，涂鸦式乱线背景，白色背景，文字涂鸦，皇冠符号，星星，箭头，动感氛围，高对比度，粗黑轮廓线，动漫机甲插画，voxcat画风`
-  }
-];
-
 export default {
   components: {
     StyleSelectPopup,
@@ -172,7 +143,7 @@ export default {
       loadingText: "AI 正在创作中，请稍候...",
       imageSize: "",
       selectedStyle: 0,
-      styleOptions: STYLE_OPTIONS,
+      styleOptions: [],
       energy: 0,
       energyCost: ENERGY_COST,
       isProcessing: false,
@@ -184,6 +155,7 @@ export default {
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
     this.statusBarHeight = systemInfo.statusBarHeight || 20;
+    this.fetchStyles();
     setTimeout(() => {
       this.pageReady = true;
     }, 100);
@@ -201,6 +173,23 @@ export default {
         }
       } catch (err) {
         console.log("获取能量失败:", err);
+      }
+    },
+    // 获取风格列表
+    async fetchStyles() {
+      try {
+        const res = await api.getStyleList();
+        if (res.data && res.data.list && res.data.list.length) {
+          this.styleOptions = res.data.list.map(item => ({
+            id: item.id,
+            name: item.name,
+            image: item.image,
+            prompt: item.prompt
+          }));
+          this.selectedStyle = 0;
+        }
+      } catch (err) {
+        console.log("获取风格列表失败:", err);
       }
     },
     // 消耗能量
@@ -358,6 +347,16 @@ export default {
       if (!this.uploadedImageUrl) {
         uni.showToast({
           title: "请先上传图片",
+          icon: "none",
+        });
+        this.isProcessing = false;
+        return;
+      }
+
+      // 验证风格是否已加载
+      if (!this.styleOptions.length) {
+        uni.showToast({
+          title: "风格列表加载中，请稍候",
           icon: "none",
         });
         this.isProcessing = false;

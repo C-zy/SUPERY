@@ -64,7 +64,9 @@
 			 */
 			type: {
 				handler: function(newVal) {
-					this[this.config[newVal]]()
+					if (this.config && this.config[newVal] && typeof this[this.config[newVal]] === 'function') {
+						this[this.config[newVal]]()
+					}
 				},
 				immediate: true
 			},

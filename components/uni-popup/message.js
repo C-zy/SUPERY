@@ -9,12 +9,12 @@ export default {
 	},
 	methods: {
 		customOpen() {
-			if (this.childrenMsg) {
+			if (this.childrenMsg && typeof this.childrenMsg.open === 'function') {
 				this.childrenMsg.open()
 			}
 		},
 		customClose() {
-			if (this.childrenMsg) {
+			if (this.childrenMsg && typeof this.childrenMsg.close === 'function') {
 				this.childrenMsg.close()
 			}
 		}

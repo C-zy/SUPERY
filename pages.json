@@ -27,6 +27,13 @@
         "navigationBarTitleText": "反馈",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/review/index",
+      "style": {
+        "navigationBarTitleText": "我的备注",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "subPackages": [

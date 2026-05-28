@@ -8,7 +8,7 @@
 		 <!-- 底部内容 -->
 		 <view class="bottom-content">
 			<view class="oneBox animate-card" :class="{ 'card-show': pageReady }" :style="{ animationDelay: '0.1s' }" @click="handleUseAi">
-				<view class="itemText">AI创作</view>
+				<view class="itemText">{{ isAuditMode ? '我的备忘录' : 'GUNDAM创作' }}</view>
 				<view class="itemImg" :style="parallax.a">
 					<image src="https://img.cdn1.vip/i/6a150652cb1e7_1779762770.webp" mode="widthFix" class="aiImg"></image>
 				</view>
@@ -80,7 +80,8 @@ export default {
 			showNicknamePopup: false,
 			newNickname: '',
 			pageReady: false,
-			keyboardShow: false
+			keyboardShow: false,
+			isAuditMode: false
 		}
 	},
 	computed: {
@@ -103,6 +104,7 @@ export default {
 		this.checkLoginStatus()
 		this.initFont()
 		this.initMotion()
+		this.checkAuditStatus()
 		setTimeout(() => {
 			this.pageReady = true
 		}, 100)
@@ -169,9 +171,15 @@ export default {
 		handleUseAi() {
 			if (!this.checkLogin()) return
 			uni.vibrateShort()
-			uni.navigateTo({
-				url: '/pages/ai/index'
-			})
+			if (this.isAuditMode) {
+				uni.navigateTo({
+					url: '/pages/review/index'
+				})
+			} else {
+				uni.navigateTo({
+					url: '/pages/ai/index'
+				})
+			}
 		},
 		handleLoginClick() {
 			uni.vibrateShort()
@@ -226,6 +234,17 @@ export default {
 				}
 			} catch (e) {
 				this.clearSession()
+			}
+		},
+
+		async checkAuditStatus() {
+			try {
+				const res = await api.getAuditStatus()
+				if (res.data) {
+					this.isAuditMode = res.data.isOpen || false
+				}
+			} catch (e) {
+				console.log('获取审核模式状态失败', e)
 			}
 		},
 
@@ -375,6 +394,7 @@ export default {
 	}
 	.itemText{
 		font-size: 50rpx;
+		white-space: nowrap;
 	}
 	.aiImg{
 		width: 400rpx;

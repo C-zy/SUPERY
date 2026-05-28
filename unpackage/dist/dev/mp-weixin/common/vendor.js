@@ -12867,6 +12867,25 @@ api.getShareQrcode = function (data) {
 api.submitFeedback = function (data) {
   return _request.default.globalRequest(API_HOST_V2 + '/feedback', 'POST', data);
 };
+
+/**
+ * 获取风格列表接口
+ * @param {Object} [data] - 请求参数
+ * @param {string} [data.type] - 风格类型筛选（official-官方 personal-个人，不传则获取所有启用的风格）
+ * @returns {Promise} 返回风格列表
+ */
+api.getStyleList = function (data) {
+  return _request.default.globalRequest(API_HOST_V2 + '/style/list', 'GET', data);
+};
+
+/**
+ * 获取审核模式状态接口
+ * @returns {Promise} 返回审核模式状态，包含 isOpen 字段
+ * @description 无需认证即可访问
+ */
+api.getAuditStatus = function () {
+  return _request.default.globalRequest(API_HOST_V2 + '/audit/status', 'GET');
+};
 var _default = api;
 exports.default = _default;
 
@@ -14169,294 +14188,7 @@ module.exports = index_cjs;
 /* 57 */,
 /* 58 */,
 /* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */
-/*!*****************************************!*\
-  !*** D:/demo/SUPERY/static/js/mixin.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.mixin = void 0;
-var _jrPencil = __webpack_require__(/*! ../../static/js/jrPencil.js */ 77);
-var motionListenerAdded = false;
-var mixin = {
-  data: function data() {
-    return {
-      mixinBg: uni.getStorageSync('timColor').bgC,
-      bgImg: '../../static/img/bgImg.png',
-      bgColor1: '#d1c145',
-      bgColor2: '#f9fcfb',
-      bgColor3: '#30475e',
-      calendar: null,
-      comicImg: uni.getStorageSync('comicImg'),
-      Pimg: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
-      x: 0,
-      y: 0
-    };
-  },
-  computed: {
-    rotate: function rotate() {
-      var numX = this.x.toFixed(2) * 4;
-      var numY = this.y.toFixed(2) * 2;
-      return "transform: translate(".concat(numX, "rpx,").concat(numY, "rpx)");
-    },
-    rotateM: function rotateM() {
-      var numX = this.x.toFixed(2) * 2;
-      var numY = this.y.toFixed(2) * 2;
-      return "transform: translate(".concat(numX, "rpx,").concat(numY, "rpx)");
-    },
-    rotateX: function rotateX() {
-      var numX = this.x.toFixed(2) * 3;
-      return "transform: translateX(".concat(numX, "rpx)");
-    }
-  },
-  onLoad: function onLoad() {
-    this.initMotion();
-    if (!this.comicImg) {
-      this.setComic();
-    }
-  },
-  onUnload: function onUnload() {
-    this.stopMotion();
-  },
-  beforeDestroy: function beforeDestroy() {
-    this.stopMotion();
-  },
-  methods: {
-    initMotion: function initMotion() {
-      var _this = this;
-      if (motionListenerAdded) return;
-      motionListenerAdded = true;
-      uni.startDeviceMotionListening({
-        interval: 'ui'
-      });
-      uni.onDeviceMotionChange(function (result) {
-        var xVal = -result.gamma.toFixed(2) / 5;
-        var yVal = -(result.beta - 30).toFixed(2) / 5;
-        _this.x = xVal > 10 ? 10 : xVal < -10 ? -10 : xVal;
-        _this.y = yVal > 10 ? 10 : yVal < -10 ? -10 : yVal;
-      });
-    },
-    stopMotion: function stopMotion() {
-      motionListenerAdded = false;
-      uni.stopDeviceMotionListening();
-    },
-    base64Img: function base64Img(url) {
-      return new Promise(function (resolve, reject) {
-        uni.request({
-          url: 'https://supery.work/api/v1/getPixiv1P?val=' + url,
-          method: 'GET',
-          responseType: 'arraybuffer'
-        }).then(function (img) {
-          var base64Img = uni.arrayBufferToBase64(img[1].data);
-          resolve('data:image/png;base64,' + base64Img);
-        }).catch(function (err) {
-          reject(err);
-        });
-      });
-    },
-    setComic: function setComic() {
-      var num = Math.floor(Math.random() * _jrPencil.jrPencil.length);
-      var url = _jrPencil.jrPencil[num];
-      uni.setStorageSync('comicImg', url);
-      uni.vibrateShort();
-      this.comicImg = url;
-    }
-  }
-};
-exports.mixin = mixin;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
-
-/***/ }),
-/* 77 */
-/*!********************************************!*\
-  !*** D:/demo/SUPERY/static/js/jrPencil.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.jrPencil = void 0;
-var jrPencil = ['https://supery.work/img/jrPencil/yuanshen/jr-ys1.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys2.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys3.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys4.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys5.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys6.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys7.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys8.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys9.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys10.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys11.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys12.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys13.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys14.png'];
-exports.jrPencil = jrPencil;
-
-/***/ }),
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */
-/*!****************************************************!*\
-  !*** D:/demo/SUPERY/components/uni-popup/popup.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 117));
-// 定义 type 类型:弹出类型：top/bottom/center
-var config = {
-  // 顶部弹出
-  top: 'top',
-  // 底部弹出
-  bottom: 'bottom',
-  // 居中弹出
-  center: 'center',
-  // 消息提示
-  message: 'top',
-  // 对话框
-  dialog: 'center',
-  // 分享
-  share: 'bottom'
-};
-var _default = {
-  data: function data() {
-    return {
-      config: config
-    };
-  },
-  mixins: [_message.default]
-};
-exports.default = _default;
-
-/***/ }),
-/* 117 */
-/*!******************************************************!*\
-  !*** D:/demo/SUPERY/components/uni-popup/message.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _default = {
-  created: function created() {
-    if (this.type === 'message') {
-      // 不显示遮罩
-      this.maskShow = false;
-      // 获取子组件对象
-      this.childrenMsg = null;
-    }
-  },
-  methods: {
-    customOpen: function customOpen() {
-      if (this.childrenMsg) {
-        this.childrenMsg.open();
-      }
-    },
-    customClose: function customClose() {
-      if (this.childrenMsg) {
-        this.childrenMsg.close();
-      }
-    }
-  }
-};
-exports.default = _default;
-
-/***/ }),
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */
+/* 60 */
 /*!******************************************!*\
   !*** D:/demo/SUPERY/common/imageUtil.js ***!
   \******************************************/
@@ -14642,6 +14374,280 @@ function formatFileSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+
+/***/ }),
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */
+/*!*****************************************!*\
+  !*** D:/demo/SUPERY/static/js/mixin.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mixin = void 0;
+var _jrPencil = __webpack_require__(/*! ../../static/js/jrPencil.js */ 94);
+var motionListenerAdded = false;
+var mixin = {
+  data: function data() {
+    return {
+      mixinBg: uni.getStorageSync('timColor').bgC,
+      bgImg: '../../static/img/bgImg.png',
+      bgColor1: '#d1c145',
+      bgColor2: '#f9fcfb',
+      bgColor3: '#30475e',
+      calendar: null,
+      comicImg: uni.getStorageSync('comicImg'),
+      Pimg: 'https://api.moedog.org/pixiv/interface/PixivProxy.php?url=',
+      x: 0,
+      y: 0
+    };
+  },
+  computed: {
+    rotate: function rotate() {
+      var numX = this.x.toFixed(2) * 4;
+      var numY = this.y.toFixed(2) * 2;
+      return "transform: translate(".concat(numX, "rpx,").concat(numY, "rpx)");
+    },
+    rotateM: function rotateM() {
+      var numX = this.x.toFixed(2) * 2;
+      var numY = this.y.toFixed(2) * 2;
+      return "transform: translate(".concat(numX, "rpx,").concat(numY, "rpx)");
+    },
+    rotateX: function rotateX() {
+      var numX = this.x.toFixed(2) * 3;
+      return "transform: translateX(".concat(numX, "rpx)");
+    }
+  },
+  onLoad: function onLoad() {
+    this.initMotion();
+    if (!this.comicImg) {
+      this.setComic();
+    }
+  },
+  onUnload: function onUnload() {
+    this.stopMotion();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.stopMotion();
+  },
+  methods: {
+    initMotion: function initMotion() {
+      var _this = this;
+      if (motionListenerAdded) return;
+      motionListenerAdded = true;
+      uni.startDeviceMotionListening({
+        interval: 'ui'
+      });
+      uni.onDeviceMotionChange(function (result) {
+        var xVal = -result.gamma.toFixed(2) / 5;
+        var yVal = -(result.beta - 30).toFixed(2) / 5;
+        _this.x = xVal > 10 ? 10 : xVal < -10 ? -10 : xVal;
+        _this.y = yVal > 10 ? 10 : yVal < -10 ? -10 : yVal;
+      });
+    },
+    stopMotion: function stopMotion() {
+      motionListenerAdded = false;
+      uni.stopDeviceMotionListening();
+    },
+    base64Img: function base64Img(url) {
+      return new Promise(function (resolve, reject) {
+        uni.request({
+          url: 'https://supery.work/api/v1/getPixiv1P?val=' + url,
+          method: 'GET',
+          responseType: 'arraybuffer'
+        }).then(function (img) {
+          var base64Img = uni.arrayBufferToBase64(img[1].data);
+          resolve('data:image/png;base64,' + base64Img);
+        }).catch(function (err) {
+          reject(err);
+        });
+      });
+    },
+    setComic: function setComic() {
+      var num = Math.floor(Math.random() * _jrPencil.jrPencil.length);
+      var url = _jrPencil.jrPencil[num];
+      uni.setStorageSync('comicImg', url);
+      uni.vibrateShort();
+      this.comicImg = url;
+    }
+  }
+};
+exports.mixin = mixin;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+
+/***/ }),
+/* 94 */
+/*!********************************************!*\
+  !*** D:/demo/SUPERY/static/js/jrPencil.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.jrPencil = void 0;
+var jrPencil = ['https://supery.work/img/jrPencil/yuanshen/jr-ys1.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys2.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys3.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys4.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys5.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys6.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys7.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys8.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys9.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys10.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys11.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys12.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys13.png', 'https://supery.work/img/jrPencil/yuanshen/jr-ys14.png'];
+exports.jrPencil = jrPencil;
+
+/***/ }),
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */
+/*!****************************************************!*\
+  !*** D:/demo/SUPERY/components/uni-popup/popup.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 134));
+// 定义 type 类型:弹出类型：top/bottom/center
+var config = {
+  // 顶部弹出
+  top: 'top',
+  // 底部弹出
+  bottom: 'bottom',
+  // 居中弹出
+  center: 'center',
+  // 消息提示
+  message: 'top',
+  // 对话框
+  dialog: 'center',
+  // 分享
+  share: 'bottom'
+};
+var _default = {
+  data: function data() {
+    return {
+      config: config
+    };
+  },
+  mixins: [_message.default]
+};
+exports.default = _default;
+
+/***/ }),
+/* 134 */
+/*!******************************************************!*\
+  !*** D:/demo/SUPERY/components/uni-popup/message.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  created: function created() {
+    if (this.type === 'message') {
+      // 不显示遮罩
+      this.maskShow = false;
+      // 获取子组件对象
+      this.childrenMsg = null;
+    }
+  },
+  methods: {
+    customOpen: function customOpen() {
+      if (this.childrenMsg && typeof this.childrenMsg.open === 'function') {
+        this.childrenMsg.open();
+      }
+    },
+    customClose: function customClose() {
+      if (this.childrenMsg && typeof this.childrenMsg.close === 'function') {
+        this.childrenMsg.close();
+      }
+    }
+  }
+};
+exports.default = _default;
 
 /***/ })
 ]]);

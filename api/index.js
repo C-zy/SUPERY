@@ -193,4 +193,23 @@ api.submitFeedback = (data) => {
 	return request.globalRequest(API_HOST_V2 + '/feedback', 'POST', data)
 }
 
+/**
+ * 获取风格列表接口
+ * @param {Object} [data] - 请求参数
+ * @param {string} [data.type] - 风格类型筛选（official-官方 personal-个人，不传则获取所有启用的风格）
+ * @returns {Promise} 返回风格列表
+ */
+api.getStyleList = (data) => {
+	return request.globalRequest(API_HOST_V2 + '/style/list', 'GET', data)
+}
+
+/**
+ * 获取审核模式状态接口
+ * @returns {Promise} 返回审核模式状态，包含 isOpen 字段
+ * @description 无需认证即可访问
+ */
+api.getAuditStatus = () => {
+	return request.globalRequest(API_HOST_V2 + '/audit/status', 'GET')
+}
+
 export default api

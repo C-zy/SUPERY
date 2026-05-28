@@ -165,7 +165,8 @@ var _default = {
       showNicknamePopup: false,
       newNickname: '',
       pageReady: false,
-      keyboardShow: false
+      keyboardShow: false,
+      isAuditMode: false
     };
   },
   computed: {
@@ -190,6 +191,7 @@ var _default = {
     this.checkLoginStatus();
     this.initFont();
     this.initMotion();
+    this.checkAuditStatus();
     setTimeout(function () {
       _this2.pageReady = true;
     }, 100);
@@ -262,9 +264,15 @@ var _default = {
     handleUseAi: function handleUseAi() {
       if (!this.checkLogin()) return;
       uni.vibrateShort();
-      uni.navigateTo({
-        url: '/pages/ai/index'
-      });
+      if (this.isAuditMode) {
+        uni.navigateTo({
+          url: '/pages/review/index'
+        });
+      } else {
+        uni.navigateTo({
+          url: '/pages/ai/index'
+        });
+      }
     },
     handleLoginClick: function handleLoginClick() {
       uni.vibrateShort();
@@ -376,45 +384,8 @@ var _default = {
         }, _callee2, null, [[0, 7]]);
       }))();
     },
-    handleLogin: function handleLogin() {
+    checkAuditStatus: function checkAuditStatus() {
       var _this7 = this;
-      if (this.isLoading) return;
-      this.isLoading = true;
-      wx.login({
-        success: function success(loginRes) {
-          if (loginRes.code) {
-            _this7.getUserProfile(loginRes.code);
-          } else {
-            _this7.isLoading = false;
-            uni.showToast({
-              title: '获取登录凭证失败',
-              icon: 'none'
-            });
-          }
-        },
-        fail: function fail() {
-          _this7.isLoading = false;
-          uni.showToast({
-            title: '登录失败',
-            icon: 'none'
-          });
-        }
-      });
-    },
-    getUserProfile: function getUserProfile(code) {
-      var _this8 = this;
-      wx.getUserProfile({
-        desc: '用于完善用户资料',
-        success: function success(profileRes) {
-          _this8.doLogin(code, profileRes.userInfo);
-        },
-        fail: function fail() {
-          _this8.doLogin(code, null);
-        }
-      });
-    },
-    doLogin: function doLogin(code, userInfo) {
-      var _this9 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
         var res;
         return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -423,38 +394,105 @@ var _default = {
               case 0:
                 _context3.prev = 0;
                 _context3.next = 3;
-                return _index.default.login({
-                  code: code,
-                  userInfo: userInfo
-                });
+                return _index.default.getAuditStatus();
               case 3:
                 res = _context3.sent;
-                if (res.data && res.data.token) {
-                  uni.setStorageSync('token', res.data.token);
-                  uni.setStorageSync('userInfo', res.data.user);
-                  _this9.userInfo = res.data.user;
-                  uni.vibrateShort();
-                  uni.showToast({
-                    title: res.data.isNewUser ? '注册成功' : '登录成功',
-                    icon: 'success'
-                  });
+                if (res.data) {
+                  _this7.isAuditMode = res.data.isOpen || false;
                 }
                 _context3.next = 10;
                 break;
               case 7:
                 _context3.prev = 7;
                 _context3.t0 = _context3["catch"](0);
-                console.log('登录失败', _context3.t0);
+                console.log('获取审核模式状态失败', _context3.t0);
               case 10:
-                _context3.prev = 10;
-                _this9.isLoading = false;
-                return _context3.finish(10);
-              case 13:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 7, 10, 13]]);
+        }, _callee3, null, [[0, 7]]);
+      }))();
+    },
+    handleLogin: function handleLogin() {
+      var _this8 = this;
+      if (this.isLoading) return;
+      this.isLoading = true;
+      wx.login({
+        success: function success(loginRes) {
+          if (loginRes.code) {
+            _this8.getUserProfile(loginRes.code);
+          } else {
+            _this8.isLoading = false;
+            uni.showToast({
+              title: '获取登录凭证失败',
+              icon: 'none'
+            });
+          }
+        },
+        fail: function fail() {
+          _this8.isLoading = false;
+          uni.showToast({
+            title: '登录失败',
+            icon: 'none'
+          });
+        }
+      });
+    },
+    getUserProfile: function getUserProfile(code) {
+      var _this9 = this;
+      wx.getUserProfile({
+        desc: '用于完善用户资料',
+        success: function success(profileRes) {
+          _this9.doLogin(code, profileRes.userInfo);
+        },
+        fail: function fail() {
+          _this9.doLogin(code, null);
+        }
+      });
+    },
+    doLogin: function doLogin(code, userInfo) {
+      var _this10 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
+        var res;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                _context4.next = 3;
+                return _index.default.login({
+                  code: code,
+                  userInfo: userInfo
+                });
+              case 3:
+                res = _context4.sent;
+                if (res.data && res.data.token) {
+                  uni.setStorageSync('token', res.data.token);
+                  uni.setStorageSync('userInfo', res.data.user);
+                  _this10.userInfo = res.data.user;
+                  uni.vibrateShort();
+                  uni.showToast({
+                    title: res.data.isNewUser ? '注册成功' : '登录成功',
+                    icon: 'success'
+                  });
+                }
+                _context4.next = 10;
+                break;
+              case 7:
+                _context4.prev = 7;
+                _context4.t0 = _context4["catch"](0);
+                console.log('登录失败', _context4.t0);
+              case 10:
+                _context4.prev = 10;
+                _this10.isLoading = false;
+                return _context4.finish(10);
+              case 13:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[0, 7, 10, 13]]);
       }))();
     }
   }

@@ -80,6 +80,7 @@
 }
 .oneBox .itemText.data-v-57280228 {
   font-size: 50rpx;
+  white-space: nowrap;
 }
 .oneBox .aiImg.data-v-57280228 {
   width: 400rpx;
