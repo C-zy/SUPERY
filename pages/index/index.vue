@@ -112,6 +112,20 @@ export default {
 	onUnload() {
 		this.stopMotion()
 	},
+	onShareAppMessage() {
+		return {
+			title: 'GUNDAM创作 - AI图片风格转换',
+			path: '/pages/index/index',
+			imageUrl: 'https://img.cdn1.vip/i/6a13fb4fa76ab_1779694415.webp'
+		}
+	},
+	onShareTimeline() {
+		return {
+			title: 'GUNDAM创作 - AI图片风格转换',
+			query: '',
+			imageUrl: 'https://img.cdn1.vip/i/6a13fb4fa76ab_1779694415.webp'
+		}
+	},
 	methods: {
 		checkLogin() {
 			if (!this.userInfo) {

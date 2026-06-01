@@ -115,6 +115,18 @@ export default {
       this.showCard = true;
     }, 100);
   },
+  onShareAppMessage() {
+    return {
+      title: '我的备忘录',
+      path: '/pages/review/index'
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: '我的备忘录',
+      query: ''
+    }
+  },
   methods: {
     goBack() {
       uni.vibrateShort();

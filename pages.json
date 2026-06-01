@@ -79,6 +79,8 @@
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8",
+    "enableShareAppMessage": true,
+    "enableShareTimeline": true,
     "app-plus": {
       "background": "#efeff4"
     }

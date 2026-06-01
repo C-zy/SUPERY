@@ -163,6 +163,18 @@ export default {
   onShow() {
     this.fetchEnergy();
   },
+  onShareAppMessage() {
+    return {
+      title: 'GUNDAM创作 - AI图片风格转换',
+      path: '/pages/ai/index'
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: 'GUNDAM创作 - AI图片风格转换',
+      query: ''
+    }
+  },
   methods: {
     // 获取用户能量
     async fetchEnergy() {

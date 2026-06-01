@@ -118,6 +118,18 @@ export default {
       this.showCard = true;
     }, 100);
   },
+  onShareAppMessage() {
+    return {
+      title: '意见反馈 - GUNDAM创作',
+      path: '/pages/feedback/index'
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: '意见反馈 - GUNDAM创作',
+      query: ''
+    }
+  },
   methods: {
     getTodayKey() {
       const now = new Date();

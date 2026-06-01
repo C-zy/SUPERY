@@ -117,6 +117,18 @@ export default {
     }
     this.loadData();
   },
+  onShareAppMessage() {
+    return {
+      title: '我的记录 - GUNDAM创作',
+      path: '/pages/aiImgList/index'
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: '我的记录 - GUNDAM创作',
+      query: ''
+    }
+  },
   methods: {
     async loadData() {
       if (this.loading || this.noMore) return;
